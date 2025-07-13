@@ -1,0 +1,159 @@
+<div class="login-page">
+  <div class="login-container">
+    <!-- Left Side - Branding -->
+    <div class="login-branding">
+      <div class="branding-content">
+        <div class="logo-section">
+          <h1 class="brand-logo">Betna</h1>
+          <p class="brand-tagline">Home Brands Marketplace</p>
+        </div>
+        <div class="welcome-content">
+          <h2 class="welcome-title">Welcome Back!</h2>
+          <p class="welcome-description">
+            Sign in to discover amazing home brands, manage your orders, and connect with talented creators.
+          </p>
+          <div class="features-list">
+            <div class="feature-item">
+              <span class="feature-icon">🏠</span>
+              <span class="feature-text">Access exclusive home brands</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🛒</span>
+              <span class="feature-text">Manage your orders and wishlist</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🎪</span>
+              <span class="feature-text">Join monthly bazaar events</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="login-form-section">
+      <div class="form-container">
+        <div class="form-header">
+          <h2 class="form-title">Sign In</h2>
+          <p class="form-subtitle">Enter your credentials to access your account</p>
+        </div>
+
+        <form class="login-form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <!-- Email Field -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">📧</span>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="Enter your email"
+                [(ngModel)]="loginData.email"
+                #email="ngModel"
+                required
+                email
+                [class.error]="email.invalid && email.touched"
+              />
+            </div>
+            <div class="error-message" *ngIf="email.invalid && email.touched">
+              <span *ngIf="email.errors?.['required']">Email is required</span>
+              <span *ngIf="email.errors?.['email']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                name="password"
+                class="form-input"
+                placeholder="Enter your password"
+                [(ngModel)]="loginData.password"
+                #password="ngModel"
+                required
+                minlength="6"
+                [class.error]="password.invalid && password.touched"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="togglePassword()"
+              >
+                {{ showPassword ? '🙈' : '👁️' }}
+              </button>
+            </div>
+            <div class="error-message" *ngIf="password.invalid && password.touched">
+              <span *ngIf="password.errors?.['required']">Password is required</span>
+              <span *ngIf="password.errors?.['minlength']">Password must be at least 6 characters</span>
+            </div>
+          </div>
+
+          <!-- Remember Me & Forgot Password -->
+          <div class="form-options">
+            <label class="checkbox-wrapper">
+              <input
+                type="checkbox"
+                name="rememberMe"
+                [(ngModel)]="loginData.rememberMe"
+              />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-label">Remember me</span>
+            </label>
+            <a href="#" class="forgot-password" (click)="onForgotPassword($event)">
+              Forgot password?
+            </a>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="submit-btn"
+            [disabled]="loginForm.invalid || isLoading"
+            [class.loading]="isLoading"
+          >
+            <span *ngIf="!isLoading">Sign In</span>
+            <span *ngIf="isLoading" class="loading-spinner">🔄</span>
+          </button>
+
+          <!-- Error Message -->
+          <div class="form-error" *ngIf="errorMessage">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text">{{ errorMessage }}</span>
+          </div>
+        </form>
+
+        <!-- Social Login -->
+        <div class="social-login">
+          <div class="divider">
+            <span class="divider-text">Or continue with</span>
+          </div>
+          <div class="social-buttons">
+            <button class="social-btn google" (click)="loginWithGoogle()">
+              <span class="social-icon">🔍</span>
+              <span class="social-text">Google</span>
+            </button>
+            <button class="social-btn facebook" (click)="loginWithFacebook()">
+              <span class="social-icon">📘</span>
+              <span class="social-text">Facebook</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sign Up Link -->
+        <div class="signup-link">
+          <p class="signup-text">
+            Don't have an account?
+            <a [routerLink]="['/register']" class="signup-btn">Sign up here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,63 @@
+<div class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Discover the Magic of Betna Bazaar</h1>
+
+        <div class="bazaar-features-simple">
+          <div class="bazaar-feature-item">
+            <h4>🌟 Discover Unique Brands</h4>
+            <p>Fresh products from creative home brands.</p>
+          </div>
+          <div class="bazaar-feature-item">
+            <h4>🎉 Live Experiences</h4>
+            <p>Engage in workshops, demos, and real-time fun.</p>
+          </div>
+          <div class="bazaar-feature-item">
+            <h4>💝 Exclusive Bazaar Offers</h4>
+            <p>Enjoy deals, bundles, and special surprises.</p>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">50+</span>
+            <span class="stat-label">Featured Brands</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">1000+</span>
+            <span class="stat-label">Happy Visitors</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">12</span>
+            <span class="stat-label">Events Per Year</span>
+          </div>
+        </div>
+        <div class="hero-buttons">
+          <a routerLink="/bazaar" class="btn btn-primary"
+            >🎁 Explore our Bazaar</a
+          >
+
+          <button *ngIf="userRole === 'brand-owner'" class="btn btn-warning">
+            💳 Subscribe & Payment
+          </button>
+
+          <button *ngIf="userRole === 'customer'" class="btn btn-secondary">
+            📅 Add to Calendar
+          </button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="bazaar-illustration">
+          <div class="tent-icon">🎪</div>
+          <div class="floating-elements">
+            <span class="floating-item">🏺</span>
+            <span class="floating-item">🍯</span>
+            <span class="floating-item">🧶</span>
+            <span class="floating-item">🕯️</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

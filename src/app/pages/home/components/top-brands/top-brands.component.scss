@@ -1,0 +1,127 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: var(--neutral-charcoal);
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    .brands-grid {
+      gap: 1.25rem;
+    }
+  }
+}
+
+.section-description {
+  font-size: 1.125rem;
+  color: var(--neutral-charcoal);
+  opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+.section-link {
+  color: var(--primary-terracotta);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--secondary-teal);
+  }
+}
+.top-brands {
+  background-color: var(--white);
+  padding: 3rem 0;
+}
+
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.brand-card {
+  background-color: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px var(--shadow-light);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 32px var(--shadow-medium);
+  }
+}
+
+.brand-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-cream) 0%,
+    var(--neutral-light-gray) 100%
+  );
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  align-self: center;
+}
+
+.brand-icon {
+  font-size: 2rem;
+}
+
+.brand-info {
+  flex-grow: 1;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.brand-name {
+  font-size: 1.5rem;
+  color: var(--neutral-charcoal);
+  margin-bottom: 0.5rem;
+}
+
+.brand-category {
+  color: var(--secondary-green);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+}
+
+.brand-description {
+  color: var(--neutral-charcoal);
+  opacity: 0.7;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.brand-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--neutral-charcoal);
+  opacity: 0.8;
+}
+
+.brand-rating {
+  font-weight: 600;
+}

@@ -1,0 +1,321 @@
+<div class="brand-detail-page">
+  <!-- Brand Hero Section -->
+  <div class="brand-hero">
+    <div class="hero-background">
+      <div class="hero-pattern"></div>
+    </div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="brand-info">
+          <div class="brand-logo">
+            <span class="logo-icon">{{ brand.icon }}</span>
+          </div>
+          <div class="brand-details">
+            <h1 class="brand-name">{{ brand.name }}</h1>
+            <p class="brand-category">{{ brand.category }}</p>
+            <div class="brand-rating">
+              <div class="stars">
+                <span class="star" *ngFor="let star of getStars(brand.rating)" [class.filled]="star">⭐</span>
+              </div>
+              <span class="rating-text">{{ brand.rating }} ({{ brand.reviewCount }} reviews)</span>
+            </div>
+            <p class="brand-description">{{ brand.description }}</p>
+            <div class="brand-stats">
+              <div class="stat-item">
+                <span class="stat-number">{{ brand.productCount }}</span>
+                <span class="stat-label">Products</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">{{ brand.yearsActive }}</span>
+                <span class="stat-label">Years Active</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">{{ brand.customerCount }}</span>
+                <span class="stat-label">Happy Customers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="brand-actions">
+          <button class="btn btn-primary" (click)="followBrand()">
+            {{ brand.isFollowed ? 'Following' : 'Follow Brand' }}
+          </button>
+          <button class="btn btn-outline" (click)="contactBrand()">
+            Contact Brand
+          </button>
+          <button class="btn btn-text" (click)="shareBrand()">
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand Story Section -->
+  <div class="brand-story-section">
+    <div class="container">
+      <div class="story-content">
+        <div class="story-text">
+          <h2 class="section-title">Our Story</h2>
+          <div class="story-paragraphs">
+            <p *ngFor="let paragraph of brand.story">{{ paragraph }}</p>
+          </div>
+          <div class="brand-values">
+            <h3 class="values-title">Our Values</h3>
+            <div class="values-grid">
+              <div class="value-item" *ngFor="let value of brand.values">
+                <span class="value-icon">{{ value.icon }}</span>
+                <div class="value-content">
+                  <h4 class="value-name">{{ value.name }}</h4>
+                  <p class="value-description">{{ value.description }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="story-images">
+          <div class="image-gallery">
+            <div class="gallery-item" *ngFor="let image of brand.galleryImages">
+              <div class="image-placeholder">
+                <span class="placeholder-icon">{{ image.icon }}</span>
+              </div>
+              <p class="image-caption">{{ image.caption }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <div class="products-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our Products</h2>
+        <div class="products-filters">
+          <select class="filter-select" [(ngModel)]="selectedCategory" (change)="filterProducts()">
+            <option value="">All Categories</option>
+            <option *ngFor="let category of productCategories" [value]="category">{{ category }}</option>
+          </select>
+          <select class="filter-select" [(ngModel)]="sortBy" (change)="sortProducts()">
+            <option value="name">Sort by Name</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+            <option value="newest">Newest First</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card" *ngFor="let product of filteredProducts" (click)="viewProduct(product.id)">
+          <div class="product-image">
+            <span class="product-icon">{{ product.icon }}</span>
+            <div class="product-badge" *ngIf="product.isNew">New</div>
+            <div class="product-discount" *ngIf="product.discount">-{{ product.discount }}%</div>
+            <div class="product-overlay">
+              <button class="quick-view-btn" (click)="quickView(product.id, $event)">
+                Quick View
+              </button>
+            </div>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-description">{{ product.description }}</p>
+            <div class="product-rating">
+              <div class="stars">
+                <span class="star" *ngFor="let star of getStars(product.rating)" [class.filled]="star">⭐</span>
+              </div>
+              <span class="rating-count">({{ product.reviewCount }})</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">${{ product.price }}</span>
+              <span class="original-price" *ngIf="product.originalPrice">${{ product.originalPrice }}</span>
+            </div>
+          </div>
+          <div class="product-actions">
+            <button class="btn btn-primary" (click)="addToCart(product.id, $event)">
+              Add to Cart
+            </button>
+            <button class="btn btn-outline" (click)="addToWishlist(product.id, $event)">
+              {{ product.isWishlisted ? '❤️' : '🤍' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="load-more" *ngIf="hasMoreProducts">
+        <button class="btn btn-outline" (click)="loadMoreProducts()">
+          Load More Products
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="reviews-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Customer Reviews</h2>
+        <div class="reviews-summary">
+          <div class="overall-rating">
+            <span class="rating-number">{{ brand.rating }}</span>
+            <div class="rating-stars">
+              <span class="star" *ngFor="let star of getStars(brand.rating)" [class.filled]="star">⭐</span>
+            </div>
+            <span class="total-reviews">{{ brand.reviewCount }} reviews</span>
+          </div>
+          <div class="rating-breakdown">
+            <div class="rating-bar" *ngFor="let rating of ratingBreakdown">
+              <span class="rating-label">{{ rating.stars }} stars</span>
+              <div class="bar-container">
+                <div class="bar-fill" [style.width.%]="rating.percentage"></div>
+              </div>
+              <span class="rating-count">{{ rating.count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reviews-list">
+        <div class="review-item" *ngFor="let review of reviews">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">
+                <span class="avatar-icon">{{ review.avatar }}</span>
+              </div>
+              <div class="reviewer-details">
+                <h4 class="reviewer-name">{{ review.name }}</h4>
+                <p class="review-date">{{ review.date }}</p>
+              </div>
+            </div>
+            <div class="review-rating">
+              <span class="star" *ngFor="let star of getStars(review.rating)" [class.filled]="star">⭐</span>
+            </div>
+          </div>
+          <div class="review-content">
+            <p class="review-text">{{ review.text }}</p>
+            <div class="review-images" *ngIf="review.images">
+              <div class="review-image" *ngFor="let image of review.images">
+                <span class="image-icon">{{ image }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="review-actions">
+            <button class="review-action" (click)="likeReview(review.id)">
+              👍 {{ review.likes }}
+            </button>
+            <button class="review-action" (click)="replyToReview(review.id)">
+              Reply
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="load-more-reviews">
+        <button class="btn btn-outline" (click)="loadMoreReviews()">
+          Load More Reviews
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Section -->
+  <div class="contact-section">
+    <div class="container">
+      <div class="contact-content">
+        <div class="contact-info">
+          <h2 class="section-title">Get in Touch</h2>
+          <p class="contact-description">
+            Have questions about our products or want to place a custom order? We'd love to hear from you!
+          </p>
+          <div class="contact-methods">
+            <div class="contact-method">
+              <span class="method-icon">📧</span>
+              <div class="method-content">
+                <span class="method-label">Email</span>
+                <span class="method-value">{{ brand.contact.email }}</span>
+              </div>
+            </div>
+            <div class="contact-method">
+              <span class="method-icon">📱</span>
+              <div class="method-content">
+                <span class="method-label">Phone</span>
+                <span class="method-value">{{ brand.contact.phone }}</span>
+              </div>
+            </div>
+            <div class="contact-method">
+              <span class="method-icon">📍</span>
+              <div class="method-content">
+                <span class="method-label">Location</span>
+                <span class="method-value">{{ brand.contact.location }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-link" *ngFor="let social of brand.socialLinks">
+              <span class="social-icon">{{ social.icon }}</span>
+              <span class="social-name">{{ social.name }}</span>
+            </a>
+          </div>
+        </div>
+        <div class="contact-form">
+          <form class="message-form" (ngSubmit)="sendMessage()" #contactForm="ngForm">
+            <div class="form-group">
+              <label for="name" class="form-label">Your Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="form-input"
+                placeholder="Enter your name"
+                [(ngModel)]="contactMessage.name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">Your Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="Enter your email"
+                [(ngModel)]="contactMessage.email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="subject" class="form-label">Subject</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                class="form-input"
+                placeholder="What's this about?"
+                [(ngModel)]="contactMessage.subject"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="message" class="form-label">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                class="form-textarea"
+                placeholder="Tell us more..."
+                rows="5"
+                [(ngModel)]="contactMessage.message"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="contactForm.invalid">
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

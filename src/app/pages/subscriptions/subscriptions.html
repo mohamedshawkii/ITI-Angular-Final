@@ -1,0 +1,266 @@
+<div class="subscriptions-page">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Choose Your Betna Experience</h1>
+        <p class="hero-description">
+          Get exclusive access to amazing home brands, special offers, and monthly bazaar events. 
+          Choose the plan that works best for you.
+        </p>
+        <div class="hero-features">
+          <div class="feature-badge">
+            <span class="feature-icon">✨</span>
+            <span class="feature-text">Early access to new brands</span>
+          </div>
+          <div class="feature-badge">
+            <span class="feature-icon">🎁</span>
+            <span class="feature-text">Exclusive member discounts</span>
+          </div>
+          <div class="feature-badge">
+            <span class="feature-icon">📦</span>
+            <span class="feature-text">Priority delivery</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing Plans -->
+  <div class="pricing-section">
+    <div class="container">
+      <div class="pricing-header">
+        <h2 class="section-title">Subscription Plans</h2>
+        <p class="section-description">
+          Start with our free plan and upgrade anytime to unlock premium features
+        </p>
+        
+        <!-- Billing Toggle -->
+        <div class="billing-toggle">
+          <span class="billing-label" [class.active]="billingPeriod === 'monthly'">Monthly</span>
+          <label class="toggle-switch">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="isYearlyBilling"
+              (change)="toggleBilling()"
+            />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="billing-label" [class.active]="billingPeriod === 'yearly'">
+            Yearly
+            <span class="savings-badge">Save 20%</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free Plan -->
+        <div class="pricing-card free">
+          <div class="card-header">
+            <h3 class="plan-name">Free</h3>
+            <div class="plan-price">
+              <span class="price-amount">$0</span>
+              <span class="price-period">/month</span>
+            </div>
+            <p class="plan-description">Perfect for exploring home brands</p>
+          </div>
+          
+          <div class="card-features">
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Browse all brands</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Basic customer support</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Monthly newsletter</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Access to public bazaar events</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Standard shipping rates</span>
+            </div>
+          </div>
+          
+          <button class="plan-button free-button" (click)="selectPlan('free')">
+            Get Started Free
+          </button>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="pricing-card premium" [class.popular]="true">
+          <div class="popular-badge">Most Popular</div>
+          <div class="card-header">
+            <h3 class="plan-name">Premium</h3>
+            <div class="plan-price">
+              <span class="price-amount">${{ getPremiumPrice() }}</span>
+              <span class="price-period">{{ billingPeriod === 'yearly' ? '/year' : '/month' }}</span>
+            </div>
+            <p class="plan-description">Everything you need for the best experience</p>
+          </div>
+          
+          <div class="card-features">
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Everything in Free</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">10% discount on all orders</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Priority customer support</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Exclusive bazaar access</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Early access to new brands</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Free shipping on orders over $50</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Monthly exclusive product samples</span>
+            </div>
+          </div>
+          
+          <button class="plan-button premium-button" (click)="selectPlan('premium')">
+            Start Premium Trial
+          </button>
+        </div>
+
+        <!-- Business Plan -->
+        <div class="pricing-card business">
+          <div class="card-header">
+            <h3 class="plan-name">Business</h3>
+            <div class="plan-price">
+              <span class="price-amount">${{ getBusinessPrice() }}</span>
+              <span class="price-period">{{ billingPeriod === 'yearly' ? '/year' : '/month' }}</span>
+            </div>
+            <p class="plan-description">For brand owners and businesses</p>
+          </div>
+          
+          <div class="card-features">
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Everything in Premium</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Brand dashboard access</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Product listing management</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Sales analytics & insights</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Priority bazaar booth placement</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Marketing tools & promotion</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span class="feature-text">Dedicated account manager</span>
+            </div>
+          </div>
+          
+          <button class="plan-button business-button" (click)="selectPlan('business')">
+            Start Business Plan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Comparison -->
+  <div class="comparison-section">
+    <div class="container">
+      <h2 class="section-title">Feature Comparison</h2>
+      <div class="comparison-table">
+        <div class="table-header">
+          <div class="feature-column">Features</div>
+          <div class="plan-column">Free</div>
+          <div class="plan-column">Premium</div>
+          <div class="plan-column">Business</div>
+        </div>
+        
+        <div class="table-row" *ngFor="let feature of comparisonFeatures">
+          <div class="feature-name">{{ feature.name }}</div>
+          <div class="feature-value">
+            <span *ngIf="feature.free === true" class="check-icon">✓</span>
+            <span *ngIf="feature.free === false" class="cross-icon">✗</span>
+            <span *ngIf="feature.free !== true && feature.free !== false">{{ feature.free }}</span>
+          </div>
+          <div class="feature-value">
+            <span *ngIf="feature.premium === true" class="check-icon">✓</span>
+            <span *ngIf="feature.premium === false" class="cross-icon">✗</span>
+            <span *ngIf="feature.premium !== true && feature.premium !== false">{{ feature.premium }}</span>
+          </div>
+          <div class="feature-value">
+            <span *ngIf="feature.business === true" class="check-icon">✓</span>
+            <span *ngIf="feature.business === false" class="cross-icon">✗</span>
+            <span *ngIf="feature.business !== true && feature.business !== false">{{ feature.business }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="faq-section">
+    <div class="container">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item" *ngFor="let faq of faqs; let i = index">
+          <div class="faq-question" (click)="toggleFaq(i)">
+            <span class="question-text">{{ faq.question }}</span>
+            <span class="question-icon" [class.open]="faq.isOpen">{{ faq.isOpen ? '−' : '+' }}</span>
+          </div>
+          <div class="faq-answer" [class.open]="faq.isOpen">
+            <p class="answer-text">{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Ready to Join Betna?</h2>
+        <p class="cta-description">
+          Start your journey with amazing home brands today. You can always upgrade or downgrade your plan.
+        </p>
+        <div class="cta-buttons">
+          <button class="btn btn-primary" (click)="selectPlan('premium')">
+            Start Premium Trial
+          </button>
+          <button class="btn btn-outline" (click)="selectPlan('free')">
+            Start Free
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

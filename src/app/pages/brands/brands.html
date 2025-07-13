@@ -1,0 +1,79 @@
+<div class="brands-page">
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">Discover Amazing Brands</h1>
+      <p class="page-description">
+        Explore our collection of talented home-based businesses offering unique products made with love and care.
+      </p>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <label class="filter-label">Category:</label>
+        <select class="filter-select" (change)="filterByCategory($event)">
+          <option value="">All Categories</option>
+          <option value="Food & Beverages">Food & Beverages</option>
+          <option value="Home Decor">Home Decor</option>
+          <option value="Fashion & Accessories">Fashion & Accessories</option>
+          <option value="Beauty & Wellness">Beauty & Wellness</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Sort by:</label>
+        <select class="filter-select" (change)="sortBrands($event)">
+          <option value="name">Name</option>
+          <option value="rating">Rating</option>
+          <option value="products">Product Count</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Brands Grid -->
+    <div class="brands-grid">
+      <div class="brand-card" *ngFor="let brand of filteredBrands">
+        <div class="brand-image">
+          <span class="brand-icon">{{ brand.icon }}</span>
+        </div>
+        <div class="brand-info">
+          <h3 class="brand-name">{{ brand.name }}</h3>
+          <p class="brand-category">{{ brand.category }}</p>
+          <p class="brand-description">{{ brand.description }}</p>
+          <div class="brand-stats">
+            <span class="brand-rating">⭐ {{ brand.rating }}</span>
+            <span class="brand-products">{{ brand.productCount }} products</span>
+          </div>
+          <div class="brand-location" *ngIf="brand.location">
+            <span class="location-icon">📍</span>
+            <span class="location-text">{{ brand.location }}</span>
+          </div>
+        </div>
+        <div class="brand-actions">
+          <a [routerLink]="['/brand', brand.id]" class="btn btn-primary">View Brand</a>
+          <button class="btn btn-outline" (click)="followBrand(brand.id)">
+            {{ brand.isFollowed ? 'Following' : 'Follow' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load More Button -->
+    <div class="load-more-section" *ngIf="hasMoreBrands">
+      <button class="btn btn-outline btn-large" (click)="loadMoreBrands()">
+        Load More Brands
+      </button>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredBrands.length === 0">
+      <div class="empty-state-icon">🔍</div>
+      <h3 class="empty-state-title">No brands found</h3>
+      <p class="empty-state-description">
+        Try adjusting your filters or search criteria to find more brands.
+      </p>
+      <button class="btn btn-primary" (click)="clearFilters()">Clear Filters</button>
+    </div>
+  </div>
+</div>
+

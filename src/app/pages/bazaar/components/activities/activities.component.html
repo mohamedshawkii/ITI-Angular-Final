@@ -1,0 +1,23 @@
+<div class="activities-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Bazaar Activities</h2>
+      <p class="section-description">
+        Enjoy a variety of engaging activities designed to connect you with
+        creators and their craft
+      </p>
+    </div>
+
+    <div class="activities-grid">
+      <div class="activity-card" *ngFor="let activity of bazaarActivities">
+        <div class="activity-icon">{{ activity.icon }}</div>
+        <h3 class="activity-title">{{ activity.title }}</h3>
+        <p class="activity-description">{{ activity.description }}</p>
+        <div class="activity-details">
+          <span class="activity-duration">{{ activity.duration }}</span>
+          <span class="activity-level">{{ activity.level }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

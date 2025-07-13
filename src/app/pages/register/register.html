@@ -1,0 +1,326 @@
+<div class="register-page">
+  <div class="register-container">
+    <!-- Left Side - Registration Form -->
+    <div class="register-form-section">
+      <div class="form-container">
+        <div class="form-header">
+          <h2 class="form-title">Create Account</h2>
+          <p class="form-subtitle">Join Betna and discover amazing home brands</p>
+        </div>
+
+        <form class="register-form" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+          <!-- Name Fields -->
+          <div class="name-fields">
+            <div class="form-group">
+              <label for="firstName" class="form-label">First Name</label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  class="form-input"
+                  placeholder="First name"
+                  [(ngModel)]="registerData.firstName"
+                  #firstName="ngModel"
+                  required
+                  minlength="2"
+                  [class.error]="firstName.invalid && firstName.touched"
+                />
+              </div>
+              <div class="error-message" *ngIf="firstName.invalid && firstName.touched">
+                <span *ngIf="firstName.errors?.['required']">First name is required</span>
+                <span *ngIf="firstName.errors?.['minlength']">Must be at least 2 characters</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="lastName" class="form-label">Last Name</label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  class="form-input"
+                  placeholder="Last name"
+                  [(ngModel)]="registerData.lastName"
+                  #lastName="ngModel"
+                  required
+                  minlength="2"
+                  [class.error]="lastName.invalid && lastName.touched"
+                />
+              </div>
+              <div class="error-message" *ngIf="lastName.invalid && lastName.touched">
+                <span *ngIf="lastName.errors?.['required']">Last name is required</span>
+                <span *ngIf="lastName.errors?.['minlength']">Must be at least 2 characters</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">📧</span>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="Enter your email"
+                [(ngModel)]="registerData.email"
+                #email="ngModel"
+                required
+                email
+                [class.error]="email.invalid && email.touched"
+              />
+            </div>
+            <div class="error-message" *ngIf="email.invalid && email.touched">
+              <span *ngIf="email.errors?.['required']">Email is required</span>
+              <span *ngIf="email.errors?.['email']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <!-- Phone Field -->
+          <div class="form-group">
+            <label for="phone" class="form-label">Phone Number</label>
+            <div class="input-wrapper">
+              <span class="input-icon">📱</span>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="form-input"
+                placeholder="Enter your phone number"
+                [(ngModel)]="registerData.phone"
+                #phone="ngModel"
+                required
+                pattern="[0-9]{10,15}"
+                [class.error]="phone.invalid && phone.touched"
+              />
+            </div>
+            <div class="error-message" *ngIf="phone.invalid && phone.touched">
+              <span *ngIf="phone.errors?.['required']">Phone number is required</span>
+              <span *ngIf="phone.errors?.['pattern']">Please enter a valid phone number</span>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                name="password"
+                class="form-input"
+                placeholder="Create a password"
+                [(ngModel)]="registerData.password"
+                #password="ngModel"
+                required
+                minlength="8"
+                (input)="checkPasswordStrength()"
+                [class.error]="password.invalid && password.touched"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="togglePassword()"
+              >
+                {{ showPassword ? '🙈' : '👁️' }}
+              </button>
+            </div>
+            <div class="password-strength" *ngIf="registerData.password">
+              <div class="strength-bar">
+                <div class="strength-fill" [class]="passwordStrength.class" [style.width.%]="passwordStrength.percentage"></div>
+              </div>
+              <span class="strength-text" [class]="passwordStrength.class">{{ passwordStrength.text }}</span>
+            </div>
+            <div class="error-message" *ngIf="password.invalid && password.touched">
+              <span *ngIf="password.errors?.['required']">Password is required</span>
+              <span *ngIf="password.errors?.['minlength']">Password must be at least 8 characters</span>
+            </div>
+          </div>
+
+          <!-- Confirm Password Field -->
+          <div class="form-group">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                id="confirmPassword"
+                name="confirmPassword"
+                class="form-input"
+                placeholder="Confirm your password"
+                [(ngModel)]="registerData.confirmPassword"
+                #confirmPassword="ngModel"
+                required
+                [class.error]="(confirmPassword.invalid && confirmPassword.touched) || (confirmPassword.touched && !passwordsMatch())"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="toggleConfirmPassword()"
+              >
+                {{ showConfirmPassword ? '🙈' : '👁️' }}
+              </button>
+            </div>
+            <div class="error-message" *ngIf="confirmPassword.touched && !passwordsMatch()">
+              <span>Passwords do not match</span>
+            </div>
+          </div>
+
+          <!-- Account Type -->
+          <div class="form-group">
+            <label class="form-label">Account Type</label>
+            <div class="account-type-options">
+              <label class="radio-option">
+                <input
+                  type="radio"
+                  name="accountType"
+                  value="customer"
+                  [(ngModel)]="registerData.accountType"
+                />
+                <span class="radio-custom"></span>
+                <div class="radio-content">
+                  <span class="radio-title">Customer</span>
+                  <span class="radio-description">Browse and purchase from home brands</span>
+                </div>
+              </label>
+              <label class="radio-option">
+                <input
+                  type="radio"
+                  name="accountType"
+                  value="brand"
+                  [(ngModel)]="registerData.accountType"
+                />
+                <span class="radio-custom"></span>
+                <div class="radio-content">
+                  <span class="radio-title">Brand Owner</span>
+                  <span class="radio-description">Sell your products and manage your brand</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Terms and Conditions -->
+          <div class="form-group">
+            <label class="checkbox-wrapper">
+              <input
+                type="checkbox"
+                name="agreeToTerms"
+                [(ngModel)]="registerData.agreeToTerms"
+                required
+              />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-label">
+                I agree to the <a href="#" class="terms-link">Terms of Service</a> and 
+                <a href="#" class="terms-link">Privacy Policy</a>
+              </span>
+            </label>
+          </div>
+
+          <!-- Newsletter Subscription -->
+          <div class="form-group">
+            <label class="checkbox-wrapper">
+              <input
+                type="checkbox"
+                name="subscribeNewsletter"
+                [(ngModel)]="registerData.subscribeNewsletter"
+              />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-label">
+                Subscribe to our newsletter for updates and exclusive offers
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="submit-btn"
+            [disabled]="registerForm.invalid || !passwordsMatch() || isLoading"
+            [class.loading]="isLoading"
+          >
+            <span *ngIf="!isLoading">Create Account</span>
+            <span *ngIf="isLoading" class="loading-spinner">🔄</span>
+          </button>
+
+          <!-- Error Message -->
+          <div class="form-error" *ngIf="errorMessage">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text">{{ errorMessage }}</span>
+          </div>
+        </form>
+
+        <!-- Social Registration -->
+        <div class="social-login">
+          <div class="divider">
+            <span class="divider-text">Or sign up with</span>
+          </div>
+          <div class="social-buttons">
+            <button class="social-btn google" (click)="registerWithGoogle()">
+              <span class="social-icon">🔍</span>
+              <span class="social-text">Google</span>
+            </button>
+            <button class="social-btn facebook" (click)="registerWithFacebook()">
+              <span class="social-icon">📘</span>
+              <span class="social-text">Facebook</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Login Link -->
+        <div class="login-link">
+          <p class="login-text">
+            Already have an account?
+            <a [routerLink]="['/login']" class="login-btn">Sign in here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side - Branding -->
+    <div class="register-branding">
+      <div class="branding-content">
+        <div class="logo-section">
+          <h1 class="brand-logo">Betna</h1>
+          <p class="brand-tagline">Home Brands Marketplace</p>
+        </div>
+        <div class="benefits-content">
+          <h2 class="benefits-title">Join Our Community</h2>
+          <p class="benefits-description">
+            Connect with talented creators and discover unique products made with love and care.
+          </p>
+          <div class="benefits-list">
+            <div class="benefit-item">
+              <span class="benefit-icon">🏠</span>
+              <div class="benefit-content">
+                <span class="benefit-title">Discover Home Brands</span>
+                <span class="benefit-text">Find unique products from local artisans</span>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <span class="benefit-icon">🎪</span>
+              <div class="benefit-content">
+                <span class="benefit-title">Monthly Bazaar Events</span>
+                <span class="benefit-text">Exclusive access to special events</span>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <span class="benefit-icon">💝</span>
+              <div class="benefit-content">
+                <span class="benefit-title">Member Benefits</span>
+                <span class="benefit-text">Special discounts and early access</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

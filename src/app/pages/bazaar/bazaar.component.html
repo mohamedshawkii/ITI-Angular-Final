@@ -1,0 +1,10 @@
+<app-next-event [nextEvent]="nextEvent" (register)="registerForEvent()">
+</app-next-event>
+
+<app-featured-brands
+  [featuredBrands]="featuredBrands"
+  [viewBrand]="viewBrand.bind(this)"
+  [followBrand]="followBrand.bind(this)"
+></app-featured-brands>
+
+<app-activities [bazaarActivities]="bazaarActivities"></app-activities>

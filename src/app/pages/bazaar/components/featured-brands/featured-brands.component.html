@@ -1,0 +1,37 @@
+<div class="featured-brands-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Featured Brands This Month</h2>
+      <p class="section-description">
+        Meet the amazing home brands that will be showcasing their products at
+        our next bazaar event
+      </p>
+    </div>
+
+    <div class="brands-grid">
+      <div class="brand-card" *ngFor="let brand of featuredBrands">
+        <div class="brand-image">
+          <span class="brand-icon">{{ brand.icon }}</span>
+          <div class="brand-badge" *ngIf="brand.isNew">New</div>
+        </div>
+        <div class="brand-info">
+          <h3 class="brand-name">{{ brand.name }}</h3>
+          <p class="brand-category">{{ brand.category }}</p>
+          <p class="brand-description">{{ brand.description }}</p>
+          <div class="brand-special" *ngIf="brand.specialOffer">
+            <span class="special-icon">🎁</span>
+            <span class="special-text">{{ brand.specialOffer }}</span>
+          </div>
+        </div>
+        <div class="brand-actions">
+          <button class="btn btn-outline" (click)="viewBrand(brand.id)">
+            View Brand
+          </button>
+          <button class="btn btn-text" (click)="followBrand(brand.id)">
+            {{ brand.isFollowed ? "Following" : "Follow" }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

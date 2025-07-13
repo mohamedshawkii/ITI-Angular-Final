@@ -1,0 +1,76 @@
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <!-- Logo Section -->
+      <div class="logo">
+        <a routerLink="/home" class="logo-link">
+          <h1 class="logo-text">Betna</h1>
+          <span class="logo-tagline">Home Brands Marketplace</span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav-desktop">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/brands" routerLinkActive="active" class="nav-link">Brands</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/subscriptions" routerLinkActive="active" class="nav-link">Subscriptions</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/bazaar" routerLinkActive="active" class="nav-link">Bazaar</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- User Actions -->
+      <div class="user-actions">
+        <a routerLink="/cart" class="cart-link">
+          <span class="cart-icon">🛒</span>
+          <span class="cart-count">0</span>
+        </a>
+        <a routerLink="/login" class="btn btn-outline">Login</a>
+        <a routerLink="/register" class="btn btn-primary">Sign Up</a>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="nav-mobile" [class.active]="isMobileMenuOpen">
+      <ul class="nav-list-mobile">
+        <li class="nav-item-mobile">
+          <a routerLink="/home" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Home</a>
+        </li>
+        <li class="nav-item-mobile">
+          <a routerLink="/brands" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Brands</a>
+        </li>
+        <li class="nav-item-mobile">
+          <a routerLink="/subscriptions" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Subscriptions</a>
+        </li>
+        <li class="nav-item-mobile">
+          <a routerLink="/bazaar" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Bazaar</a>
+        </li>
+        <li class="nav-item-mobile">
+          <a routerLink="/cart" class="nav-link-mobile" (click)="closeMobileMenu()">Cart</a>
+        </li>
+        <li class="nav-item-mobile">
+          <a routerLink="/login" class="nav-link-mobile" (click)="closeMobileMenu()">Login</a>
+        </li>
+        <li class="nav-item-mobile">
+          <a routerLink="/register" class="nav-link-mobile" (click)="closeMobileMenu()">Sign Up</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+

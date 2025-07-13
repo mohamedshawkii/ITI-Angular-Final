@@ -1,0 +1,146 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.subscriptions-preview {
+  background: linear-gradient(
+    135deg,
+    var(--secondary-teal) 0%,
+    var(--primary-terracotta) 100%
+  );
+  color: var(--white);
+  padding: 5rem 0;
+}
+
+.subscription-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+@media (max-width: 768px) {
+  .subscription-content {
+    gap: 3rem;
+  }
+}
+
+.subscription-title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    text-align: center;
+  }
+}
+
+.subscription-text .btn {
+  margin-top: 1.5rem;
+}
+
+.subscription-description {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.subscription-features {
+  margin-bottom: 2rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.feature-icon {
+  font-size: 1.5rem;
+}
+
+.feature-text {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.subscription-plans {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.plan-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  &.featured {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+  }
+}
+
+.plan-name {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.plan-price {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.plan-period {
+  font-size: 1rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-features li {
+  padding: 0.5rem 0;
+  opacity: 0.9;
+
+  &::before {
+    content: "✓";
+    color: var(--white);
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .subscription-title {
+    font-size: 1.75rem;
+  }
+
+  .subscription-description {
+    font-size: 1rem;
+  }
+
+  .feature-text {
+    font-size: 0.95rem;
+  }
+}

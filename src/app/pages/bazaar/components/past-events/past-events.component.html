@@ -1,0 +1,34 @@
+<div class="past-events-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Past Events Gallery</h2>
+      <p class="section-description">
+        Take a look at the amazing moments from our previous bazaar events
+      </p>
+    </div>
+
+    <div class="events-gallery">
+      <div class="gallery-item" *ngFor="let event of pastEvents">
+        <div class="gallery-image">
+          <div class="image-placeholder">
+            <span class="placeholder-icon">📸</span>
+          </div>
+          <div class="gallery-overlay">
+            <h3 class="gallery-title">{{ event.title }}</h3>
+            <p class="gallery-date">{{ event.date }}</p>
+          </div>
+        </div>
+        <div class="gallery-stats">
+          <div class="stat">
+            <span class="stat-value">{{ event.brands }}</span>
+            <span class="stat-label">Brands</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{{ event.visitors }}</span>
+            <span class="stat-label">Visitors</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

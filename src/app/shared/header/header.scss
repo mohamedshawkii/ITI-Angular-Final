@@ -1,0 +1,234 @@
+.header {
+  background-color: var(--white);
+  box-shadow: 0 2px 8px var(--shadow-light);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--neutral-light-gray);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  min-height: 70px;
+}
+
+/* Logo Styles */
+.logo {
+  flex-shrink: 0;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: var(--neutral-charcoal);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-terracotta);
+  margin: 0;
+  line-height: 1;
+}
+
+.logo-tagline {
+  font-size: 0.75rem;
+  color: var(--secondary-green);
+  font-weight: 500;
+  margin-top: 0.25rem;
+  letter-spacing: 0.5px;
+}
+
+/* Desktop Navigation */
+.nav-desktop {
+  display: none;
+  
+  @media (min-width: 769px) {
+    display: block;
+  }
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  color: var(--neutral-charcoal);
+  text-decoration: none;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+  position: relative;
+  
+  &:hover {
+    color: var(--primary-terracotta);
+  }
+  
+  &.active {
+    color: var(--primary-terracotta);
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--primary-terracotta);
+      border-radius: 1px;
+    }
+  }
+}
+
+/* User Actions */
+.user-actions {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  
+  @media (min-width: 769px) {
+    display: flex;
+  }
+}
+
+.cart-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--neutral-charcoal);
+  text-decoration: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  
+  &:hover {
+    background-color: var(--primary-cream);
+  }
+}
+
+.cart-icon {
+  font-size: 1.5rem;
+}
+
+.cart-count {
+  background-color: var(--primary-terracotta);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  gap: 0.25rem;
+  
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background-color: var(--neutral-charcoal);
+  transition: all 0.3s ease;
+  border-radius: 1px;
+}
+
+.mobile-menu-toggle:hover .hamburger-line {
+  background-color: var(--primary-terracotta);
+}
+
+/* Mobile Navigation */
+.nav-mobile {
+  display: none;
+  background-color: var(--white);
+  border-top: 1px solid var(--neutral-light-gray);
+  padding: 1rem 0;
+  
+  &.active {
+    display: block;
+  }
+  
+  @media (min-width: 769px) {
+    display: none !important;
+  }
+}
+
+.nav-list-mobile {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item-mobile {
+  border-bottom: 1px solid var(--primary-cream);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.nav-link-mobile {
+  display: block;
+  padding: 1rem 0;
+  color: var(--neutral-charcoal);
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: var(--primary-terracotta);
+    background-color: var(--primary-cream);
+    padding-left: 1rem;
+  }
+  
+  &.active {
+    color: var(--primary-terracotta);
+    font-weight: 600;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .header-content {
+    padding: 0.75rem 0;
+  }
+  
+  .logo-text {
+    font-size: 1.5rem;
+  }
+  
+  .logo-tagline {
+    font-size: 0.65rem;
+  }
+}
+

@@ -1,0 +1,53 @@
+<div class="next-event-section">
+  <div class="container">
+    <div class="event-card">
+      <div class="event-header">
+        <div class="event-badge">Next Event</div>
+        <h2 class="event-title">{{ nextEvent.title }}</h2>
+        <p class="event-date">{{ nextEvent.date }}</p>
+      </div>
+
+      <div class="event-details">
+        <div class="detail-item">
+          <span class="detail-icon">📅</span>
+          <div class="detail-content">
+            <span class="detail-label">Date & Time</span>
+            <span class="detail-value">{{ nextEvent.dateTime }}</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">📍</span>
+          <div class="detail-content">
+            <span class="detail-label">Location</span>
+            <span class="detail-value">{{ nextEvent.location }}</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">🎫</span>
+          <div class="detail-content">
+            <span class="detail-label">Entry</span>
+            <span class="detail-value">{{ nextEvent.entry }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-highlights">
+        <h3 class="highlights-title">Event Highlights</h3>
+        <div class="highlights-grid">
+          <div
+            class="highlight-item"
+            *ngFor="let highlight of nextEvent.highlights"
+          >
+            <span class="highlight-icon">{{ highlight.icon }}</span>
+            <span class="highlight-text">{{ highlight.text }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="event-actions">
+        <button class="btn btn-primary" (click)="register.emit()">
+          Register Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

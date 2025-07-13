@@ -1,0 +1,25 @@
+<div class="schedule-section" id="schedule">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Event Schedule</h2>
+      <p class="section-description">
+        Plan your visit with our detailed schedule of activities and
+        demonstrations
+      </p>
+    </div>
+
+    <div class="schedule-timeline">
+      <div class="timeline-item" *ngFor="let item of eventSchedule">
+        <div class="timeline-time">{{ item.time }}</div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">{{ item.title }}</h3>
+          <p class="timeline-description">{{ item.description }}</p>
+          <div class="timeline-location" *ngIf="item.location">
+            <span class="location-icon">📍</span>
+            <span class="location-text">{{ item.location }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
