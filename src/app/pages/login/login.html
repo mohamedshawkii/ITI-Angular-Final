@@ -44,18 +44,9 @@
             <label for="email" class="form-label">Email Address</label>
             <div class="input-wrapper">
               <span class="input-icon">📧</span>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="form-input"
-                placeholder="Enter your email"
-                [(ngModel)]="loginData.email"
-                #email="ngModel"
-                required
-                email
-                [class.error]="email.invalid && email.touched"
-              />
+              <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email"
+                [(ngModel)]="loginData.email" #email="ngModel" required email
+                [class.error]="email.invalid && email.touched" />
             </div>
             <div class="error-message" *ngIf="email.invalid && email.touched">
               <span *ngIf="email.errors?.['required']">Email is required</span>
@@ -68,23 +59,10 @@
             <label for="password" class="form-label">Password</label>
             <div class="input-wrapper">
               <span class="input-icon">🔒</span>
-              <input
-                [type]="showPassword ? 'text' : 'password'"
-                id="password"
-                name="password"
-                class="form-input"
-                placeholder="Enter your password"
-                [(ngModel)]="loginData.password"
-                #password="ngModel"
-                required
-                minlength="6"
-                [class.error]="password.invalid && password.touched"
-              />
-              <button
-                type="button"
-                class="password-toggle"
-                (click)="togglePassword()"
-              >
+              <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" class="form-input"
+                placeholder="Enter your password" [(ngModel)]="loginData.password" #password="ngModel" required
+                minlength="6" [class.error]="password.invalid && password.touched" />
+              <button type="button" class="password-toggle" (click)="togglePassword()">
                 {{ showPassword ? '🙈' : '👁️' }}
               </button>
             </div>
@@ -97,11 +75,7 @@
           <!-- Remember Me & Forgot Password -->
           <div class="form-options">
             <label class="checkbox-wrapper">
-              <input
-                type="checkbox"
-                name="rememberMe"
-                [(ngModel)]="loginData.rememberMe"
-              />
+              <input type="checkbox" name="rememberMe" [(ngModel)]="loginData.rememberMe" />
               <span class="checkbox-custom"></span>
               <span class="checkbox-label">Remember me</span>
             </label>
@@ -111,12 +85,8 @@
           </div>
 
           <!-- Submit Button -->
-          <button
-            type="submit"
-            class="submit-btn"
-            [disabled]="loginForm.invalid || isLoading"
-            [class.loading]="isLoading"
-          >
+          <button type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading"
+            [class.loading]="isLoading">
             <span *ngIf="!isLoading">Sign In</span>
             <span *ngIf="isLoading" class="loading-spinner">🔄</span>
           </button>
@@ -156,4 +126,3 @@
     </div>
   </div>
 </div>
-
