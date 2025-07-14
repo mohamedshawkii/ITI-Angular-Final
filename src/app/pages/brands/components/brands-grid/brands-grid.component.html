@@ -1,0 +1,26 @@
+<div class="brands-grid">
+  <div class="brand-card" *ngFor="let brand of brands">
+    <div class="brand-image">
+      <span class="brand-icon">{{ brand.icon }}</span>
+    </div>
+    <div class="brand-info">
+      <h3 class="brand-name">{{ brand.name }}</h3>
+      <p class="brand-category">{{ brand.category }}</p>
+      <p class="brand-description">{{ brand.description }}</p>
+      <div class="brand-stats">
+        <span class="brand-rating">⭐ {{ brand.rating }}</span>
+        <span class="brand-products">{{ brand.productCount }} products</span>
+      </div>
+      <div class="brand-location" *ngIf="brand.location">
+        <span class="location-icon">📍</span>
+        <span class="location-text">{{ brand.location }}</span>
+      </div>
+    </div>
+    <div class="brand-actions">
+      <a [routerLink]="['/brand', brand.id]" class="btn btn-primary">View Brand</a>
+      <button class="btn btn-outline" (click)="toggleFollow(brand.id)">
+        {{ brand.isFollowed ? 'Following' : 'Follow' }}
+      </button>
+    </div>
+  </div>
+</div>

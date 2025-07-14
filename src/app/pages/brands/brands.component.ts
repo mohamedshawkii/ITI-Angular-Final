@@ -1,25 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Brand } from './../../interfaces/brand';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
-interface Brand {
-  id: number;
-  name: string;
-  category: string;
-  description: string;
-  icon: string;
-  rating: number;
-  productCount: number;
-  location?: string;
-  isFollowed: boolean;
-}
+import { BrandsFilterComponent } from './components/brands-filter/brands-filter.component';
+import { BrandsGridComponent } from './components/brands-grid/brands-grid.component';
+import { LoadMoreComponent } from './components/load-more/load-more.component';
+import { BrandsEmptyStateComponent } from './components/brands-empty-state/brands-empty-state.component';
 
 @Component({
   selector: 'app-brands',
   standalone: true,
-  imports: [RouterLink, CommonModule],
-  templateUrl: './brands.html',
-  styleUrl: './brands.scss'
+  imports: [
+    CommonModule,
+    RouterLink,
+    BrandsFilterComponent,
+    BrandsGridComponent,
+    LoadMoreComponent,
+    BrandsEmptyStateComponent
+  ],
+  templateUrl: './brands.component.html',
+  styleUrls: ['./brands.component.scss']
 })
 export class BrandsComponent implements OnInit {
   allBrands: Brand[] = [
@@ -133,19 +134,19 @@ export class BrandsComponent implements OnInit {
     this.filteredBrands = [...this.allBrands];
   }
 
-  filterByCategory(event: any) {
-    this.currentFilter = event.target.value;
+  filterByCategory(category: string) {
+    this.currentFilter = category;
     this.applyFilters();
   }
 
-  sortBrands(event: any) {
-    this.currentSort = event.target.value;
+  sortBrands(sortBy: string) {
+    this.currentSort = sortBy;
     this.applySorting();
   }
 
   applyFilters() {
     if (this.currentFilter) {
-      this.filteredBrands = this.allBrands.filter(brand => 
+      this.filteredBrands = this.allBrands.filter(brand =>
         brand.category === this.currentFilter
       );
     } else {
@@ -176,7 +177,6 @@ export class BrandsComponent implements OnInit {
   }
 
   loadMoreBrands() {
-    // Simulate loading more brands
     console.log('Loading more brands...');
   }
 
@@ -187,4 +187,3 @@ export class BrandsComponent implements OnInit {
     this.applySorting();
   }
 }
-
