@@ -8,7 +8,8 @@
       <p class="brand-category">{{ brand.category }}</p>
       <p class="brand-description">{{ brand.description }}</p>
       <div class="brand-stats">
-        <span class="brand-rating">⭐ {{ brand.rating }}</span>
+        <span class="brand-rating">⭐ {{ brand.averageRating | number:'1.1-1' }}</span>
+
         <span class="brand-products">{{ brand.productCount }} products</span>
       </div>
       <div class="brand-location" *ngIf="brand.location">

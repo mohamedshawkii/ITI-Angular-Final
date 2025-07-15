@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Brand } from '../../../../interfaces/brand';
+import { iBrand } from '../../../../interfaces/ibrand';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./brand-card.component.scss']
 })
 export class BrandCardComponent {
-  @Input() brand!: Brand;
+  @Input() brand!: iBrand;
 
   toggleFollow() {
     this.brand.isFollowed = !this.brand.isFollowed;
