@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Auth } from '../../Services/auth';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +12,12 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
   isMobileMenuOpen = false;
+  authService = inject(Auth);
+  router = inject(Router);
+
+  get isLoggedIn(): boolean {
+    return !!this.authService.UserToken.value;
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -18,6 +25,10 @@ export class HeaderComponent {
 
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
+  }
+
+  logOut() {
+    this.authService.logOut();
   }
 }
 
