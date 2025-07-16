@@ -1,19 +1,25 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Auth } from '../../Services/auth';
 
-interface RegisterData {
+
+
+
+export interface RegisterData {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   password: string;
   confirmPassword: string;
   accountType: 'customer' | 'brand';
-  agreeToTerms: boolean;
-  subscribeNewsletter: boolean;
 }
+
+// في نفس الملف أو في models.ts
+export type RegisterRequest = Omit<RegisterData, 'confirmPassword'>;
+
 
 interface PasswordStrength {
   percentage: number;
@@ -29,23 +35,25 @@ interface PasswordStrength {
   styleUrl: './register.scss'
 })
 export class RegisterComponent {
+
+  constructor(private _auth: Auth) { }
+  _router = inject(Router);
+
   registerData: RegisterData = {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
+    phoneNumber: '',
     password: '',
     confirmPassword: '',
-    accountType: 'customer',
-    agreeToTerms: false,
-    subscribeNewsletter: false
+    accountType: 'customer'
   };
 
   showPassword = false;
   showConfirmPassword = false;
   isLoading = false;
   errorMessage = '';
-  
+
   passwordStrength: PasswordStrength = {
     percentage: 0,
     text: '',
@@ -94,25 +102,28 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    if (this.isLoading) return;
-    
+    if (this.isLoading || !this.passwordsMatch()) return;
+
     this.isLoading = true;
     this.errorMessage = '';
 
-    // Simulate API call
-    setTimeout(() => {
-      // Mock registration logic
-      if (this.registerData.email && this.registerData.password && this.passwordsMatch()) {
-        console.log('Registration successful!', this.registerData);
+    // احذف confirmPassword قبل الإرسال لو الـ API مش محتاجها
+    const { confirmPassword, ...sendData } = this.registerData;
+
+    this._auth.register(sendData).subscribe({
+      next: (res) => {
         alert(`Registration successful! Welcome to Betna, ${this.registerData.firstName}!`);
-        // In a real app, you would navigate to dashboard or verification page
-      } else {
-        this.errorMessage = 'Please check your information and try again.';
+        this._router.navigate(['/login'], { queryParams: { email: this.registerData.email } });
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Register Error:', err);
+        this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
+        this.isLoading = false;
       }
-      
-      this.isLoading = false;
-    }, 2000);
+    });
   }
+
 
   registerWithGoogle() {
     alert('Google registration would be implemented here.');

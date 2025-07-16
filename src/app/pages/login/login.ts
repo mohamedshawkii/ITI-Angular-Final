@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { Auth } from '../../Services/auth';
 
 interface LoginData {
   email: string;
@@ -12,7 +14,7 @@ interface LoginData {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, CommonModule, FormsModule],
+  imports: [RouterLink, CommonModule, FormsModule, NgIf],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
@@ -27,32 +29,44 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
 
+  constructor(
+    private _auth: Auth,
+    private _router: Router,
+    private _route: ActivatedRoute
+  ) {
+    this._route.queryParams.subscribe(params => {
+      if (params['email']) {
+        this.loginData.email = params['email'];
+      }
+    });
+  }
+
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
   onSubmit() {
     if (this.isLoading) return;
-    
-    this.isLoading = true;
     this.errorMessage = '';
+    this.isLoading = true;
 
-    // Simulate API call
-    setTimeout(() => {
-      // Mock authentication logic
-      if (this.loginData.email === 'admin@betna.com' && this.loginData.password === 'admin123') {
-        console.log('Login successful!');
-        // In a real app, you would navigate to dashboard or home
-        alert('Login successful! Welcome to Betna.');
-      } else if (this.loginData.email && this.loginData.password) {
-        console.log('Login successful for user:', this.loginData.email);
-        alert('Login successful! Welcome to Betna.');
-      } else {
-        this.errorMessage = 'Invalid email or password. Please try again.';
+    this._auth.Login(this.loginData).subscribe({
+      next: (res) => {
+        const token = res?.token;
+        if (token) {
+          localStorage.setItem('token', token);
+          this._auth.saveUser();
+          this._router.navigate(['/']);
+        } else {
+          this.errorMessage = 'Login failed: No token received';
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = err?.error?.message || 'Invalid email or password.';
+        this.isLoading = false;
       }
-      
-      this.isLoading = false;
-    }, 1500);
+    });
   }
 
   onForgotPassword(event: Event) {
@@ -68,4 +82,3 @@ export class LoginComponent {
     alert('Facebook login would be implemented here.');
   }
 }
-
