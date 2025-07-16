@@ -7,43 +7,50 @@ import { UserManagementServic } from '../../../../Services/user-management-servi
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
+
 export class Users {
-  _UserManagement = inject(UserManagementServic)
   users: any[] = [];
   displayedUsers: any[] = [];
-
   pageSize = 5;
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
 
-  GetAll() {
-    return this._UserManagement.GetAll().subscribe({
-      next(value) {
+  _UserManagement = inject(UserManagementServic)
 
+  ngOnInit(): void {
+    this.GetAll();
+  }
+
+
+  GetAll(): void {
+    this._UserManagement.GetAll().subscribe({
+      next: (value) => {
+        this.users = value;
+        this.totalPages = Math.ceil(this.users.length / this.pageSize);
+        this.totalPagesArray = Array(this.totalPages)
+          .fill(0)
+          .map((_, i) => i + 1);
+        this.updateDisplayedUsers();
+        console.log(value);
       },
-      error(err) {
-
+      error: (err) => {
+        console.log(err);
       },
     });
   }
 
-
-
-  ngOnInit(): void {
-    // Sample user list
-    this.users = Array.from({ length: 47 }, (_, i) => ({
-      id: i + 1,
-      name: `User ${i + 1}`,
-      email: `user${i + 1}@mail.com`
-    }));
-
-    this.totalPages = Math.ceil(this.users.length / this.pageSize);
-    this.totalPagesArray = Array(this.totalPages)
-      .fill(0)
-      .map((_, i) => i + 1);
-
-    this.updateDisplayedUsers();
+  // /Admin/promotion/{userId}
+  Promotion(userId: number): void {
+    this._UserManagement.Promotion(userId).subscribe({
+      next: (value) => {
+        console.log('Promoted', value);
+        this.GetAll();
+      },
+      error: (err) => {
+        console.error('error', err);
+      }
+    });
   }
 
   updateDisplayedUsers(): void {

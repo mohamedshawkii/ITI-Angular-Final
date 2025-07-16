@@ -8,7 +8,6 @@ import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { Users } from './pages/admin-dashboard/components/users/users';
-import { Promotion } from './pages/admin-dashboard/components/promotion/promotion';
 import { BazaarComponent } from './pages/bazaar/bazaar.component';
 import { HomeComponent } from './pages/home/home.component';
 
@@ -27,7 +26,6 @@ export const routes: Routes = [
     path: 'admin', component: AdminDashboardComponent,
     children: [
       { path: 'users', component: Users },
-      { path: 'promotion', component: Promotion },
     ]
   },
   { path: '**', redirectTo: '/home' } //or 404 page

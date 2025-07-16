@@ -1,1 +1,19 @@
-<p>cart works!</p>
+<div class="displaRow">
+  <h1>cart</h1>
+  <div>
+    <h1>Shopping Cart</h1>
+    <p>Your cart is currently empty.</p>
+    <!--displaying products user just picked from his prefered brands
+    
+    -->
+    @for (OrderDetails of OrderDetails; track $index) {
+    <div class="cart-item">
+      <p>{{ OrderDetails.price }}</p>
+    </div>
+    }
+  </div>
+  <div>
+    <h1>Shopping Cart</h1>
+    <!--reciept amd that should be displayed for delivery after payment-->
+  </div>
+</div>
