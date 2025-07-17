@@ -34,15 +34,33 @@
       <div class="event-highlights">
         <h3 class="highlights-title">Event Highlights</h3>
         <div class="highlights-grid">
-          <div
-            class="highlight-item"
-            *ngFor="let highlight of nextEvent.highlights"
-          >
-            <span class="highlight-icon">{{ highlight.icon }}</span>
-            <span class="highlight-text">{{ highlight.text }}</span>
+          <div class="highlight-item">
+            <span class="highlight-icon">🎨</span>
+            <span class="highlight-text">Live pottery demonstrations</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🍯</span>
+            <span class="highlight-text">Honey tasting sessions</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🧶</span>
+            <span class="highlight-text">Knitting workshops</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🎵</span>
+            <span class="highlight-text">Local musicians performances</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🍰</span>
+            <span class="highlight-text">Artisan food sampling</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🎁</span>
+            <span class="highlight-text">Exclusive event discounts</span>
           </div>
         </div>
       </div>
+
       <div class="event-actions">
         <button class="btn btn-primary" (click)="register.emit()">
           Register Now

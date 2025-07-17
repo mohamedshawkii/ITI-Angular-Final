@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { IBazaarActivity } from '../../../../interfaces/ibazaar-activity';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,6 +8,4 @@ import { CommonModule } from '@angular/common';
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss'],
 })
-export class ActivitiesComponent {
-  @Input() bazaarActivities!: IBazaarActivity[];
-}
+export class ActivitiesComponent {}
