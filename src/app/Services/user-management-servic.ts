@@ -8,7 +8,6 @@ import { environment } from '../../environments/environments';
 })
 export class UserManagementServic {
   _httpClient = inject(HttpClient)
-  Url: string = ''
 
   constructor() { }
 
@@ -16,7 +15,7 @@ export class UserManagementServic {
     return this._httpClient.get(`${environment.apiUrl}/Admin/AllUsers`)
   }
 
-  Promotion(userId: number): Observable<any> {
+  Promotion(userId: string): Observable<any> {
     return this._httpClient.post(`${environment.apiUrl}/Admin/promotion/${userId}`, {})
   }
 }

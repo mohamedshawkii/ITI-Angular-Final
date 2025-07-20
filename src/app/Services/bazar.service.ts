@@ -5,13 +5,14 @@ import { environment } from '../../environments/environments';
 @Injectable({
   providedIn: 'root'
 })
-export class OrderDetails {
+export class BazarService {
   _httpClient = inject(HttpClient);
-
   constructor() { }
 
-  GetAll(): Observable<any> {
-    return this._httpClient.get(`${environment.apiUrl}/OrderDetails/all`);
+  getBazar(): Observable<any> {
+    return this._httpClient.get(`${environment.apiUrl}/Bazar/GetProducts`);
   }
-
+  postBazar(Bazar: any, p0?: { responseType: "json"; }): Observable<any> {
+    return this._httpClient.post(`${environment.apiUrl}/Bazaar/CreateBazaar`, Bazar);
+  }
 }

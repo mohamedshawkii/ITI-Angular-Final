@@ -13,16 +13,37 @@
       <nav class="nav-desktop">
         <ul class="nav-list">
           <li class="nav-item">
-            <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
+            <a routerLink="/home" routerLinkActive="active" class="nav-link"
+              >Home</a
+            >
           </li>
           <li class="nav-item">
-            <a routerLink="/brands" routerLinkActive="active" class="nav-link">Brands</a>
+            <a routerLink="/brands" routerLinkActive="active" class="nav-link"
+              >Brands</a
+            >
           </li>
           <li class="nav-item">
-            <a routerLink="/subscriptions" routerLinkActive="active" class="nav-link">Subscriptions</a>
+            <a
+              routerLink="/subscriptions"
+              routerLinkActive="active"
+              class="nav-link"
+              >Subscriptions</a
+            >
           </li>
           <li class="nav-item">
-            <a routerLink="/bazaar" routerLinkActive="active" class="nav-link">Bazaar</a>
+            <a routerLink="/admin" routerLinkActive="active" class="nav-link"
+              >Admin</a
+            >
+          </li>
+          <li class="nav-item">
+            <a routerLink="/delivery" routerLinkActive="active" class="nav-link"
+              >Delivery</a
+            >
+          </li>
+          <li class="nav-item">
+            <a routerLink="/bazaar" routerLinkActive="active" class="nav-link"
+              >Bazaar</a
+            >
           </li>
         </ul>
       </nav>
@@ -45,7 +66,6 @@
         <button class="btn btn-danger" (click)="logOut()">Logout</button>
       </div>
 
-
       <!-- Mobile Menu Toggle -->
       <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
         <span class="hamburger-line"></span>
@@ -58,31 +78,72 @@
     <nav class="nav-mobile" [class.active]="isMobileMenuOpen">
       <ul class="nav-list-mobile">
         <li class="nav-item-mobile">
-          <a routerLink="/home" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Home</a>
+          <a
+            routerLink="/home"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Home</a
+          >
         </li>
         <li class="nav-item-mobile">
-          <a routerLink="/brands" routerLinkActive="active" class="nav-link-mobile"
-            (click)="closeMobileMenu()">Brands</a>
+          <a
+            routerLink="/brands"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Brands</a
+          >
         </li>
         <li class="nav-item-mobile">
-          <a routerLink="/subscriptions" routerLinkActive="active" class="nav-link-mobile"
-            (click)="closeMobileMenu()">Subscriptions</a>
+          <a
+            routerLink="/subscriptions"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Subscriptions</a
+          >
         </li>
         <li class="nav-item-mobile">
-          <a routerLink="/bazaar" routerLinkActive="active" class="nav-link-mobile"
-            (click)="closeMobileMenu()">Bazaar</a>
+          <a
+            routerLink="/bazaar"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Bazaar</a
+          >
         </li>
         <li class="nav-item-mobile">
-          <a routerLink="/cart" class="nav-link-mobile" (click)="closeMobileMenu()">Cart</a>
+          <a
+            routerLink="/cart"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Cart</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="!isLoggedIn">
-          <a routerLink="/login" class="nav-link-mobile" (click)="closeMobileMenu()">Login</a>
+          <a
+            routerLink="/login"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Login</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="!isLoggedIn">
-          <a routerLink="/register" class="nav-link-mobile" (click)="closeMobileMenu()">Sign Up</a>
+          <a
+            routerLink="/register"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Sign Up</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="isLoggedIn">
-          <a href="#" class="nav-link-mobile" (click)="logOut(); closeMobileMenu()">Logout</a>
+          <a
+            href="#"
+            class="nav-link-mobile"
+            (click)="logOut(); closeMobileMenu()"
+            >Logout</a
+          >
         </li>
       </ul>
     </nav>

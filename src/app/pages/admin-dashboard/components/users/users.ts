@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { UserManagementServic } from '../../../../Services/user-management-servic';
+import { IUser } from '../../../../interfaces/IUser';
 
 @Component({
   selector: 'app-users',
@@ -9,8 +10,8 @@ import { UserManagementServic } from '../../../../Services/user-management-servi
 })
 
 export class Users {
-  users: any[] = [];
-  displayedUsers: any[] = [];
+  users: IUser[] = [];
+  displayedUsers: IUser[] = [];
   pageSize = 5;
   currentPage = 1;
   totalPages = 0;
@@ -21,7 +22,6 @@ export class Users {
   ngOnInit(): void {
     this.GetAll();
   }
-
 
   GetAll(): void {
     this._UserManagement.GetAll().subscribe({
@@ -40,8 +40,7 @@ export class Users {
     });
   }
 
-  // /Admin/promotion/{userId}
-  Promotion(userId: number): void {
+  Promotion(userId: string): void {
     this._UserManagement.Promotion(userId).subscribe({
       next: (value) => {
         console.log('Promoted', value);

@@ -7,7 +7,7 @@ import { Users } from "./components/users/users";
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, SideBare, Users, RouterOutlet],
+  imports: [CommonModule, SideBare, Users, RouterOutlet, RouterLink],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss'
 })

@@ -1,19 +1,24 @@
-<div class="displaRow">
-  <h1>cart</h1>
-  <div>
-    <h1>Shopping Cart</h1>
-    <p>Your cart is currently empty.</p>
-    <!--displaying products user just picked from his prefered brands
-    
-    -->
-    @for (OrderDetails of OrderDetails; track $index) {
+<div class="cart-container">
+  <div class="cart-content">
+    <h1 class="cart-subtitle">Shopping Cart</h1>
+    <p class="cart-empty-message">Your cart is currently empty.</p>
+    @for (item of cartItems; track $index) {
     <div class="cart-item">
-      <p>{{ OrderDetails.price }}</p>
+      <div class="cart-item-content">
+        <h2 class="cart-item-title">{{ item.name }}</h2>
+        <p class="cart-item-price">{{ item.price }}</p>
+        <p class="cart-item-quantity">Quantity: {{ item.quantity }}</p>
+      </div>
     </div>
     }
   </div>
-  <div>
-    <h1>Shopping Cart</h1>
-    <!--reciept amd that should be displayed for delivery after payment-->
+  <div class="cart-sidebar">
+    <h1 class="cart-sidebar-title">Shopping Cart</h1>
+    <div class="cart-sidebar-content">
+      <p class="cart-total">Total: {{ calculateTotal(getCartItems()) }}</p>
+    </div>
+    <a routerLink="/payment" class="nav-link btn btn-primary w-100 mr-auto"
+      >checkout</a
+    >
   </div>
 </div>

@@ -10,6 +10,12 @@ import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard
 import { Users } from './pages/admin-dashboard/components/users/users';
 import { BazaarComponent } from './pages/bazaar/bazaar.component';
 import { HomeComponent } from './pages/home/home.component';
+import { Bazar } from './pages/admin-dashboard/components/bazar/bazar';
+import { StripePayment } from './components/stripe-payment/stripe-payment';
+import { Delivery } from './pages/delivery/delivery';
+import { DeliveryHistory } from './pages/delivery/components/delivery-history/delivery-history';
+import { MyOrders } from './pages/delivery/components/my-orders/my-orders';
+import { AvailableOrders } from './pages/delivery/components/available-orders/available-orders';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -22,10 +28,20 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'payment', component: StripePayment },
   {
     path: 'admin', component: AdminDashboardComponent,
     children: [
       { path: 'users', component: Users },
+      { path: 'createBazar', component: Bazar },
+    ]
+  },
+  {
+    path: 'delivery', component: Delivery,
+    children: [
+      { path: 'history', component: DeliveryHistory },
+      { path: 'myorders', component: MyOrders },
+      { path: 'available', component: AvailableOrders },
     ]
   },
   { path: '**', redirectTo: '/home' } //or 404 page

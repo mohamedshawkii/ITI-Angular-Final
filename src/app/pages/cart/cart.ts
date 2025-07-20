@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { OrderDetails } from '../../Services/order-details';
+import { OrderService } from '../../Services/orders-service';
+import { IOrder } from '../../interfaces/IOrder';
+import { IProduct } from '../../interfaces/IProduct';
 
 @Component({
   selector: 'app-cart',
@@ -11,25 +13,46 @@ import { OrderDetails } from '../../Services/order-details';
   styleUrl: './cart.scss'
 })
 export class CartComponent {
-  OrderDetails: any[] = [];
-  Product: any[] = [];
+  Orders!: IOrder;
+  cartItems!: IProduct[];
 
-  _OrderDetails = inject(OrderDetails);
+  _Order = inject(OrderService);
 
-  ngOnInit(): void {
-    this.GetAll();
+  getCartItems(): IProduct[] {
+    return JSON.parse(localStorage.getItem('cart') || '[]');
   }
+  checkout(): void {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.cartItems = this.getCartItems();
 
-  GetAll(): void {
-    this._OrderDetails.GetAll().subscribe({
+    this.Orders = {
+      id: 0,
+      status: 0,
+      deliveryBoyID: '',
+      orderTypeID: 1,
+      userID: user.id,
+      orderDate: new Date(),
+      totalAmount: this.calculateTotal(this.cartItems),
+      orderDetails: this.cartItems.map((item) => ({
+        orderID: 0,
+        productID: item.id,
+        quantity: item.quantity,
+        price: item.price
+      }))
+    };
+
+    this._Order.createOrder(this.Orders).subscribe({
       next: (value) => {
-        this.OrderDetails = value;
-        console.log(value);
+        localStorage.removeItem('cart');
+        console.log('Order submitted!', value);
       },
       error: (err) => {
-        console.log(err);
-      },
+        console.error(err)
+      }
     });
   }
-}
 
+  calculateTotal(cartItems: any[]): number {
+    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+}
