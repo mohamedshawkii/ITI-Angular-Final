@@ -1,0 +1,154 @@
+/* General Layout & Colors */
+
+/* Brand Detail Page Styles */
+:root {
+  --primary-color: #d9534f; /* A nice reddish color for buttons */
+  --secondary-color: #f4f4f4;
+  --text-color: #333;
+  --border-color: #ddd;
+  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.brand-detail-page {
+  font-family: 'Arial', sans-serif;
+  color: var(--text-color);
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+.btn-primary { background-color: var(--primary-color); color: rgb(238, 128, 73); }
+.btn-primary:hover { opacity: 0.9; }
+.btn-outline { background-color: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); }
+
+/* Hero Section */
+.brand-hero {
+  background-color: var(--secondary-color);
+  padding: 60px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hero-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+
+.brand-info { display: flex; align-items: center; gap: 20px; }
+.brand-logo { font-size: 5rem; }
+.brand-name { font-size: 3rem; margin: 0; }
+.brand-category { color: #777; font-size: 1.2rem; }
+.brand-stats { display: flex; gap: 25px; margin-top: 15px; }
+.stat-item { text-align: center; }
+.stat-number { font-size: 1.5rem; font-weight: bold; display: block; }
+.stat-label { font-size: 0.9rem; color: #666; }
+.brand-actions { display: flex; gap: 10px; }
+
+/* Story Section */
+.brand-story-section { padding: 50px 0; }
+.story-content { display: flex; gap: 30px; align-items: center; }
+.story-text { flex: 2; line-height: 1.6; }
+.story-images { flex: 1; }
+
+/* Products Section */
+.products-section { padding: 50px 0; background-color: var(--secondary-color); }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+
+/* Product Card Styling */
+.product-card {
+  background: rgb(236, 226, 191);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+.product-card:hover { transform: translateY(-5px); }
+.product-image { text-align: center; padding: 20px; font-size: 4rem; background-color: #f9f9f9; }
+.product-info { padding: 20px; flex-grow: 1; }
+.product-name { font-size: 1.2rem; margin: 0 0 10px 0; }
+.product-description { font-size: 0.9rem; color: #666; margin-bottom: 15px; }
+.product-price { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); }
+
+.product-actions {
+  display: flex;
+  padding: 0 20px 20px 20px;
+  gap: 10px;
+}
+.product-actions .btn-primary { flex-grow: 1; }
+.btn-icon { background: #eee; border-radius: 5px; padding: 10px; border: none; cursor: pointer; }
+
+
+//brand form modal style
+/* Styling for the modal form */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #888;
+}
+
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+.form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+.form-actions { text-align: right; margin-top: 20px; }
+.form-actions .btn { margin-left: 10px; }

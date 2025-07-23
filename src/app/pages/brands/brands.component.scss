@@ -30,3 +30,29 @@
   margin: 0 auto;
   line-height: 1.6;
 }
+
+
+.page-header {
+  display: flex;
+  justify-content: space-around; /* لوضع كل عنصر في جهة */
+  align-items: center;
+  margin-bottom: 2rem; /* لإضافة مساحة تحتها */
+  flex-wrap: wrap; /* للسماح للعناصر بالنزول لسطر جديد في الشاشات الصغيرة */
+}
+.add-brand-button {
+  background-color: #e75b5b; /* اللون الوردي/الأحمر الأساسي من تصميمك */
+  color: #ffffff; /* لون النص أبيض */
+  border: none;
+  border-radius: 8px; /* نفس استدارة حواف الأزرار الأخرى */
+  padding: 12px 24px; /* مساحات داخلية مريحة */
+  font-family: inherit; /* ليستخدم نفس خط الموقع */
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-brand-button:hover {
+  background-color: #d94a4a; /* درجة أغمق قليلاً من اللون الأساسي */
+  transform: translateY(-2px); /* حركة بسيطة للأعلى */
+}

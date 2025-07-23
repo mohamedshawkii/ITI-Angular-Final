@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BrandService {
+  createBrand(newBrand: { name: string; description: string; address: string; image: string; categoryID: number; ownerID: string; }) {
+    throw new Error('Method not implemented.');
+  }
   private baseUrl = 'http://localhost:5066/api/Brand';
 
   constructor(private http: HttpClient) {}

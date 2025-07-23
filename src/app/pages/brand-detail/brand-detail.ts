@@ -273,9 +273,14 @@ export class BrandDetailComponent implements OnInit {
     subject: '',
     message: ''
   };
+    showProductForm = false;
+
 
   constructor(private route: ActivatedRoute) {}
-
+  // دالة لفتح الفورم
+   // --- Modal Functions ---
+  openProductForm(): void { this.showProductForm = true; }
+  closeProductForm(): void { this.showProductForm = false; }
   ngOnInit() {
     // Get brand ID from route params
     const brandId = this.route.snapshot.paramMap.get('id');
@@ -387,6 +392,7 @@ export class BrandDetailComponent implements OnInit {
   loadMoreReviews() {
     alert('Loading more reviews...');
   }
+
 
   sendMessage() {
     if (this.contactMessage.name && this.contactMessage.email && this.contactMessage.message) {

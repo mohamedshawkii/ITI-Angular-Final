@@ -191,7 +191,7 @@ import { Component, OnInit } from '@angular/core';
 import { iBrand } from '../../interfaces/ibrand';
 import { BrandService } from '../../../../src/app/Services/brand.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { BrandsFilterComponent } from './components/brands-filter/brands-filter.component';
 import { BrandsGridComponent } from './components/brands-grid/brands-grid.component';
@@ -219,8 +219,12 @@ export class BrandsComponent implements OnInit {
   currentFilter = '';
   currentSort = 'name';
 
-  constructor(private brandService: BrandService) {}
+  constructor(private brandService: BrandService ,private router:Router) {}
 
+    goToAddBrandPage(): void {
+    // سنقوم بتوجيه المستخدم إلى مسار '/brands/add' الذي سننشئه في الخطوة التالية
+    this.router.navigate(['/brands/add']);
+  }
   ngOnInit(): void {
     this.brandService.getAllBrands().subscribe((brands) => {
       this.allBrands = brands.map(b => ({

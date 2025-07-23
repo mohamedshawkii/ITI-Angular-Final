@@ -1,0 +1,40 @@
+<div class="form-container">
+  <h2>Add New Brand</h2>
+
+  <form class="brand-form">
+    <div class="form-group">
+      <label for="brandName">Brand Name <span class="required-star">*</span></label>
+      <input type="text" id="brandName" placeholder="اكتب اسم البراند هنا">
+    </div>
+
+    <div class="form-group">
+      <label for="brandDescription">Description</label>
+      <textarea id="brandDescription" rows="4" placeholder="وصف قصير وجذاب للبراند الخاص بك..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="brandAddress">Address</label>
+      <input type="text" id="brandAddress" placeholder="عنوان البراند أو المتجر">
+    </div>
+
+    <div class="form-group">
+      <label for="imageUrl">Image URL</label>
+      <input type="url" id="imageUrl" placeholder="https://example.com/image.png">
+    </div>
+
+    <div class="form-group">
+      <label for="brandCategory">Category <span class="required-star">*</span></label>
+      <select id="brandCategory">
+        <option value="" disabled selected>-- اختر فئة --</option>
+        <option value="fashion">أزياء</option>
+        <option value="food">مأكولات</option>
+        <option value="crafts">أشغال يدوية</option>
+        <option value="home">مستلزمات منزلية</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="submit-button">حفظ البراند</button>
+    </div>
+  </form>
+</div>

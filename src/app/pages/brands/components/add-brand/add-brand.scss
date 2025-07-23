@@ -1,0 +1,103 @@
+/* --- تنسيق حاوية الفورم (نفس السابق) --- */
+.form-container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  max-width: 700px;
+  margin: 2rem auto;
+}
+
+.form-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* --- تنسيق الحقول بشكل عام --- */
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+/* --- تنسيق النجمة للحقول الإلزامية --- */
+.required-star {
+  color: #e75b5b; /* اللون الأحمر الأساسي */
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+/* --- تنسيق حقول الإدخال والنص والقائمة المنسدلة --- */
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  -webkit-appearance: none; /* لإزالة الستايل الافتراضي للمتصفح (مهم جداً للقائمة) */
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* --- تنسيق خاص للقائمة المنسدلة (Select) لإضافة سهم مخصص --- */
+.form-group select {
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 15px top 50%;
+  background-size: 12px;
+  padding-right: 40px; /* لإعطاء مساحة للسهم */
+}
+
+/* --- تنسيق التأثير عند التركيز على أي حقل --- */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #e75b5b;
+  box-shadow: 0 0 0 3px rgba(231, 91, 91, 0.15);
+}
+
+/* --- تنسيق رسالة الخطأ --- */
+.error-message {
+  color: #e75b5b;
+  font-size: 14px;
+  margin-top: 6px;
+  /* في الوضع الطبيعي، رسالة الخطأ تكون مخفية */
+  /* يمكنك التحكم بظهورها في أنجلور باستخدام *ngIf */
+  /* display: none; */ 
+}
+
+/* --- تنسيق زر الحفظ (نفس السابق) --- */
+.form-actions {
+  text-align: right;
+  margin-top: 30px;
+}
+
+.submit-button {
+  background-color: #e75b5b;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #d94a4a;
+}
