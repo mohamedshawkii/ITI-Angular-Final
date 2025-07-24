@@ -40,7 +40,7 @@ export class BrandsComponent implements OnInit {
     this.brandService.getAllBrands().subscribe((brands) => {
       this.allBrands = brands.map(b => ({
         ...b,
-        icon: this.getIconForCategory(b.category),
+        icon: this.getIconForCategory(b.categoryID),
         location: 'Online Store', // مؤقتًا
         isFollowed: false         // مؤقتًا
       }));
@@ -62,7 +62,7 @@ export class BrandsComponent implements OnInit {
   applyFilters(): void {
     if (this.currentFilter) {
       this.filteredBrands = this.allBrands.filter(brand =>
-        brand.category === this.currentFilter
+        brand.categoryID === this.currentFilter
       );
     } else {
       this.filteredBrands = [...this.allBrands];

@@ -16,6 +16,8 @@ export class AddBrand implements OnInit {
   brandForm!: FormGroup;
   Brand!: iBrand;
   Categories!: ICategory[];
+  selectedImageFile: File | null = null;
+
   _BrandService = inject(BrandService);
   _CategoryService = inject(CategoryService);
 
@@ -23,16 +25,22 @@ export class AddBrand implements OnInit {
 
   ngOnInit(): void {
     this.brandForm = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
-      address: [''],
-      image: [''],
+      Name: ['', Validators.required],
+      Description: [''],
+      Address: [''],
+      ImageFile: [''],
       CategoryID: ['', Validators.required],
       OwnerID: ['', Validators.required]
     });
     this.brandForm.patchValue({ OwnerID: "dac65c6d-f848-4841-8e36-4fbda6220f5b" });
     this.GetCategories();
-    console.log('CategoryID Selected:', this.brandForm.value.CategoryID);
+  }
+
+  onImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImageFile = file;
+    }
   }
 
   GetCategories(): void {
@@ -49,10 +57,19 @@ export class AddBrand implements OnInit {
 
   OnSubmtit(): void {
     if (this.brandForm.valid) {
-      console.log('Form Submitted', this.brandForm.value);
-      this.Brand = this.brandForm.value as iBrand;
+      const formData = new FormData();
 
-      this._BrandService.CreateBrand(this.Brand).subscribe({
+      formData.append('Name', this.brandForm.value.Name);
+      formData.append('Description', this.brandForm.value.Description || '');
+      formData.append('Address', this.brandForm.value.Address || '');
+      formData.append('CategoryID', this.brandForm.value.CategoryID.toString());
+      formData.append('OwnerID', this.brandForm.value.OwnerID);
+
+      if (this.selectedImageFile) {
+        formData.append('ImageFile', this.selectedImageFile);
+      }
+
+      this._BrandService.CreateBrand(formData).subscribe({
         next: (res) => {
           console.log('Brand created successfully', res);
         },

@@ -2,12 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'; // Import FormsModule
+import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms'; // Import FormsModule
 import { IProduct } from '../../interfaces/IProduct';
 import { BrandService } from '../../Services/brand.service';
-import { iBrand } from '../../interfaces/ibrand';
 import { ProductService } from '../../Services/product-service';
 import { CartService } from '../../Services/cart-service';
+import { environment } from '../../../environments/environments';
+import { IReview } from '../../interfaces/IReview';
+import { ReviewService } from '../../Services/review-service';
 
 @Component({
   selector: 'app-brand-detail',
@@ -17,11 +19,23 @@ import { CartService } from '../../Services/cart-service';
   styleUrl: './brand-detail.scss'
 })
 export class BrandDetailComponent implements OnInit {
-  brand!: iBrand;
+
+  brand!: any;
   products: IProduct[] = [];
   productForm!: FormGroup;
   BrandId!: number;
   cartItems!: IProduct[];
+  selectedImageFile: File | null = null;
+  EUrl = environment.apiUrl;
+  selectedProduct: IProduct | null = null;
+  newReview: IReview = {
+    Id: 0,
+    UserID: 'dac65c6d-f848-4841-8e36-4fbda6220f5b',
+    Comment: '',
+    Rating: 1,
+    CreatedAt: new Date(),
+    ProductID: 0
+  };
 
   hasMoreProducts = false;
   showProductForm = false;
@@ -29,6 +43,7 @@ export class BrandDetailComponent implements OnInit {
   _BrandService = inject(BrandService);
   _ProductService = inject(ProductService);
   _CartService = inject(CartService);
+  _ReviewService = inject(ReviewService);
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder) { }
 
@@ -38,11 +53,9 @@ export class BrandDetailComponent implements OnInit {
       description: ['', Validators.required],
       price: ['', Validators.required],
       quantity: ['', Validators.required],
-      image: ['', Validators.required],
       brandID: ['', Validators.required],
     });
 
-    console.log('cart', this.getCartItems());
     this._CartService.cart$.subscribe(items => {
       this.cartItems = items;
     });
@@ -57,30 +70,75 @@ export class BrandDetailComponent implements OnInit {
     this.GetAllProducts(this.BrandId);
     this.productForm.patchValue({ brandID: this.BrandId });
   }
+  onImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImageFile = file;
+    }
+  }
+  SaveProduct() {
+    if (!this.productForm.invalid) {
+      const formData = new FormData();
 
-  saveProduct() {
-    const newProduct: IProduct = {
-      id: 0, // Assuming the backend will assign an ID
-      name: this.productForm.value.name,
-      description: this.productForm.value.description,
-      price: this.productForm.value.price,
-      quantity: this.productForm.value.quantity,
-      image: this.productForm.value.image,
-      brandID: this.productForm.value.brandID // or this.BrandId if you prefer
-    };
+      formData.append('name', this.productForm.value.name);
+      formData.append('description', this.productForm.value.description);
+      formData.append('price', this.productForm.value.price.toString());
+      formData.append('quantity', this.productForm.value.quantity.toString());
+      formData.append('brandID', this.productForm.value.brandID.toString());
 
-    this._ProductService.CreateProduct(newProduct).subscribe({
+      if (this.selectedImageFile) {
+        formData.append('ImageFile', this.selectedImageFile);
+      }
+
+      this._ProductService.CreateProduct(formData).subscribe({
+        next: (res) => {
+          console.log('Product created:', res);
+          this.products.push(res);
+          this.closeProductForm();
+          this.productForm.reset();
+        },
+        error: (err) => {
+          console.error('Error creating product:', err);
+        }
+      });
+    }
+    else {
+      console.log('Form is invalid');
+    }
+  }
+
+  selectProduct(product: IProduct): void {
+    this.selectedProduct = { ...product };
+  }
+
+  AddReviewProduct(form: NgForm): void {
+    if (!this.selectedProduct) return;
+
+    this.newReview.CreatedAt = new Date();
+    this.newReview.ProductID = this.selectedProduct.id;
+
+    this._ReviewService.AddReview(this.newReview).subscribe({
       next: (res) => {
-        console.log('Product created:', res);
-        this.products.push(res); // Add the new product to the list
-        this.closeProductForm();
-        this.productForm.reset(); // Reset the form after submission
+        console.log('Review added successfully:', res);
+        form.resetForm();
+        this.selectedProduct = null;
+        this.closeReviewModal();
       },
       error: (err) => {
-        console.error('Error creating product:', err);
+        console.error('Error adding review:', err);
       }
     });
   }
+
+
+  closeReviewModal(): void {
+    const modalEl = document.getElementById('reviewModal');
+    if (modalEl) {
+      const modalInstance = (window as any).bootstrap.Modal.getInstance(modalEl);
+      modalInstance?.hide();
+    }
+  }
+
   getCartItems(): IProduct[] {
     return this._CartService.getCartItems();
   }
@@ -94,7 +152,7 @@ export class BrandDetailComponent implements OnInit {
   GetAllProducts(Id: number) {
     this._ProductService.GetAllProducts(Id).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('Products-api:', res);
         this.products = res;
       },
       error: (err) => {
@@ -106,8 +164,8 @@ export class BrandDetailComponent implements OnInit {
   GetBrandById(ID: number) {
     this._BrandService.GetBrandById(ID).subscribe({
       next: (res) => {
-        console.log(res);
         this.brand = res;
+        console.log(this.brand);
       },
       error: (err) => {
         console.log(err);
@@ -158,13 +216,6 @@ export class BrandDetailComponent implements OnInit {
   loadMoreProducts() {
     alert('Loading more products...');
   }
-
-  // likeReview(reviewId: number) {
-  //   const review = this.reviews.find(r => r.id === reviewId);
-  //   if (review) {
-  //     review.likes++;
-  //   }
-  // }
 
   replyToReview(reviewId: number) {
     alert(`Reply functionality would open for review ID: ${reviewId}`);

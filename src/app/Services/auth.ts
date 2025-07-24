@@ -26,11 +26,11 @@ export class Auth {
   }
 
   register(Info: RegisterRequest): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}/Account/Register`, Info);
+    return this._httpClient.post(`${environment.apiUrl}/api/Account/Register`, Info);
   }
 
   Login(Info: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}/Account/Login`, Info);
+    return this._httpClient.post(`${environment.apiUrl}/api/Account/Login`, Info);
   }
 
   saveUser() {

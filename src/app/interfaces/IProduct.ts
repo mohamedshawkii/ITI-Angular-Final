@@ -1,3 +1,5 @@
+import { IReview } from "./IReview";
+
 export interface IProduct {
     id: number;
     name: string;
@@ -6,4 +8,5 @@ export interface IProduct {
     quantity: number;
     image: string;
     brandID: number;
+    reviews?: IReview[];
 }
