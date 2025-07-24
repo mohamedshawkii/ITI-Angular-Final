@@ -4,52 +4,24 @@
       <div class="hero-content">
         <div class="brand-info">
           <div class="brand-logo">
-            <span class="logo-icon">{{ brand.icon }}</span>
+            <span class="logo-icon">"🌟" </span>
           </div>
           <div class="brand-details">
             <h1 class="brand-name">{{ brand.name }}</h1>
             <p class="brand-category">{{ brand.category }}</p>
             <div class="brand-stats">
               <div class="stat-item">
-                <span class="stat-number">{{ brand.productCount }}</span>
-                <span class="stat-label">Products</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">{{ brand.yearsActive }}</span>
-                <span class="stat-label">Years</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">{{ brand.customerCount }}</span>
-                <span class="stat-label">Customers</span>
+                <span class="stat-number">{{ brand.description }}</span>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="brand-actions">
+        <!-- <div class="brand-actions">
           <button class="btn btn-primary" (click)="followBrand()">
-            {{ brand.isFollowed ? 'Following' : 'Follow Brand' }}
+            {{ brand.isFollowed ? "Following" : "Follow Brand" }}
           </button>
           <button class="btn btn-outline" (click)="shareBrand()">Share</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="brand-story-section">
-    <div class="container">
-      <h2 class="section-title">Our Story</h2>
-      <div class="story-content">
-        <div class="story-text">
-          <p *ngFor="let paragraph of brand.story">{{ paragraph }}</p>
-        </div>
-        <div class="story-images">
-          <div class="image-gallery">
-            <div class="gallery-item" *ngFor="let image of brand.galleryImages">
-              <span class="placeholder-icon">{{ image.icon }}</span>
-            </div>
-          </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -58,27 +30,34 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Our Products</h2>
-        <button class="btn btn-primary btn-add-product" (click)="openProductForm()">
+        <button
+          class="btn btn-primary btn-add-product"
+          (click)="openProductForm()"
+        >
           <i class="fa fa-plus"></i> Add Product
         </button>
       </div>
 
       <div class="products-grid">
-        <div class="product-card" *ngFor="let product of filteredProducts">
-          <div class="product-image">
-            <span class="product-icon">{{ product.icon }}</span>
-          </div>
+        <div class="product-card" *ngFor="let product of products">
           <div class="product-info">
             <h3 class="product-name">{{ product.name }}</h3>
-            <p class="product-description">{{ product.description | slice:0:60 }}...</p>
+            <p class="product-description">
+              {{ product.description | slice : 0 : 60 }}...
+            </p>
             <div class="product-price">${{ product.price }}</div>
           </div>
           <div class="product-actions">
-            <button class="btn btn-primary" (click)="addToCart(product.id, $event)">
+            <button class="btn btn-primary" (click)="addToCart(product)">
               Add to Cart
             </button>
-            <button class="btn-icon" (click)="addToWishlist(product.id, $event)">
-              {{ product.isWishlisted ? '❤️' : '🤍' }}
+          </div>
+          <div class="product-actions">
+            <button
+              class="btn btn-primary"
+              (click)="removeFromCart(product.id)"
+            >
+              Remove
             </button>
           </div>
         </div>
@@ -87,7 +66,6 @@
   </div>
 </div>
 
-
 <div class="modal-overlay" *ngIf="showProductForm">
   <div class="modal-content">
     <div class="modal-header">
@@ -95,26 +73,65 @@
       <button class="close-btn" (click)="closeProductForm()">&times;</button>
     </div>
     <div class="modal-body">
-      <form>
+      <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
         <div class="form-group">
           <label for="productName">Product Name</label>
-          <input type="text" id="productName" class="form-control" placeholder="e.g., Whole Wheat Bread">
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            formControlName="name"
+            placeholder="e.g., Whole Wheat Bread"
+          />
         </div>
         <div class="form-group">
           <label for="productPrice">Price</label>
-          <input type="number" id="productPrice" class="form-control" placeholder="e.g., 25.00">
+          <input
+            type="number"
+            id="Price"
+            class="form-control"
+            formControlName="price"
+            placeholder="e.g., 25.00"
+          />
         </div>
         <div class="form-group">
           <label for="productDescription">Description</label>
-          <textarea id="productDescription" class="form-control" rows="3"></textarea>
+          <textarea
+            id="Description"
+            class="form-control"
+            formControlName="description"
+            rows="3"
+          ></textarea>
         </div>
         <div class="form-group">
-          <label for="productImage">Image URL</label>
-          <input type="text" id="productImage" class="form-control" placeholder="https://example.com/image.jpg">
+          <label for="productPrice">Quantity</label>
+          <input
+            type="number"
+            id="quantity"
+            class="form-control"
+            formControlName="quantity"
+            placeholder="e.g., 25.00"
+          />
+        </div>
+        <div class="form-group">
+          <label for="productImage">Image</label>
+          <input
+            type="text"
+            id="Image"
+            formControlName="image"
+            class="form-control"
+            placeholder="https://example.com/image.jpg"
+          />
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-success">Save Product</button>
-          <button type="button" class="btn btn-secondary" (click)="closeProductForm()">Cancel</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeProductForm()"
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>

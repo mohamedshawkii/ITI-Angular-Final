@@ -1,42 +1,39 @@
 <div class="brands-page">
   <div class="container">
-
     <!-- Page Header -->
     <div class="page-header">
       <div>
-      <h1 class="page-title">Discover Amazing Brands</h1>
-      <p class="page-description">
-        Explore our collection of talented home-based businesses offering unique products made with love and care.
-      </p>
-</div>
+        <h1 class="page-title">Discover Amazing Brands</h1>
+        <p class="page-description">
+          Explore our collection of talented home-based businesses offering
+          unique products made with love and care.
+        </p>
+      </div>
       <button class="add-brand-button" (click)="goToAddBrandPage()">
-      + إضافة براند جديد
-    </button>
+        Add New Brand
+      </button>
     </div>
 
     <!-- Filters Section -->
     <app-brands-filter
       (categoryChange)="filterByCategory($event)"
-      (sortChange)="sortBrands($event)">
+      (sortChange)="sortBrands($event)"
+    >
     </app-brands-filter>
 
     <!-- Brands Grid Section -->
-    <app-brands-grid
-      [brands]="filteredBrands"
-      (follow)="followBrand($event)">
+    <app-brands-grid [brands]="filteredBrands" (follow)="followBrand($event)">
     </app-brands-grid>
 
     <!-- Load More Button -->
-    <app-load-more
-      *ngIf="hasMoreBrands"
-      (loadMore)="loadMoreBrands()">
+    <app-load-more *ngIf="hasMoreBrands" (loadMore)="loadMoreBrands()">
     </app-load-more>
 
     <!-- Empty State -->
     <app-brands-empty-state
       *ngIf="filteredBrands.length === 0"
-      (clear)="clearFilters()">
+      (clear)="clearFilters()"
+    >
     </app-brands-empty-state>
-
   </div>
 </div>

@@ -1,12 +1,19 @@
 <div class="payment-form-container">
   <h2 class="title">Secure Payment</h2>
+  <p class="subtitle">
+    {{ totalAmount }}
+  </p>
 
   <label for="card-element" class="input-label">Card Details</label>
   <div id="card-element" class="card-input"></div>
 
   <div id="card-errors" role="alert" class="error-message"></div>
 
-  <button class="nav-link btn btn-primary w-100 mr-auto" (click)="pay()">
+  <button
+    class="nav-link btn btn-primary w-100 mr-auto"
+    [disabled]="!totalAmount"
+    (click)="pay()"
+  >
     Pay Now
   </button>
 </div>

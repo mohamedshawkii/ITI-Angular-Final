@@ -1,13 +1,17 @@
 <div class="cart-container">
   <div class="cart-content">
     <h1 class="cart-subtitle">Shopping Cart</h1>
-    <p class="cart-empty-message">Your cart is currently empty.</p>
-    @for (item of cartItems; track $index) {
+    @if(cartItems.length === 0) {
+    <p class="cart-empty-message">Your cart is empty. Start shopping now!</p>
+    } @for (item of cartItems; track $index) {
     <div class="cart-item">
       <div class="cart-item-content">
         <h2 class="cart-item-title">{{ item.name }}</h2>
         <p class="cart-item-price">{{ item.price }}</p>
         <p class="cart-item-quantity">Quantity: {{ item.quantity }}</p>
+        <button class="btn btn-danger" (click)="removeItem(item.id)">
+          Remove
+        </button>
       </div>
     </div>
     }
@@ -17,8 +21,12 @@
     <div class="cart-sidebar-content">
       <p class="cart-total">Total: {{ calculateTotal(getCartItems()) }}</p>
     </div>
-    <a routerLink="/payment" class="nav-link btn btn-primary w-100 mr-auto"
-      >checkout</a
+    <a
+      [routerLink]="cartItems.length === 0 ? null : '/payment'"
+      [class.disabled]="cartItems.length === 0"
+      class="nav-link btn btn-primary w-100 mr-auto"
     >
+      Checkout
+    </a>
   </div>
 </div>

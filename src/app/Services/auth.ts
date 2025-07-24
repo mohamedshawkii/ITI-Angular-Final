@@ -4,6 +4,7 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { RegisterData, RegisterRequest } from '../pages/register/register';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +26,11 @@ export class Auth {
   }
 
   register(Info: RegisterRequest): Observable<any> {
-    return this._httpClient.post(`http://localhost:5066/api/Account/Register`, Info);
+    return this._httpClient.post(`${environment.apiUrl}/Account/Register`, Info);
   }
 
   Login(Info: any): Observable<any> {
-    return this._httpClient.post(`http://localhost:5066/api/Account/Login`, Info);
+    return this._httpClient.post(`${environment.apiUrl}/Account/Login`, Info);
   }
 
   saveUser() {

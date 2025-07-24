@@ -2,19 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { iBrand } from './../interfaces/ibrand';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrandService {
-  createBrand(newBrand: { name: string; description: string; address: string; image: string; categoryID: number; ownerID: string; }) {
-    throw new Error('Method not implemented.');
-  }
-  private baseUrl = 'http://localhost:5066/api/Brand';
 
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient) { }
 
   getAllBrands(): Observable<iBrand[]> {
-    return this.http.get<iBrand[]>(`${this.baseUrl}/all`);
+    return this.http.get<iBrand[]>(`${environment.apiUrl}/Brand/all`);
+  }
+
+  CreateBrand(brand: iBrand): Observable<iBrand> {
+    return this.http.post<iBrand>(`${environment.apiUrl}/Brand/add`, brand);
+  }
+  GetBrandById(id: number): Observable<iBrand> {
+    return this.http.get<iBrand>(`${environment.apiUrl}/Brand/${id}`);
   }
 }

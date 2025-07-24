@@ -29,17 +29,24 @@ export class BazaarComponent implements OnInit {
   nextEvent!: INextEvent;
   featuredBrands: IfeaturedBrand[] = [];
 
-  constructor(private bazaarService: BazaarService) {}
+  constructor(private bazaarService: BazaarService) { }
 
   ngOnInit(): void {
     const bazaarId = 1;
     // this.bazaarService.getNextEvent(bazaarId).subscribe((data) => {
     //   this.nextEvent = data;
 
-    this.bazaarService.getNextEvent(bazaarId).subscribe((data) => {
-      console.log('nextEvent:', data);
-      this.nextEvent = data;
-    });
+    this.bazaarService.getNextEvent(bazaarId).subscribe(
+      {
+        next: (data) => {
+          console.log('Next event data:', data);
+          this.nextEvent = data;
+        },
+        error: (error) => {
+          console.error('Error fetching next event:', error);
+        },
+      }
+    );
 
     // });
 

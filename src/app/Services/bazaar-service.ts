@@ -4,39 +4,40 @@ import { INextEvent } from '../interfaces/inext-event';
 import { Observable } from 'rxjs';
 import { IBazaar } from '../interfaces/ibazaar';
 import { IfeaturedBrand } from '../interfaces/ifeatured-brand';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BazaarService {
-  private baseUrl = 'http://localhost:29962/api/Bazaar';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllBazaars(): Observable<IBazaar[]> {
-    return this.http.get<IBazaar[]>(`${this.baseUrl}/GetAllBazaars`);
+    return this.http.get<IBazaar[]>(`${environment.apiUrl}/Bazaar/GetAllBazaars`);
   }
   getBazaarById(id: number): Observable<IBazaar> {
-    return this.http.get<IBazaar>(`${this.baseUrl}/GetBazaarById/${id}`);
+    return this.http.get<IBazaar>(`${environment.apiUrl}/Bazaar/GetBazaarById/${id}`);
   }
 
   getNextEvent(id: number): Observable<INextEvent> {
-    return this.http.get<INextEvent>(`${this.baseUrl}/next-event/${id}`);
+    return this.http.get<INextEvent>(`${environment.apiUrl}/Bazaar/next-event/${id}`);
   }
 
   createBazaar(data: IBazaar): Observable<IBazaar> {
-    return this.http.post<IBazaar>(`${this.baseUrl}/CreateBazaar`, data);
+    return this.http.post<IBazaar>(`${environment.apiUrl}/Bazaar/CreateBazaar`, data);
   }
 
   updateBazaar(id: number, data: IBazaar): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/UpdateBazaar/${id}`, data);
+    return this.http.put<void>(`${environment.apiUrl}/Bazaar/UpdateBazaar/${id}`, data);
   }
+
   deleteBazaar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/Delete/${id}`);
+    return this.http.delete<void>(`${environment.apiUrl}/Bazaar/Delete/${id}`);
   }
 
   getBrandsForBazaar(bazaarId: number): Observable<IfeaturedBrand[]> {
     return this.http.get<IfeaturedBrand[]>(
-      `http://localhost:29962/api/BazarBrand/${bazaarId}/brands`
+      `${environment.apiUrl}/BazarBrand/${bazaarId}/brands`
     );
   }
 }

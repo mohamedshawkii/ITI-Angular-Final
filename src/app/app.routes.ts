@@ -17,16 +17,16 @@ import { Delivery } from './pages/delivery/delivery';
 import { DeliveryHistory } from './pages/delivery/components/delivery-history/delivery-history';
 import { MyOrders } from './pages/delivery/components/my-orders/my-orders';
 import { AvailableOrders } from './pages/delivery/components/available-orders/available-orders';
-import { AddBrand } from './pages/brands/components/add-brand/add-brand' 
+import { AddBrand } from './pages/brands/components/add-brand/add-brand'
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'brands', component: BrandsComponent },
-    { path: 'brands/add', component:AddBrand }, 
+  { path: 'brands/add', component: AddBrand },
   { path: 'brand/:id', component: BrandDetailComponent },
   { path: 'product/:id', component: ProductDetailComponent },
-  { path: 'subscriptions', component: SubscriptionsComponent },
+  // { path: 'subscriptions', component: SubscriptionsComponent },
   { path: 'bazaar', component: BazaarComponent },
   { path: 'cart', component: CartComponent },
   { path: 'login', component: LoginComponent },

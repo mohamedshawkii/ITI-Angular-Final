@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../Services/orders-service';
 import { IOrder } from '../../interfaces/IOrder';
 import { IProduct } from '../../interfaces/IProduct';
+import { CartService } from '../../Services/cart-service';
 
 @Component({
   selector: 'app-cart',
@@ -12,18 +13,34 @@ import { IProduct } from '../../interfaces/IProduct';
   templateUrl: './cart.html',
   styleUrl: './cart.scss'
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
   Orders!: IOrder;
   cartItems!: IProduct[];
+  isDisabled!: boolean;
 
   _Order = inject(OrderService);
+  _CartService = inject(CartService);
 
-  getCartItems(): IProduct[] {
-    return JSON.parse(localStorage.getItem('cart') || '[]');
+  ngOnInit() {
+    this._CartService.cart$.subscribe(cart => {
+      this.cartItems = cart;
+    });
   }
+  getCartItems(): IProduct[] {
+    return this._CartService.getCartItems();
+  }
+  removeItem(productId: number) {
+    this._CartService.removeFromCart(productId);
+  }
+  calculateTotal(cartItems: any[]): number {
+    const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    this._CartService.totalAmount = total; // Update the total amount in the cart service
+    return total
+  }
+
   checkout(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.cartItems = this.getCartItems();
+    this.cartItems = this._CartService.getCartItems();
 
     this.Orders = {
       id: 0,
@@ -52,7 +69,5 @@ export class CartComponent {
     });
   }
 
-  calculateTotal(cartItems: any[]): number {
-    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  }
+
 }

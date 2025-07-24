@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Stripe } from '@stripe/stripe-js';
 import { StripeService } from '../../Services/stripe-service';
 import { firstValueFrom } from 'rxjs';
+import { CartService } from '../../Services/cart-service';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -13,8 +14,10 @@ import { firstValueFrom } from 'rxjs';
 export class StripePayment implements OnInit {
   stripe!: Stripe;
   cardElement: any;
-  totalAmount = 1500;
+  totalAmount!: number;
+
   _StripeService = inject(StripeService);
+  _CartService = inject(CartService);
 
 
   async ngOnInit() {
@@ -24,6 +27,8 @@ export class StripePayment implements OnInit {
       return;
     }
     this.stripe = stripe;
+
+    this.totalAmount = this._CartService.totalAmount;
 
     const elements = this.stripe.elements();
     this.cardElement = elements.create('card');

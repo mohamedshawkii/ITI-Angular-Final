@@ -8,8 +8,13 @@
     <p class="brand-description">{{ brand.description }}</p>
     <div class="brand-stats">
       <span class="brand-rating">
-  ⭐ {{ brand.averageRating > 0 ? (brand.averageRating | number:'1.1-1') : 'No ratings yet' }}
-</span>
+        ⭐
+        {{
+          brand.averageRating! > 0
+            ? (brand.averageRating | number : "1.1-1")
+            : "No ratings yet"
+        }}
+      </span>
 
       <span class="brand-products">{{ brand.productCount }} products</span>
     </div>
@@ -19,9 +24,11 @@
     </div>
   </div>
   <div class="brand-actions">
-    <a [routerLink]="['/brand', brand.id]" class="btn btn-primary">View Brand</a>
+    <a [routerLink]="['/brand', brand.id]" class="btn btn-primary"
+      >View Brand</a
+    >
     <button class="btn btn-outline" (click)="toggleFollow()">
-      {{ brand.isFollowed ? 'Following' : 'Follow' }}
+      {{ brand.isFollowed ? "Following" : "Follow" }}
     </button>
   </div>
 </div>

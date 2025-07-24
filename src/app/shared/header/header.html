@@ -22,14 +22,14 @@
               >Brands</a
             >
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a
               routerLink="/subscriptions"
               routerLinkActive="active"
               class="nav-link"
               >Subscriptions</a
             >
-          </li>
+          </li> -->
           <li class="nav-item">
             <a routerLink="/admin" routerLinkActive="active" class="nav-link"
               >Admin</a
@@ -49,21 +49,20 @@
       </nav>
 
       <!-- User Actions -->
-      <div class="user-actions" *ngIf="!isLoggedIn">
+      <div class="user-actions">
         <a routerLink="/cart" class="cart-link">
           <span class="cart-icon">🛒</span>
-          <span class="cart-count">0</span>
+          <span class="cart-count">{{ cartCount }}</span>
         </a>
-        <a routerLink="/login" class="btn btn-outline">Login</a>
-        <a routerLink="/register" class="btn btn-primary">Sign Up</a>
-      </div>
 
-      <div class="user-actions" *ngIf="isLoggedIn">
-        <a routerLink="/cart" class="cart-link">
-          <span class="cart-icon">🛒</span>
-          <span class="cart-count">0</span>
-        </a>
-        <button class="btn btn-danger" (click)="logOut()">Logout</button>
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/login" class="btn btn-outline">Login</a>
+          <a routerLink="/register" class="btn btn-primary">Sign Up</a>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <button class="btn btn-danger" (click)="logOut()">Logout</button>
+        </ng-container>
       </div>
 
       <!-- Mobile Menu Toggle -->
@@ -95,7 +94,7 @@
             >Brands</a
           >
         </li>
-        <li class="nav-item-mobile">
+        <!-- <li class="nav-item-mobile">
           <a
             routerLink="/subscriptions"
             routerLinkActive="active"
@@ -103,7 +102,7 @@
             (click)="closeMobileMenu()"
             >Subscriptions</a
           >
-        </li>
+        </li> -->
         <li class="nav-item-mobile">
           <a
             routerLink="/bazaar"
