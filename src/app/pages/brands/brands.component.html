@@ -9,7 +9,7 @@
           unique products made with love and care.
         </p>
       </div>
-      <button *ngIf="authService.getRole() === 'Admin' || authService.getRole() === 'BrandOwner'" class="add-brand-button" (click)="goToAddBrandPage()">
+      <button  class="btn btn-primary" (click)="goToAddBrandPage()">
         Add New Brand
       </button>
     </div>
