@@ -10,6 +10,7 @@ import { IfeaturedBrand } from '../../interfaces/ifeatured-brand';
 
 import { INextEvent } from '../../interfaces/inext-event';
 import { BazaarService } from '../../Services/bazaar-service';
+import { Auth } from '../../Services/auth';
 
 @Component({
   selector: 'app-bazaar',
@@ -29,13 +30,13 @@ export class BazaarComponent implements OnInit {
   nextEvent!: INextEvent;
   featuredBrands: IfeaturedBrand[] = [];
 
-  constructor(private bazaarService: BazaarService) { }
+  constructor(private bazaarService: BazaarService, public authService: Auth) { }
 
   ngOnInit(): void {
     const bazaarId = 1;
     // this.bazaarService.getNextEvent(bazaarId).subscribe((data) => {
     //   this.nextEvent = data;
-
+console.log(this.nextEvent);
     this.bazaarService.getNextEvent(bazaarId).subscribe(
       {
         next: (data) => {
