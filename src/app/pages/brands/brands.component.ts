@@ -8,6 +8,7 @@ import { BrandsFilterComponent } from './components/brands-filter/brands-filter.
 import { BrandsGridComponent } from './components/brands-grid/brands-grid.component';
 import { LoadMoreComponent } from './components/load-more/load-more.component';
 import { BrandsEmptyStateComponent } from './components/brands-empty-state/brands-empty-state.component';
+import { Auth } from '../../Services/auth';
 
 @Component({
   selector: 'app-brands',
@@ -29,8 +30,9 @@ export class BrandsComponent implements OnInit {
   hasMoreBrands = false;
   currentFilter = '';
   currentSort = 'name';
+  userRole: string | null | undefined;
 
-  constructor(private brandService: BrandService, private router: Router,) { }
+  constructor(private brandService: BrandService, private router: Router, public authService: Auth) { }
 
   goToAddBrandPage(): void {
     // سنقوم بتوجيه المستخدم إلى مسار '/brands/add' الذي سننشئه في الخطوة التالية
@@ -47,6 +49,8 @@ export class BrandsComponent implements OnInit {
       this.filteredBrands = [...this.allBrands];
       this.applySorting();
     });
+    const role = this.authService.getRole();
+    this.userRole = role;
   }
 
   filterByCategory(category: string): void {
