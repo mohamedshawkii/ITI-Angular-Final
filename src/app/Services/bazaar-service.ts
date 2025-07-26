@@ -1,43 +1,70 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { INextEvent } from '../interfaces/inext-event';
 import { Observable } from 'rxjs';
 import { IBazaar } from '../interfaces/ibazaar';
 import { IfeaturedBrand } from '../interfaces/ifeatured-brand';
 import { environment } from '../../environments/environments';
+import { Auth } from './auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BazaarService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private auth: Auth) {}
 
   getAllBazaars(): Observable<IBazaar[]> {
-    return this.http.get<IBazaar[]>(`${environment.apiUrl}/Bazaar/GetAllBazaars`);
+    return this.http.get<IBazaar[]>(
+      `${environment.apiUrl}/Bazaar/GetAllBazaars`
+    );
   }
   getBazaarById(id: number): Observable<IBazaar> {
-    return this.http.get<IBazaar>(`${environment.apiUrl}/Bazaar/GetBazaarById/${id}`);
+    return this.http.get<IBazaar>(
+      `${environment.apiUrl}/Bazaar/GetBazaarById/${id}`
+    );
   }
 
   getNextEvent(id: number): Observable<INextEvent> {
-    return this.http.get<INextEvent>(`${environment.apiUrl}/Bazaar/next-event/${id}`);
+    return this.http.get<INextEvent>(
+      `${environment.apiUrl}/Bazaar/next-event/${id}`
+    );
   }
 
   createBazaar(data: IBazaar): Observable<IBazaar> {
-    return this.http.post<IBazaar>(`${environment.apiUrl}/Bazaar/CreateBazaar`, data);
+    return this.http.post<IBazaar>(
+      `${environment.apiUrl}/Bazaar/CreateBazaar`,
+      data
+    );
   }
 
   updateBazaar(id: number, data: IBazaar): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/Bazaar/UpdateBazaar/${id}`, data);
+    return this.http.put<void>(
+      `${environment.apiUrl}/Bazaar/UpdateBazaar/${id}`,
+      data
+    );
   }
 
   deleteBazaar(id: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/Bazaar/Delete/${id}`);
   }
-
+//modified nahed
   getBrandsForBazaar(bazaarId: number): Observable<IfeaturedBrand[]> {
     return this.http.get<IfeaturedBrand[]>(
       `${environment.apiUrl}/BazarBrand/${bazaarId}/brands`
+    );
+  }
+
+  addBrandToBazaar(bazaarId: number, brandId: number): Observable<any> {
+    const token = this.auth.getToken();
+
+    return this.http.post(
+      `${environment.apiUrl}/BazarBrand/AddBrandToBazar/${bazaarId}/${brandId}`,
+      {},
+      {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      }
     );
   }
 }
