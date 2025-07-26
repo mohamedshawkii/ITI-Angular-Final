@@ -10,6 +10,7 @@ import { CartService } from '../../Services/cart-service';
 import { environment } from '../../../environments/environments';
 import { IReview } from '../../interfaces/IReview';
 import { ReviewService } from '../../Services/review-service';
+import { Auth } from '../../Services/auth';
 
 @Component({
   selector: 'app-brand-detail',
@@ -30,16 +31,17 @@ export class BrandDetailComponent implements OnInit {
   selectedProduct: IProduct | null = null;
   newReview: IReview = {
     Id: 0,
-    UserID: 'dac65c6d-f848-4841-8e36-4fbda6220f5b',
+    UserID: '',
     Comment: '',
     Rating: 1,
     CreatedAt: new Date(),
     ProductID: 0
   };
-
+  showReviewForm = false;
   hasMoreProducts = false;
   showProductForm = false;
 
+  _AuthService = inject(Auth);
   _BrandService = inject(BrandService);
   _ProductService = inject(ProductService);
   _CartService = inject(CartService);
@@ -47,6 +49,19 @@ export class BrandDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder) { }
 
+  closeReviewForm() {
+    this.showReviewForm = false;
+
+  }
+
+  DisplayBasedOnRole(Role: string): boolean {
+    const userRole = this._AuthService.getRole();
+    return userRole == Role;
+  }
+
+  openReviewForm() {
+    this.showReviewForm = true;
+  }
   ngOnInit(): void {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -116,6 +131,7 @@ export class BrandDetailComponent implements OnInit {
 
     this.newReview.CreatedAt = new Date();
     this.newReview.ProductID = this.selectedProduct.id;
+    this.newReview.UserID = this._AuthService.getCurrentUserID()!;
 
     this._ReviewService.AddReview(this.newReview).subscribe({
       next: (res) => {
@@ -152,7 +168,7 @@ export class BrandDetailComponent implements OnInit {
   GetAllProducts(Id: number) {
     this._ProductService.GetAllProducts(Id).subscribe({
       next: (res) => {
-        console.log('Products-api:', res);
+        // console.log('Products-api:', res);
         this.products = res;
       },
       error: (err) => {
@@ -165,7 +181,7 @@ export class BrandDetailComponent implements OnInit {
     this._BrandService.GetBrandById(ID).subscribe({
       next: (res) => {
         this.brand = res;
-        console.log(this.brand);
+        // console.log(this.brand);
       },
       error: (err) => {
         console.log(err);

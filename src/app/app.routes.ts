@@ -34,7 +34,7 @@ export const routes: Routes = [
     path: 'brands',
     component: BrandsComponent,
     canActivate: [RoleGuard],
-    data: { roles: ['Customer' , 'BrandOwner'] }
+    data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'brands/add',
@@ -83,19 +83,19 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminDashboardComponent,
     canActivate: [RoleGuard],
-    data: { roles: ['Admin'] },
+    data: { roles: ['ADMIN'] },
     children: [
       {
         path: 'users',
         component: Users,
         canActivate: [RoleGuard],
-        data: { roles: ['Admin'] }
+        data: { roles: ['ADMIN'] }
       },
       {
         path: 'createBazar',
         component: Bazar,
         canActivate: [RoleGuard],
-        data: { roles: ['Admin'] }
+        data: { roles: ['ADMIN'] }
       }
     ]
   },

@@ -4,6 +4,7 @@ import { iBrand } from '../../../../interfaces/ibrand';
 import { ICategory } from '../../../../interfaces/ICategory';
 import { BrandService } from '../../../../Services/brand.service';
 import { CategoryService } from '../../../../Services/category-service';
+import { Auth } from '../../../../Services/auth';
 
 @Component({
   selector: 'app-add-brand',
@@ -20,6 +21,7 @@ export class AddBrand implements OnInit {
 
   _BrandService = inject(BrandService);
   _CategoryService = inject(CategoryService);
+  _AuthService = inject(Auth);
 
   constructor(private fb: FormBuilder) { }
 
@@ -32,7 +34,9 @@ export class AddBrand implements OnInit {
       CategoryID: ['', Validators.required],
       OwnerID: ['', Validators.required]
     });
-    this.brandForm.patchValue({ OwnerID: "dac65c6d-f848-4841-8e36-4fbda6220f5b" });
+
+    this.brandForm.patchValue({ OwnerID: this._AuthService.getCurrentUserID() as string });
+
     this.GetCategories();
   }
 
@@ -81,6 +85,4 @@ export class AddBrand implements OnInit {
       console.log('Form is invalid');
     }
   }
-
-
 }

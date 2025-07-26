@@ -8,29 +8,46 @@
           <span class="logo-tagline">Home Brands Marketplace</span>
         </a>
       </div>
-
+      <!-- this is the Roles Names from Backend it Must be Identical with "Customer", "ADMIN", "DeliveryBoy", "BrandOwner" -->
       <nav class="nav-desktop">
         <ul class="nav-list">
-          <li class="nav-item" *ngIf="showFor(['Customer', 'BrandOwner', 'DeliveryBoy', 'Admin'])">
-            <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
+          <li
+            class="nav-item"
+            *ngIf="showFor(['Customer', 'BrandOwner', 'DeliveryBoy', 'ADMIN'])"
+          >
+            <a routerLink="/home" routerLinkActive="active" class="nav-link"
+              >Home</a
+            >
           </li>
           <li class="nav-item" *ngIf="showFor(['Customer', 'BrandOwner'])">
-            <a routerLink="/brands" routerLinkActive="active" class="nav-link">Brands</a>
+            <a routerLink="/brands" routerLinkActive="active" class="nav-link"
+              >Brands</a
+            >
           </li>
-          <li class="nav-item" *ngIf="showFor(['Admin'])">
-            <a routerLink="/admin" routerLinkActive="active" class="nav-link">Admin</a>
+          <li class="nav-item" *ngIf="showFor(['ADMIN'])">
+            <a routerLink="/admin" routerLinkActive="active" class="nav-link"
+              >Admin</a
+            >
           </li>
           <li class="nav-item" *ngIf="showFor(['DeliveryBoy'])">
-            <a routerLink="/delivery" routerLinkActive="active" class="nav-link">Delivery</a>
+            <a routerLink="/delivery" routerLinkActive="active" class="nav-link"
+              >Delivery</a
+            >
           </li>
           <li class="nav-item" *ngIf="showFor(['Customer', 'BrandOwner'])">
-            <a routerLink="/bazaar" routerLinkActive="active" class="nav-link">Bazaar</a>
+            <a routerLink="/bazaar" routerLinkActive="active" class="nav-link"
+              >Bazaar</a
+            >
           </li>
         </ul>
       </nav>
 
       <div class="user-actions">
-        <a *ngIf="showFor(['Customer', 'BrandOwner'])" routerLink="/cart" class="cart-link">
+        <a
+          *ngIf="showFor(['Customer', 'BrandOwner'])"
+          routerLink="/cart"
+          class="cart-link"
+        >
           <span class="cart-icon">🛒</span>
           <span class="cart-count">{{ cartCount }}</span>
         </a>
@@ -54,32 +71,85 @@
 
     <nav class="nav-mobile" [class.active]="isMobileMenuOpen">
       <ul class="nav-list-mobile">
-        <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner', 'DeliveryBoy', 'Admin'])">
-          <a routerLink="/home" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Home</a>
+        <li
+          class="nav-item-mobile"
+          *ngIf="showFor(['Customer', 'BrandOwner', 'DeliveryBoy', 'ADMIN'])"
+        >
+          <a
+            routerLink="/home"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Home</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
-          <a routerLink="/brands" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Brands</a>
+          <a
+            routerLink="/brands"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Brands</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
-          <a routerLink="/bazaar" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Bazaar</a>
+          <a
+            routerLink="/bazaar"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Bazaar</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="showFor(['DeliveryBoy'])">
-          <a routerLink="/delivery" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Delivery</a>
+          <a
+            routerLink="/delivery"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Delivery</a
+          >
         </li>
-        <li class="nav-item-mobile" *ngIf="showFor(['Admin'])">
-          <a routerLink="/admin" routerLinkActive="active" class="nav-link-mobile" (click)="closeMobileMenu()">Admin</a>
+        <li class="nav-item-mobile" *ngIf="showFor(['ADMIN'])">
+          <a
+            routerLink="/admin"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Admin</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
-          <a routerLink="/cart" class="nav-link-mobile" (click)="closeMobileMenu()">Cart</a>
+          <a
+            routerLink="/cart"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Cart</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="!isLoggedIn">
-          <a routerLink="/login" class="nav-link-mobile" (click)="closeMobileMenu()">Login</a>
+          <a
+            routerLink="/login"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Login</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="!isLoggedIn">
-          <a routerLink="/register" class="nav-link-mobile" (click)="closeMobileMenu()">Sign Up</a>
+          <a
+            routerLink="/register"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Sign Up</a
+          >
         </li>
         <li class="nav-item-mobile" *ngIf="isLoggedIn">
-          <a href="#" class="nav-link-mobile" (click)="logOut(); closeMobileMenu()">Logout</a>
+          <a
+            href="#"
+            class="nav-link-mobile"
+            (click)="logOut(); closeMobileMenu()"
+            >Logout</a
+          >
         </li>
       </ul>
     </nav>
