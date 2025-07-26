@@ -4,12 +4,12 @@
     <!-- صورة الكفر -->
     <div class="brand-cover">
       <img
-        src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1121&q=80"
+        [src]="EUrl + brand.image"
         alt="{{ brand.name }} Cover Image"
         class="cover-image"
       />
     </div>
-    
+
     <!-- معلومات البراند -->
     <div class="container">
       <div class="hero-content">
@@ -17,7 +17,7 @@
           <!-- لوجو البراند -->
           <div class="brand-logo">
             <img
-              src="https://i.pravatar.cc/150?u={{brand.id}}"
+              src="https://i.pravatar.cc/150?u={{ brand.id }}"
               alt="{{ brand.name }} Logo"
               class="logo-image"
             />
@@ -25,7 +25,6 @@
           <!-- تفاصيل البراند -->
           <div class="brand-details">
             <h1 class="brand-name">{{ brand.name }}</h1>
-            <p class="brand-category">{{ brand.category }}</p>
             <div class="brand-stats">
               <div class="stat-item">
                 <span class="stat-description">{{ brand.description }}</span>
@@ -33,10 +32,12 @@
             </div>
           </div>
         </div>
+        @if(!DisplayBasedOnRole("BrandOwner")) {
         <!-- أزرار التفاعل -->
         <div class="brand-actions">
           <button class="btn btn-outline" (click)="shareBrand()">Share</button>
         </div>
+        }
       </div>
     </div>
   </div>
@@ -44,16 +45,14 @@
   <!-- Products Section -->
   <div class="products-section">
     <div class="container">
+      @if(DisplayBasedOnRole("BrandOwner")) {
       <div class="section-header">
         <h2 class="section-title">Our Products</h2>
-        <button
-          class="btn btn-primary "
-          (click)="openProductForm()"
-        >
+        <button class="btn btn-primary" (click)="openProductForm()">
           <i class="fa fa-plus"></i> Add Product
         </button>
       </div>
-
+      }
       <div class="products-grid">
         <div class="product-card" *ngFor="let product of products">
           <div class="product-info">
@@ -61,8 +60,16 @@
             <p class="product-description">
               {{ product.description | slice : 0 : 60 }}...
             </p>
+            <div class="product-image">
+              <img
+                [src]="EUrl + product.image"
+                alt="{{ product.name }}"
+                class="img-fluid"
+              />
+            </div>
             <div class="product-price">${{ product.price }}</div>
           </div>
+          @if(!DisplayBasedOnRole("BrandOwner")) {
           <div class="product-actions">
             <button class="btn btn-primary" (click)="addToCart(product)">
               Add to Cart
@@ -70,19 +77,79 @@
           </div>
           <div class="product-actions">
             <button
-              class="btn btn-secondary "
+              class="btn btn-secondary"
               (click)="removeFromCart(product.id)"
             >
               Remove
             </button>
           </div>
+          <div class="product-actions">
+            <button
+              class="btn btn-primary"
+              (click)="selectProduct(product); openReviewForm()"
+            >
+              إضافة تقييم
+            </button>
+          </div>
+          }
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal for Adding a New Product -->
+@if(!DisplayBasedOnRole("BrandOwner")) {
+<div class="modal-overlay" *ngIf="showReviewForm">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>أضف تقييمك</h2>
+      <button class="close-btn" (click)="closeReviewForm()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <form #reviewForm="ngForm" (ngSubmit)="AddReviewProduct(reviewForm)">
+        <div class="form-group">
+          <label for="comment">التعليق</label>
+          <textarea
+            id="comment"
+            name="comment"
+            class="form-control"
+            [(ngModel)]="newReview.Comment"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="rating">التقييم</label>
+          <select
+            id="rating"
+            name="rating"
+            class="form-control"
+            [(ngModel)]="newReview.Rating"
+            required
+          >
+            <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">
+              {{ r }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">Add Review</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeReviewForm()"
+          >
+            إلغاء
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+} @if(DisplayBasedOnRole("BrandOwner")) {
 <div class="modal-overlay" *ngIf="showProductForm">
   <div class="modal-content">
     <div class="modal-header">
@@ -90,7 +157,7 @@
       <button class="close-btn" (click)="closeProductForm()">&times;</button>
     </div>
     <div class="modal-body">
-      <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+      <form [formGroup]="productForm" (ngSubmit)="SaveProduct()">
         <div class="form-group">
           <label for="productName">Product Name</label>
           <input
@@ -127,15 +194,15 @@
             id="quantity"
             class="form-control"
             formControlName="quantity"
-            placeholder="e.g., 25.00"
+            placeholder="e.g., 10"
           />
         </div>
         <div class="form-group">
           <label for="productImage">Image</label>
           <input
-            type="text"
+            type="file"
+            (change)="onImageSelected($event)"
             id="Image"
-            formControlName="image"
             class="form-control"
             placeholder="https://example.com/image.jpg"
           />
@@ -154,4 +221,4 @@
     </div>
   </div>
 </div>
-
+}

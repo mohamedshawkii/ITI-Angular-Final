@@ -3,8 +3,8 @@ export interface iBrand {
   name: string;
   description?: string;
   address?: string;
-  image?: string;
-  category: string;
+  ImageFile?: string;
+  categoryID: string;
   OwnerID: string;
   productCount?: number;
   averageRating?: number;

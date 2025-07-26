@@ -8,11 +8,14 @@ import { RegisterRequest } from '../pages/register/register';
 import { environment } from '../../environments/environments';
 
 export interface DecodedToken {
-  nameid: string;
-  email: string;
-  role: string | string[];
-  exp: number;
-  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?: string | string[];
+  [key: string]: unknown;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"?: string;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"?: string;
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?: string;
+  exp?: number;
+  iss?: string;
+  aud?: string;
+  jti?: string;
 }
 
 @Injectable({
@@ -23,8 +26,9 @@ export class Auth {
   _httpClient = inject(HttpClient);
   _PLATFORM_ID = inject(PLATFORM_ID);
   _Router = inject(Router);
-  public currentUser: any;
-  public currentRole: any;
+  currentUser: string | null = null;
+  currentRole: string | null = null;
+
 
   constructor() {
     if (isPlatformBrowser(this._PLATFORM_ID)) {
@@ -36,25 +40,29 @@ export class Auth {
   }
 
   register(Info: RegisterRequest): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}/Account/Register`, Info);
+    return this._httpClient.post(`${environment.apiUrl}/api/Account/Register`, Info);
   }
 
   Login(Info: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}/Account/Login`, Info);
+    return this._httpClient.post(`${environment.apiUrl}/api/Account/Login`, Info);
   }
 
   saveUser() {
-  const token = localStorage.getItem('token');
-  if (token) {
-    this.UserToken.next(token);
-
-    const payload = token.split('.')[1];
-    const decoded = JSON.parse(atob(payload));
-    this.currentUser = decoded;
-    this.currentRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.UserToken.next(token);
+      try {
+        const payload = token.split('.')[1];
+        const decoded: DecodedToken = JSON.parse(atob(payload));
+        this.currentUser = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ?? null;
+        this.currentRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? null;
+      } catch (error) {
+        console.error("Invalid token format", error);
+        this.currentUser = null;
+        this.currentRole = null;
+      }
+    }
   }
-}
-
 
 
   logOut() {
@@ -67,26 +75,38 @@ export class Auth {
   getDecodedToken(): DecodedToken | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
-
     try {
-      return jwtDecode<DecodedToken>(token);
+      const Decoded = jwtDecode<DecodedToken>(token);
+      // console.log('Decoding token:', Decoded);
+      return Decoded;
     } catch (error) {
       console.error('Error decoding token', error);
       return null;
     }
   }
 
-  // ✅ قراءة الدور
-getRole(): string | null {
-  const decoded = this.getDecodedToken();
-  const role = decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-  if (Array.isArray(role)) {
-    return role.join(',');
+  getCurrentUserID(): string | null {
+    const decoded = this.getDecodedToken();
+    const userId = decoded?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+    console.log('Decoding token userId:', userId);
+    if (Array.isArray(userId)) {
+      return userId.join(',');
+    }
+    return userId ?? null;
   }
-  return role ?? null;
-}
 
+  // ✅ قراءة الدور
+  getRole(): string | null {
+    const decoded = this.getDecodedToken();
+    const role = decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
+    // console.log('Decoding token role:', role);
+    if (Array.isArray(role)) {
+      return role.join(',');
+    }
+    return role ?? null;
+  }
 
   // ✅ التحقق من دور معين
   hasRole(role: string): boolean {
