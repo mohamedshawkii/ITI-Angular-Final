@@ -12,6 +12,7 @@ export class Bazar implements OnInit {
   bazarForm!: FormGroup;
 
   _bazarService = inject(BazarService);
+isSubmitting: any;
 
   constructor(private fb: FormBuilder) { }
 

@@ -31,69 +31,69 @@ export const routes: Routes = [
   {
     path: 'brands',
     component: BrandsComponent,
-    canActivate: [RoleGuard],
-    data: { roles: ['Customer', 'BrandOwner'] }
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'brands/add',
     component: AddBrand,
-    canActivate: [RoleGuard],
-    data: { roles: ['BrandOwner'] }
+    // canActivate: [RoleGuard],
+    // data: { roles: ['BrandOwner'] }
   },
   {
     path: 'brand/:id',
     component: BrandDetailComponent,
-    canActivate: [RoleGuard],
-    data: { roles: ['Customer', 'BrandOwner'] }
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'product/:id',
     component: ProductDetailComponent,
-    canActivate: [RoleGuard],
-    data: { roles: ['Customer', 'BrandOwner'] }
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'cart',
     component: CartComponent,
-    canActivate: [RoleGuard],
-    data: { roles: ['Customer', 'BrandOwner'] }
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'bazaar',
     component: BazaarComponent,
-    canActivate: [RoleGuard],
-    data: { roles: ['Customer', 'BrandOwner'] }
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'payment',
     component: StripePayment,
-    canActivate: [RoleGuard],
-    data: { roles: ['Customer', 'BrandOwner'] }
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'subscriptions',
     component: SubscriptionsComponent,
-    canActivate: [RoleGuard],
-    data: { roles: ['Customer', 'BrandOwner'] }
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
   },
 
   {
     path: 'admin',
     component: AdminDashboardComponent,
-    canActivate: [RoleGuard],
-    data: { roles: ['ADMIN'] },
+    // canActivate: [RoleGuard],
+    // data: { roles: ['ADMIN'] },
     children: [
       {
         path: 'users',
         component: Users,
-        canActivate: [RoleGuard],
-        data: { roles: ['ADMIN'] }
+        // canActivate: [RoleGuard],
+        // data: { roles: ['ADMIN'] }
       },
       {
         path: 'createBazar',
         component: Bazar,
-        canActivate: [RoleGuard],
-        data: { roles: ['ADMIN'] }
+        // canActivate: [RoleGuard],
+        // data: { roles: ['ADMIN'] }
       }
     ]
   },
@@ -101,26 +101,26 @@ export const routes: Routes = [
   {
     path: 'delivery',
     component: Delivery,
-    canActivate: [RoleGuard],
-    data: { roles: ['DeliveryBoy'] },
+    // canActivate: [RoleGuard],
+    // data: { roles: ['DeliveryBoy'] },
     children: [
       {
         path: 'history',
         component: DeliveryHistory,
-        canActivate: [RoleGuard],
-        data: { roles: ['DeliveryBoy'] }
+        // canActivate: [RoleGuard],
+        // data: { roles: ['DeliveryBoy'] }
       },
       {
         path: 'myorders',
         component: MyOrders,
-        canActivate: [RoleGuard],
-        data: { roles: ['DeliveryBoy'] }
+        // canActivate: [RoleGuard],
+        // data: { roles: ['DeliveryBoy'] }
       },
       {
         path: 'available',
         component: AvailableOrders,
-        canActivate: [RoleGuard],
-        data: { roles: ['DeliveryBoy'] }
+        // canActivate: [RoleGuard],
+        // data: { roles: ['DeliveryBoy'] }
       }
     ]
   },
