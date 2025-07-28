@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { iBrand } from '../../interfaces/ibrand';
 import { BrandService } from '../../../../src/app/Services/brand.service';
 import { CommonModule } from '@angular/common';
@@ -31,7 +31,7 @@ export class BrandsComponent implements OnInit {
   currentFilter = '';
   currentSort = 'name';
   userRole: string | null | undefined;
-
+  _AuthService = inject(Auth);
   constructor(private brandService: BrandService, private router: Router, public authService: Auth) { }
 
   goToAddBrandPage(): void {
@@ -51,6 +51,10 @@ export class BrandsComponent implements OnInit {
     });
     const role = this.authService.getRole();
     this.userRole = role;
+  }
+  DisplayBasedOnRole(Role: string): boolean {
+    const userRole = this._AuthService.getRole();
+    return userRole == Role;
   }
 
   filterByCategory(category: string): void {

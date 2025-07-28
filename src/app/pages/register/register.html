@@ -5,23 +5,45 @@
       <div class="form-container">
         <div class="form-header">
           <h2 class="form-title">Create Account</h2>
-          <p class="form-subtitle">Join Betna and discover amazing home brands</p>
+          <p class="form-subtitle">
+            Join Betna and discover amazing home brands
+          </p>
         </div>
 
-        <form class="register-form" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+        <form
+          class="register-form"
+          (ngSubmit)="onSubmit()"
+          #registerForm="ngForm"
+        >
           <!-- Name Fields -->
           <div class="name-fields">
             <div class="form-group">
               <label for="firstName" class="form-label">First Name</label>
               <div class="input-wrapper">
                 <span class="input-icon">👤</span>
-                <input type="text" id="firstName" name="firstName" class="form-input" placeholder="First name"
-                  [(ngModel)]="registerData.firstName" #firstName="ngModel" required minlength="2"
-                  [class.error]="firstName.invalid && firstName.touched" />
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  class="form-input"
+                  placeholder="First name"
+                  [(ngModel)]="registerData.firstName"
+                  #firstName="ngModel"
+                  required
+                  minlength="2"
+                  [class.error]="firstName.invalid && firstName.touched"
+                />
               </div>
-              <div class="error-message" *ngIf="firstName.invalid && firstName.touched">
-                <span *ngIf="firstName.errors?.['required']">First name is required</span>
-                <span *ngIf="firstName.errors?.['minlength']">Must be at least 2 characters</span>
+              <div
+                class="error-message"
+                *ngIf="firstName.invalid && firstName.touched"
+              >
+                <span *ngIf="firstName.errors?.['required']"
+                  >First name is required</span
+                >
+                <span *ngIf="firstName.errors?.['minlength']"
+                  >Must be at least 2 characters</span
+                >
               </div>
             </div>
 
@@ -29,13 +51,29 @@
               <label for="lastName" class="form-label">Last Name</label>
               <div class="input-wrapper">
                 <span class="input-icon">👤</span>
-                <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Last name"
-                  [(ngModel)]="registerData.lastName" #lastName="ngModel" required minlength="2"
-                  [class.error]="lastName.invalid && lastName.touched" />
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  class="form-input"
+                  placeholder="Last name"
+                  [(ngModel)]="registerData.lastName"
+                  #lastName="ngModel"
+                  required
+                  minlength="2"
+                  [class.error]="lastName.invalid && lastName.touched"
+                />
               </div>
-              <div class="error-message" *ngIf="lastName.invalid && lastName.touched">
-                <span *ngIf="lastName.errors?.['required']">Last name is required</span>
-                <span *ngIf="lastName.errors?.['minlength']">Must be at least 2 characters</span>
+              <div
+                class="error-message"
+                *ngIf="lastName.invalid && lastName.touched"
+              >
+                <span *ngIf="lastName.errors?.['required']"
+                  >Last name is required</span
+                >
+                <span *ngIf="lastName.errors?.['minlength']"
+                  >Must be at least 2 characters</span
+                >
               </div>
             </div>
           </div>
@@ -45,13 +83,24 @@
             <label for="email" class="form-label">Email Address</label>
             <div class="input-wrapper">
               <span class="input-icon">📧</span>
-              <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email"
-                [(ngModel)]="registerData.email" #email="ngModel" required email
-                [class.error]="email.invalid && email.touched" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="Enter your email"
+                [(ngModel)]="registerData.email"
+                #email="ngModel"
+                required
+                email
+                [class.error]="email.invalid && email.touched"
+              />
             </div>
             <div class="error-message" *ngIf="email.invalid && email.touched">
               <span *ngIf="email.errors?.['required']">Email is required</span>
-              <span *ngIf="email.errors?.['email']">Please enter a valid email</span>
+              <span *ngIf="email.errors?.['email']"
+                >Please enter a valid email</span
+              >
             </div>
           </div>
 
@@ -60,13 +109,26 @@
             <label for="phone" class="form-label">Phone Number</label>
             <div class="input-wrapper">
               <span class="input-icon">📱</span>
-              <input type="tel" id="phoneNumber" name="phoneNumber" class="form-input"
-                placeholder="Enter your phone number" [(ngModel)]="registerData.phoneNumber" #phone="ngModel" required
-                pattern="[0-9]{10,15}" [class.error]="phone.invalid && phone.touched" />
+              <input
+                type="tel"
+                id="phoneNumber"
+                name="phoneNumber"
+                class="form-input"
+                placeholder="Enter your phone number"
+                [(ngModel)]="registerData.phoneNumber"
+                #phone="ngModel"
+                required
+                pattern="[0-9]{10,15}"
+                [class.error]="phone.invalid && phone.touched"
+              />
             </div>
             <div class="error-message" *ngIf="phone.invalid && phone.touched">
-              <span *ngIf="phone.errors?.['required']">Phone number is required</span>
-              <span *ngIf="phone.errors?.['pattern']">Please enter a valid phone number</span>
+              <span *ngIf="phone.errors?.['required']"
+                >Phone number is required</span
+              >
+              <span *ngIf="phone.errors?.['pattern']"
+                >Please enter a valid phone number</span
+              >
             </div>
           </div>
 
@@ -75,40 +137,85 @@
             <label for="password" class="form-label">Password</label>
             <div class="input-wrapper">
               <span class="input-icon">🔒</span>
-              <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" class="form-input"
-                placeholder="Create a password" [(ngModel)]="registerData.password" #password="ngModel" required
-                minlength="8" (input)="checkPasswordStrength()" [class.error]="password.invalid && password.touched" />
-              <button type="button" class="password-toggle" (click)="togglePassword()">
-                {{ showPassword ? '🙈' : '👁️' }}
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                name="password"
+                class="form-input"
+                placeholder="Create a password"
+                [(ngModel)]="registerData.password"
+                #password="ngModel"
+                required
+                minlength="8"
+                (input)="checkPasswordStrength()"
+                [class.error]="password.invalid && password.touched"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="togglePassword()"
+              >
+                {{ showPassword ? "🙈" : "👁️" }}
               </button>
             </div>
             <div class="password-strength" *ngIf="registerData.password">
               <div class="strength-bar">
-                <div class="strength-fill" [class]="passwordStrength.class"
-                  [style.width.%]="passwordStrength.percentage"></div>
+                <div
+                  class="strength-fill"
+                  [class]="passwordStrength.class"
+                  [style.width.%]="passwordStrength.percentage"
+                ></div>
               </div>
-              <span class="strength-text" [class]="passwordStrength.class">{{ passwordStrength.text }}</span>
+              <span class="strength-text" [class]="passwordStrength.class">{{
+                passwordStrength.text
+              }}</span>
             </div>
-            <div class="error-message" *ngIf="password.invalid && password.touched">
-              <span *ngIf="password.errors?.['required']">Password is required</span>
-              <span *ngIf="password.errors?.['minlength']">Password must be at least 8 characters</span>
+            <div
+              class="error-message"
+              *ngIf="password.invalid && password.touched"
+            >
+              <span *ngIf="password.errors?.['required']"
+                >Password is required</span
+              >
+              <span *ngIf="password.errors?.['minlength']"
+                >Password must be at least 8 characters</span
+              >
             </div>
           </div>
 
           <!-- Confirm Password Field -->
           <div class="form-group">
-            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <label for="confirmPassword" class="form-label"
+              >Confirm Password</label
+            >
             <div class="input-wrapper">
               <span class="input-icon">🔒</span>
-              <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" name="confirmPassword"
-                class="form-input" placeholder="Confirm your password" [(ngModel)]="registerData.confirmPassword"
-                #confirmPassword="ngModel" required
-                [class.error]="(confirmPassword.invalid && confirmPassword.touched) || (confirmPassword.touched && !passwordsMatch())" />
-              <button type="button" class="password-toggle" (click)="toggleConfirmPassword()">
-                {{ showConfirmPassword ? '🙈' : '👁️' }}
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                id="confirmPassword"
+                name="confirmPassword"
+                class="form-input"
+                placeholder="Confirm your password"
+                [(ngModel)]="registerData.confirmPassword"
+                #confirmPassword="ngModel"
+                required
+                [class.error]="
+                  (confirmPassword.invalid && confirmPassword.touched) ||
+                  (confirmPassword.touched && !passwordsMatch())
+                "
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="toggleConfirmPassword()"
+              >
+                {{ showConfirmPassword ? "🙈" : "👁️" }}
               </button>
             </div>
-            <div class="error-message" *ngIf="confirmPassword.touched && !passwordsMatch()">
+            <div
+              class="error-message"
+              *ngIf="confirmPassword.touched && !passwordsMatch()"
+            >
               <span>Passwords do not match</span>
             </div>
           </div>
@@ -118,19 +225,48 @@
             <label class="form-label">Account Type</label>
             <div class="account-type-options">
               <label class="radio-option">
-                <input type="radio" name="accountType" value="Customer" [(ngModel)]="registerData.accountType" />
+                <input
+                  type="radio"
+                  name="accountType"
+                  value="Customer"
+                  [(ngModel)]="registerData.accountType"
+                />
                 <span class="radio-custom"></span>
                 <div class="radio-content">
                   <span class="radio-title">Customer</span>
-                  <span class="radio-description">Browse and purchase from home brands</span>
+                  <span class="radio-description"
+                    >Browse and purchase from home brands</span
+                  >
                 </div>
               </label>
               <label class="radio-option">
-                <input type="radio" name="accountType" value="BrandOwner" [(ngModel)]="registerData.accountType" />
+                <input
+                  type="radio"
+                  name="accountType"
+                  value="BrandOwner"
+                  [(ngModel)]="registerData.accountType"
+                />
                 <span class="radio-custom"></span>
                 <div class="radio-content">
                   <span class="radio-title">Brand Owner</span>
-                  <span class="radio-description">Sell your products and manage your brand</span>
+                  <span class="radio-description"
+                    >Sell your products and manage your brand</span
+                  >
+                </div>
+              </label>
+              <label class="radio-option">
+                <input
+                  type="radio"
+                  name="accountType"
+                  value="DeliveryBoy"
+                  [(ngModel)]="registerData.accountType"
+                />
+                <span class="radio-custom"></span>
+                <div class="radio-content">
+                  <span class="radio-title">Delivery Partner</span>
+                  <span class="radio-description"
+                    >Deliver products to customers</span
+                  >
                 </div>
               </label>
             </div>
@@ -169,8 +305,12 @@
           </div> -->
 
           <!-- Submit Button -->
-          <button type="submit" class="submit-btn" [disabled]="registerForm.invalid || !passwordsMatch() || isLoading"
-            [class.loading]="isLoading">
+          <button
+            type="submit"
+            class="submit-btn"
+            [disabled]="registerForm.invalid || !passwordsMatch() || isLoading"
+            [class.loading]="isLoading"
+          >
             <span *ngIf="!isLoading">Create Account</span>
             <span *ngIf="isLoading" class="loading-spinner">🔄</span>
           </button>
@@ -219,28 +359,35 @@
         <div class="benefits-content">
           <h2 class="benefits-title">Join Our Community</h2>
           <p class="benefits-description">
-            Connect with talented creators and discover unique products made with love and care.
+            Connect with talented creators and discover unique products made
+            with love and care.
           </p>
           <div class="benefits-list">
             <div class="benefit-item">
               <span class="benefit-icon">🏠</span>
               <div class="benefit-content">
                 <span class="benefit-title">Discover Home Brands</span>
-                <span class="benefit-text">Find unique products from local artisans</span>
+                <span class="benefit-text"
+                  >Find unique products from local artisans</span
+                >
               </div>
             </div>
             <div class="benefit-item">
               <span class="benefit-icon">🎪</span>
               <div class="benefit-content">
                 <span class="benefit-title">Monthly Bazaar Events</span>
-                <span class="benefit-text">Exclusive access to special events</span>
+                <span class="benefit-text"
+                  >Exclusive access to special events</span
+                >
               </div>
             </div>
             <div class="benefit-item">
               <span class="benefit-icon">💝</span>
               <div class="benefit-content">
                 <span class="benefit-title">Member Benefits</span>
-                <span class="benefit-text">Special discounts and early access</span>
+                <span class="benefit-text"
+                  >Special discounts and early access</span
+                >
               </div>
             </div>
           </div>
