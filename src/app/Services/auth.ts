@@ -19,7 +19,7 @@ export interface DecodedToken {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class Auth {
   UserToken: BehaviorSubject<string> = new BehaviorSubject('');
@@ -28,8 +28,6 @@ export class Auth {
   _Router = inject(Router);
   currentUser: string | null = null;
   currentRole: string | null = null;
-
-
   constructor() {
     if (isPlatformBrowser(this._PLATFORM_ID)) {
       const token = localStorage.getItem('token');
@@ -69,8 +67,8 @@ export class Auth {
     localStorage.removeItem('token');
     this.UserToken.next('');
     this._Router.navigate(['/login']);
-  }
 
+  }
   // ✅ فك التوكن
   getDecodedToken(): DecodedToken | null {
     const token = localStorage.getItem('token');
@@ -84,6 +82,13 @@ export class Auth {
       return null;
     }
   }
+//modified nahed
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+  getBrandIdFromToken(): number | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
 
   getCurrentUserID(): string | null {
     const decoded = this.getDecodedToken();

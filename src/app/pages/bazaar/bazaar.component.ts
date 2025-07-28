@@ -29,14 +29,25 @@ import { Auth } from '../../Services/auth';
 export class BazaarComponent implements OnInit {
   nextEvent!: INextEvent;
   featuredBrands: IfeaturedBrand[] = [];
+  brandId!: number;
 
+  
+=======
   constructor(private bazaarService: BazaarService, public authService: Auth) { }
 
   ngOnInit(): void {
     const bazaarId = 1;
-    // this.bazaarService.getNextEvent(bazaarId).subscribe((data) => {
-    //   this.nextEvent = data;
-console.log(this.nextEvent);
+    
+    const idFromToken = this.authService.getBrandIdFromToken();
+    if (idFromToken) {
+      this.brandId = idFromToken;
+    } else {
+      console.warn(' No brand ID found in token');
+      this.authService.logOut();
+      return;
+    }
+
+  console.log(this.nextEvent);
     this.bazaarService.getNextEvent(bazaarId).subscribe(
       {
         next: (data) => {
@@ -49,7 +60,14 @@ console.log(this.nextEvent);
       }
     );
 
-    // });
+    this.bazaarService.getNextEvent(bazaarId).subscribe({
+      next: (data) => {
+        this.nextEvent = data;
+      },
+      error: (error) => {
+        console.error('Error fetching next event:', error);
+      },
+    });
 
     this.bazaarService.getBrandsForBazaar(bazaarId).subscribe((data) => {
       this.featuredBrands = data.map((brand) => ({
@@ -63,17 +81,34 @@ console.log(this.nextEvent);
   }
 
   registerForEvent(): void {
-    alert(
-      'Registration for the Summer Artisan Showcase is now open! You will receive a confirmation email shortly.'
-    );
-  }
+    if (!this.nextEvent || !this.nextEvent.id) {
+      alert('Event is currently unavailable.');
+      return;
+    }
 
-  viewBrand(brandId: number) {
-    console.log('Viewing brand:', brandId);
-    alert(`Redirecting to brand page for brand ID: ${brandId}`);
-  }
-
-  followBrand(brandId: number) {
-    alert(`Toggling follow for brand ID: ${brandId}`);
+    this.bazaarService
+      .addBrandToBazaar(this.nextEvent.id, this.brandId)
+      .subscribe({
+        next: () => {
+          alert('✅ Brand successfully registered for the event!');
+          this.bazaarService
+            .getBrandsForBazaar(this.nextEvent.id)
+            .subscribe((data) => {
+              this.featuredBrands = data.map((brand) => ({
+                ...brand,
+                icon: '✨',
+                isNew: false,
+                isFollowed: false,
+                specialOffer: '',
+              }));
+            });
+        },
+        error: (err) => {
+          console.error('Error:', err);
+          alert(
+            err?.error?.message || ' An error occurred during registration.'
+          );
+        },
+      });
   }
 }
