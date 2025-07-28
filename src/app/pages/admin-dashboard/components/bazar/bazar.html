@@ -1,33 +1,119 @@
-<form class="grid-2" [formGroup]="bazarForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label class="form-label">Title:</label>
-    <input type="text" class="form-input" formControlName="title" />
+<!-- Enhanced Bazar Form HTML -->
+<!-- يجب تطبيق هذا التصميم على نموذج البازار الحالي -->
+
+<div class="bazar-form-container">
+  <!-- Form Header -->
+  <div class="bazar-form-header">
+    <h1 class="bazar-form-title">Create New Bazar Event</h1>
+    <p class="bazar-form-subtitle">Fill in the details to create an amazing bazar experience</p>
   </div>
 
-  <div class="form-group">
-    <label class="form-label">Event Date:</label>
-    <input type="date" class="form-input" formControlName="eventDate" />
-  </div>
+  <!-- Form Wrapper -->
+  <div class="bazar-form-wrapper">
+    <div class="bazar-form-body">
+      <!-- Validation Summary (hidden by default) -->
+      <div class="validation-summary" id="validationSummary">
+        <h4>Please fix the following errors:</h4>
+        <ul id="errorList"></ul>
+      </div>
 
-  <div class="form-group">
-    <label class="form-label">Start Time:</label>
-    <input type="time" class="form-input" formControlName="startTime" />
-  </div>
+      <!-- Enhanced Form -->
+      <form class="grid-2" [formGroup]="bazarForm" (ngSubmit)="onSubmit()">
+        <div class="form-group title-input">
+          <label class="form-label">Event Title</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            formControlName="title"
+            placeholder="Enter event title..."
+          />
+          <div class="error-message" *ngIf="bazarForm.get('title')?.errors?.['required'] && bazarForm.get('title')?.touched">
+            Title is required
+          </div>
+        </div>
 
-  <div class="form-group">
-    <label class="form-label">End Time:</label>
-    <input type="time" class="form-input" formControlName="endTime" />
-  </div>
+        <div class="form-group date-input">
+          <label class="form-label">Event Date</label>
+          <input 
+            type="date" 
+            class="form-input" 
+            formControlName="eventDate"
+          />
+          <div class="error-message" *ngIf="bazarForm.get('eventDate')?.errors?.['required'] && bazarForm.get('eventDate')?.touched">
+            Event date is required
+          </div>
+        </div>
 
-  <div class="form-group">
-    <label class="form-label">Location:</label>
-    <input type="text" class="form-input" formControlName="location" />
-  </div>
+        <div class="form-group time-input">
+          <label class="form-label">Start Time</label>
+          <input 
+            type="time" 
+            class="form-input" 
+            formControlName="startTime"
+          />
+          <div class="error-message" *ngIf="bazarForm.get('startTime')?.errors?.['required'] && bazarForm.get('startTime')?.touched">
+            Start time is required
+          </div>
+        </div>
 
-  <div class="form-group">
-    <label class="form-label">Entry:</label>
-    <input type="text" class="form-input" formControlName="entry" />
-  </div>
+        <div class="form-group time-input">
+          <label class="form-label">End Time</label>
+          <input 
+            type="time" 
+            class="form-input" 
+            formControlName="endTime"
+          />
+          <div class="error-message" *ngIf="bazarForm.get('endTime')?.errors?.['required'] && bazarForm.get('endTime')?.touched">
+            End time is required
+          </div>
+        </div>
 
-  <button type="submit" class="btn btn-primary mt-2">Submit</button>
-</form>
+        <div class="form-group location-input">
+          <label class="form-label">Location</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            formControlName="location"
+            placeholder="Enter event location..."
+          />
+          <div class="error-message" *ngIf="bazarForm.get('location')?.errors?.['required'] && bazarForm.get('location')?.touched">
+            Location is required
+          </div>
+        </div>
+
+        <div class="form-group entry-input">
+          <label class="form-label">Entry Fee</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            formControlName="entry"
+            placeholder="e.g., Free, $10, etc..."
+          />
+          <div class="error-message" *ngIf="bazarForm.get('entry')?.errors?.['required'] && bazarForm.get('entry')?.touched">
+            Entry information is required
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="btn btn-primary mt-2"
+          [class.loading]="isSubmitting"
+          [disabled]="bazarForm.invalid || isSubmitting"
+        >
+          <span *ngIf="!isSubmitting">
+            <i class="fas fa-calendar-plus"></i> Create Bazar Event
+          </span>
+          <span *ngIf="isSubmitting">Creating Event...</span>
+        </button>
+      </form>
+
+      <!-- Success Message (hidden by default) -->
+      <div class="form-success" *ngIf="formSubmitted">
+        <h3>🎉 Event Created Successfully!</h3>
+        <p>Your bazar event has been created and is now live.</p>
+      </div>
+    </div>
+  </div>
+</div>
+

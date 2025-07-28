@@ -10,6 +10,6 @@ export class CategoryService {
   _httpClient = inject(HttpClient);
 
   GetCategories(): Observable<any> {
-    return this._httpClient.get(`${environment.apiUrl}/Category/all`);
+    return this._httpClient.get(`${environment.apiUrl}/api/Category/all`);
   }
 }

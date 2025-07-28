@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <div class="event-actions">
+      <div class="event-actions" *ngIf="authService.getRole() === 'Admin' || authService.getRole() === 'BrandOwner'">
         <button class="btn btn-primary" (click)="register.emit()">
           Register Now
         </button>

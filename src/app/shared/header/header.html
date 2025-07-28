@@ -1,46 +1,40 @@
+<!-- Updated header.html with role-based rendering -->
 <header class="header">
   <div class="container">
     <div class="header-content">
-      <!-- Logo Section -->
       <div class="logo">
         <a routerLink="/home" class="logo-link">
           <h1 class="logo-text">Betna</h1>
           <span class="logo-tagline">Home Brands Marketplace</span>
         </a>
       </div>
-
-      <!-- Desktop Navigation -->
+      <!-- this is the Roles Names from Backend it Must be Identical with "Customer", "ADMIN", "DeliveryBoy", "BrandOwner" -->
       <nav class="nav-desktop">
         <ul class="nav-list">
-          <li class="nav-item">
+          <li
+            class="nav-item"
+            *ngIf="showFor(['Customer', 'BrandOwner', 'DeliveryBoy', 'ADMIN'])"
+          >
             <a routerLink="/home" routerLinkActive="active" class="nav-link"
               >Home</a
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="showFor(['Customer', 'BrandOwner'])">
             <a routerLink="/brands" routerLinkActive="active" class="nav-link"
               >Brands</a
             >
           </li>
-          <!-- <li class="nav-item">
-            <a
-              routerLink="/subscriptions"
-              routerLinkActive="active"
-              class="nav-link"
-              >Subscriptions</a
-            >
-          </li> -->
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="showFor(['ADMIN'])">
             <a routerLink="/admin" routerLinkActive="active" class="nav-link"
               >Admin</a
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="showFor(['DeliveryBoy'])">
             <a routerLink="/delivery" routerLinkActive="active" class="nav-link"
               >Delivery</a
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="showFor(['Customer', 'BrandOwner'])">
             <a routerLink="/bazaar" routerLinkActive="active" class="nav-link"
               >Bazaar</a
             >
@@ -48,12 +42,13 @@
         </ul>
       </nav>
 
-      <!-- User Actions -->
       <div class="user-actions">
+        @if(showFor(['Customer', 'BrandOwner'])){
         <a routerLink="/cart" class="cart-link">
           <span class="cart-icon">🛒</span>
-          <span class="cart-count">{{ cartCount }}</span>
+          <span class="cart-count">{{ itemCount }}</span>
         </a>
+        }
 
         <ng-container *ngIf="!isLoggedIn">
           <a routerLink="/login" class="btn btn-outline">Login</a>
@@ -65,7 +60,6 @@
         </ng-container>
       </div>
 
-      <!-- Mobile Menu Toggle -->
       <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
@@ -73,10 +67,12 @@
       </button>
     </div>
 
-    <!-- Mobile Navigation -->
     <nav class="nav-mobile" [class.active]="isMobileMenuOpen">
       <ul class="nav-list-mobile">
-        <li class="nav-item-mobile">
+        <li
+          class="nav-item-mobile"
+          *ngIf="showFor(['Customer', 'BrandOwner', 'DeliveryBoy', 'ADMIN'])"
+        >
           <a
             routerLink="/home"
             routerLinkActive="active"
@@ -85,7 +81,7 @@
             >Home</a
           >
         </li>
-        <li class="nav-item-mobile">
+        <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
           <a
             routerLink="/brands"
             routerLinkActive="active"
@@ -94,16 +90,7 @@
             >Brands</a
           >
         </li>
-        <!-- <li class="nav-item-mobile">
-          <a
-            routerLink="/subscriptions"
-            routerLinkActive="active"
-            class="nav-link-mobile"
-            (click)="closeMobileMenu()"
-            >Subscriptions</a
-          >
-        </li> -->
-        <li class="nav-item-mobile">
+        <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
           <a
             routerLink="/bazaar"
             routerLinkActive="active"
@@ -112,7 +99,25 @@
             >Bazaar</a
           >
         </li>
-        <li class="nav-item-mobile">
+        <li class="nav-item-mobile" *ngIf="showFor(['DeliveryBoy'])">
+          <a
+            routerLink="/delivery"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Delivery</a
+          >
+        </li>
+        <li class="nav-item-mobile" *ngIf="showFor(['ADMIN'])">
+          <a
+            routerLink="/admin"
+            routerLinkActive="active"
+            class="nav-link-mobile"
+            (click)="closeMobileMenu()"
+            >Admin</a
+          >
+        </li>
+        <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
           <a
             routerLink="/cart"
             class="nav-link-mobile"

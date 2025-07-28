@@ -12,9 +12,15 @@ export class ProductService {
   constructor() { }
 
   GetAllProducts(BrandID: number): Observable<IProduct[]> {
-    return this._httpClient.get<IProduct[]>(`${environment.apiUrl}/Product/all/${BrandID}`);
+    return this._httpClient.get<IProduct[]>(`${environment.apiUrl}/api/Product/all/${BrandID}`);
   }
-  CreateProduct(product: IProduct): Observable<IProduct> {
-    return this._httpClient.post<IProduct>(`${environment.apiUrl}/Product/add`, product);
+  CreateProduct(formData: FormData): Observable<IProduct> {
+    return this._httpClient.post<IProduct>(`${environment.apiUrl}/api/Product/add`, formData);
+  }
+  GetProductById(ProductID: number): Observable<IProduct> {
+    return this._httpClient.get<IProduct>(`${environment.apiUrl}/api/Product/${ProductID}`);
+  }
+  UpdateProduct(formData: FormData): Observable<IProduct> {
+    return this._httpClient.put<IProduct>(`${environment.apiUrl}/api/Product/update`, formData);
   }
 }

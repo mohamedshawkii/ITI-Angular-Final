@@ -1,43 +1,56 @@
 <div class="brand-detail-page">
+  <!-- Brand Header مثل بروفايل الفيسبوك -->
   <div class="brand-hero">
+    <!-- صورة الكفر -->
+    <div class="brand-cover">
+      <img
+        [src]="EUrl + brand.image"
+        alt="{{ brand.name }} Cover Image"
+        class="cover-image"
+      />
+    </div>
+
+    <!-- معلومات البراند -->
     <div class="container">
       <div class="hero-content">
         <div class="brand-info">
+          <!-- لوجو البراند -->
           <div class="brand-logo">
-            <span class="logo-icon">"🌟" </span>
+            <img
+              [src]="EUrl + brand.image"
+              alt="{{ brand.name }} Logo"
+              class="logo-image"
+            />
           </div>
+          <!-- تفاصيل البراند -->
           <div class="brand-details">
             <h1 class="brand-name">{{ brand.name }}</h1>
-            <p class="brand-category">{{ brand.category }}</p>
             <div class="brand-stats">
               <div class="stat-item">
-                <span class="stat-number">{{ brand.description }}</span>
+                <span class="stat-description">{{ brand.description }}</span>
               </div>
             </div>
           </div>
         </div>
-        <!-- <div class="brand-actions">
-          <button class="btn btn-primary" (click)="followBrand()">
-            {{ brand.isFollowed ? "Following" : "Follow Brand" }}
-          </button>
+        <!-- أزرار التفاعل -->
+        <div class="brand-actions">
           <button class="btn btn-outline" (click)="shareBrand()">Share</button>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Products Section -->
   <div class="products-section">
     <div class="container">
+      @if(DisplayBasedOnRole("BrandOwner")) {
       <div class="section-header">
         <h2 class="section-title">Our Products</h2>
-        <button
-          class="btn btn-primary btn-add-product"
-          (click)="openProductForm()"
-        >
+        <button class="btn btn-primary" (click)="openProductForm()">
           <i class="fa fa-plus"></i> Add Product
         </button>
       </div>
-
+      }
       <div class="products-grid">
         <div class="product-card" *ngFor="let product of products">
           <div class="product-info">
@@ -45,8 +58,16 @@
             <p class="product-description">
               {{ product.description | slice : 0 : 60 }}...
             </p>
+            <div class="product-image">
+              <img
+                [src]="EUrl + product.image"
+                alt="{{ product.name }}"
+                class="img-fluid"
+              />
+            </div>
             <div class="product-price">${{ product.price }}</div>
           </div>
+          @if(!DisplayBasedOnRole("BrandOwner")) {
           <div class="product-actions">
             <button class="btn btn-primary" (click)="addToCart(product)">
               Add to Cart
@@ -54,18 +75,110 @@
           </div>
           <div class="product-actions">
             <button
-              class="btn btn-primary"
+              class="btn btn-secondary"
               (click)="removeFromCart(product.id)"
             >
               Remove
             </button>
           </div>
+          <div class="product-actions">
+            <button
+              class="btn btn-primary"
+              (click)="selectProduct(product); openReviewForm()"
+            >
+              إضافة تقييم
+            </button>
+          </div>
+          }
         </div>
+      </div>
+
+      <div class="section-header mt-4">
+        <h2 class="section-title">Our Product Reviews</h2>
+      </div>
+
+      <div class="reviews-section">
+        @for (review of ProductReviews; track review.id) {
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-rating">
+              ⭐ {{ review.rating }} / 5
+              <span class="stars">
+                @for (i of stars; track i) { @if (i <= review.rating) {
+                <span class="star filled">★</span>
+                } @else {
+                <span class="star empty">☆</span>
+                } }
+              </span>
+            </div>
+
+            <div class="review-date">
+              {{ review.createdAt | date : "mediumDate" }}
+            </div>
+          </div>
+
+          <div class="review-body">
+            <p class="review-comment">“{{ review.comment }}”</p>
+          </div>
+        </div>
+        }
       </div>
     </div>
   </div>
 </div>
 
+@if(!DisplayBasedOnRole("BrandOwner")) {
+<div class="modal-overlay" *ngIf="showReviewForm">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>أضف تقييمك</h2>
+      <button class="close-btn" (click)="closeReviewForm()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <form #reviewForm="ngForm" (ngSubmit)="AddReviewProduct(reviewForm)">
+        <div class="form-group">
+          <label for="comment">التعليق</label>
+          <textarea
+            id="comment"
+            name="comment"
+            class="form-control"
+            [(ngModel)]="newReview.comment"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="rating">التقييم</label>
+          <select
+            id="rating"
+            name="rating"
+            class="form-control"
+            [(ngModel)]="newReview.rating"
+            required
+          >
+            <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">
+              {{ r }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">Add Review</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeReviewForm()"
+          >
+            إلغاء
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+} @if(DisplayBasedOnRole("BrandOwner")) {
 <div class="modal-overlay" *ngIf="showProductForm">
   <div class="modal-content">
     <div class="modal-header">
@@ -73,7 +186,7 @@
       <button class="close-btn" (click)="closeProductForm()">&times;</button>
     </div>
     <div class="modal-body">
-      <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+      <form [formGroup]="productForm" (ngSubmit)="SaveProduct()">
         <div class="form-group">
           <label for="productName">Product Name</label>
           <input
@@ -110,15 +223,15 @@
             id="quantity"
             class="form-control"
             formControlName="quantity"
-            placeholder="e.g., 25.00"
+            placeholder="e.g., 10"
           />
         </div>
         <div class="form-group">
           <label for="productImage">Image</label>
           <input
-            type="text"
+            type="file"
+            (change)="onImageSelected($event)"
             id="Image"
-            formControlName="image"
             class="form-control"
             placeholder="https://example.com/image.jpg"
           />
@@ -137,3 +250,4 @@
     </div>
   </div>
 </div>
+}

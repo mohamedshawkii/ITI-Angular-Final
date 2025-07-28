@@ -10,9 +10,9 @@ export class BazarService {
   constructor() { }
 
   getBazar(): Observable<any> {
-    return this._httpClient.get(`${environment.apiUrl}/Bazar/GetProducts`);
+    return this._httpClient.get(`${environment.apiUrl}/api/Bazar/GetProducts`);
   }
   postBazar(Bazar: any, p0?: { responseType: "json"; }): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}/Bazaar/CreateBazaar`, Bazar);
+    return this._httpClient.post(`${environment.apiUrl}/api/Bazaar/CreateBazaar`, Bazar);
   }
 }

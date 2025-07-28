@@ -1,3 +1,4 @@
+import { Token } from './../../../../node_modules/@stripe/stripe-js/dist/api/tokens.d';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';

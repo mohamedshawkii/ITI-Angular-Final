@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { BrandsComponent } from './pages/brands/brands.component';
 import { BrandDetailComponent } from './pages/brand-detail/brand-detail';
@@ -17,36 +16,114 @@ import { Delivery } from './pages/delivery/delivery';
 import { DeliveryHistory } from './pages/delivery/components/delivery-history/delivery-history';
 import { MyOrders } from './pages/delivery/components/my-orders/my-orders';
 import { AvailableOrders } from './pages/delivery/components/available-orders/available-orders';
-import { AddBrand } from './pages/brands/components/add-brand/add-brand'
+import { AddBrand } from './pages/brands/components/add-brand/add-brand';
+
+// Update the path below if the actual file name or location is different, e.g. './guards/role.guard.ts' or './guards/role.guard.service'
+import { RoleGuard } from '../app/guards/role-guard';
+import { UnauthorizedComponent } from './pages/unauthorized/unauthorized';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'brands', component: BrandsComponent },
-  { path: 'brands/add', component: AddBrand },
-  { path: 'brand/:id', component: BrandDetailComponent },
-  { path: 'product/:id', component: ProductDetailComponent },
-  // { path: 'subscriptions', component: SubscriptionsComponent },
-  { path: 'bazaar', component: BazaarComponent },
-  { path: 'cart', component: CartComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'payment', component: StripePayment },
+  { path: 'unauthorized', component: UnauthorizedComponent },
   {
-    path: 'admin', component: AdminDashboardComponent,
-    children: [
-      { path: 'users', component: Users },
-      { path: 'createBazar', component: Bazar },
-    ]
+    path: 'brands',
+    component: BrandsComponent,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
-    path: 'delivery', component: Delivery,
-    children: [
-      { path: 'history', component: DeliveryHistory },
-      { path: 'myorders', component: MyOrders },
-      { path: 'available', component: AvailableOrders },
-    ]
+    path: 'brands/add',
+    component: AddBrand,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['BrandOwner'] }
   },
-  { path: '**', redirectTo: '/home' } //or 404 page
-];
+  {
+    path: 'brand/:id',
+    component: BrandDetailComponent,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
+  },
+  {
+    path: 'product/:id',
+    component: ProductDetailComponent,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
+  },
+  {
+    path: 'cart',
+    component: CartComponent,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
+  },
+  {
+    path: 'bazaar',
+    component: BazaarComponent,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
+  },
+  {
+    path: 'payment',
+    component: StripePayment,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
+  },
+  {
+    path: 'subscriptions',
+    component: SubscriptionsComponent,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['Customer', 'BrandOwner'] }
+  },
 
+  {
+    path: 'admin',
+    component: AdminDashboardComponent,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['ADMIN'] },
+    children: [
+      {
+        path: 'users',
+        component: Users,
+        // canActivate: [RoleGuard],
+        // data: { roles: ['ADMIN'] }
+      },
+      {
+        path: 'createBazar',
+        component: Bazar,
+        // canActivate: [RoleGuard],
+        // data: { roles: ['ADMIN'] }
+      }
+    ]
+  },
+
+  {
+    path: 'delivery',
+    component: Delivery,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['DeliveryBoy'] },
+    children: [
+      {
+        path: 'history',
+        component: DeliveryHistory,
+        // canActivate: [RoleGuard],
+        // data: { roles: ['DeliveryBoy'] }
+      },
+      {
+        path: 'myorders',
+        component: MyOrders,
+        // canActivate: [RoleGuard],
+        // data: { roles: ['DeliveryBoy'] }
+      },
+      {
+        path: 'available',
+        component: AvailableOrders,
+        // canActivate: [RoleGuard],
+        // data: { roles: ['DeliveryBoy'] }
+      }
+    ]
+  },
+
+  { path: '**', redirectTo: '/home' }
+];

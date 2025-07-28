@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { iBrand } from '../../interfaces/ibrand';
 import { BrandService } from '../../../../src/app/Services/brand.service';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { BrandsFilterComponent } from './components/brands-filter/brands-filter.
 import { BrandsGridComponent } from './components/brands-grid/brands-grid.component';
 import { LoadMoreComponent } from './components/load-more/load-more.component';
 import { BrandsEmptyStateComponent } from './components/brands-empty-state/brands-empty-state.component';
+import { Auth } from '../../Services/auth';
 
 @Component({
   selector: 'app-brands',
@@ -29,8 +30,9 @@ export class BrandsComponent implements OnInit {
   hasMoreBrands = false;
   currentFilter = '';
   currentSort = 'name';
-
-  constructor(private brandService: BrandService, private router: Router,) { }
+  userRole: string | null | undefined;
+  _AuthService = inject(Auth);
+  constructor(private brandService: BrandService, private router: Router, public authService: Auth) { }
 
   goToAddBrandPage(): void {
     // سنقوم بتوجيه المستخدم إلى مسار '/brands/add' الذي سننشئه في الخطوة التالية
@@ -40,13 +42,19 @@ export class BrandsComponent implements OnInit {
     this.brandService.getAllBrands().subscribe((brands) => {
       this.allBrands = brands.map(b => ({
         ...b,
-        icon: this.getIconForCategory(b.category),
+        icon: this.getIconForCategory(b.categoryID),
         location: 'Online Store', // مؤقتًا
         isFollowed: false         // مؤقتًا
       }));
       this.filteredBrands = [...this.allBrands];
       this.applySorting();
     });
+    const role = this.authService.getRole();
+    this.userRole = role;
+  }
+  DisplayBasedOnRole(Role: string): boolean {
+    const userRole = this._AuthService.getRole();
+    return userRole == Role;
   }
 
   filterByCategory(category: string): void {
@@ -62,7 +70,7 @@ export class BrandsComponent implements OnInit {
   applyFilters(): void {
     if (this.currentFilter) {
       this.filteredBrands = this.allBrands.filter(brand =>
-        brand.category === this.currentFilter
+        brand.categoryID === this.currentFilter
       );
     } else {
       this.filteredBrands = [...this.allBrands];

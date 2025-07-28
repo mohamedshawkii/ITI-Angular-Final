@@ -13,13 +13,13 @@ export class BrandService {
   constructor(private http: HttpClient) { }
 
   getAllBrands(): Observable<iBrand[]> {
-    return this.http.get<iBrand[]>(`${environment.apiUrl}/Brand/all`);
+    return this.http.get<iBrand[]>(`${environment.apiUrl}/api/Brand/all`);
   }
 
-  CreateBrand(brand: iBrand): Observable<iBrand> {
-    return this.http.post<iBrand>(`${environment.apiUrl}/Brand/add`, brand);
+  CreateBrand(formData: FormData): Observable<any> {
+    return this.http.post<iBrand>(`${environment.apiUrl}/api/Brand/add`, formData);
   }
   GetBrandById(id: number): Observable<iBrand> {
-    return this.http.get<iBrand>(`${environment.apiUrl}/Brand/${id}`);
+    return this.http.get<iBrand>(`${environment.apiUrl}/api/Brand/${id}`);
   }
 }

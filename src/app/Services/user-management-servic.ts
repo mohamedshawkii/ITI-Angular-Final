@@ -12,10 +12,10 @@ export class UserManagementServic {
   constructor() { }
 
   GetAll(): Observable<any> {
-    return this._httpClient.get(`${environment.apiUrl}/Admin/AllUsers`)
+    return this._httpClient.get(`${environment.apiUrl}/api/Admin/AllUsers`)
   }
 
   Promotion(userId: string): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}/Admin/promotion/${userId}`, {})
+    return this._httpClient.post(`${environment.apiUrl}/api/Admin/promotion/${userId}`, {})
   }
 }

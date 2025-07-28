@@ -12,7 +12,7 @@ export class OrderService {
   _httpClient = inject(HttpClient);
 
   createOrder(order: IOrder): Observable<any> {
-    return this._httpClient.post(`${environment.apiUrl}/Order/CreateOrder`, { order });
+    return this._httpClient.post(`${environment.apiUrl}/api/Order/CreateOrder`, { order });
   }
 
 }

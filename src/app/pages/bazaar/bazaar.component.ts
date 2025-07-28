@@ -31,16 +31,13 @@ export class BazaarComponent implements OnInit {
   featuredBrands: IfeaturedBrand[] = [];
   brandId!: number;
 
-  constructor(
-    private bazaarService: BazaarService,
-    private authService: Auth
-  ) {}
-
-  //modified nahed
+  
+=======
+  constructor(private bazaarService: BazaarService, public authService: Auth) { }
 
   ngOnInit(): void {
     const bazaarId = 1;
-
+    
     const idFromToken = this.authService.getBrandIdFromToken();
     if (idFromToken) {
       this.brandId = idFromToken;
@@ -49,6 +46,19 @@ export class BazaarComponent implements OnInit {
       this.authService.logOut();
       return;
     }
+
+  console.log(this.nextEvent);
+    this.bazaarService.getNextEvent(bazaarId).subscribe(
+      {
+        next: (data) => {
+          console.log('Next event data:', data);
+          this.nextEvent = data;
+        },
+        error: (error) => {
+          console.error('Error fetching next event:', error);
+        },
+      }
+    );
 
     this.bazaarService.getNextEvent(bazaarId).subscribe({
       next: (data) => {

@@ -10,7 +10,7 @@ export class StripeService {
 
   createPaymentIntent(total: number) {
     return this.http.post<{ clientSecret: string }>(
-      `${environment.apiUrl}/Payment/create-payment-intent`,
+      `${environment.apiUrl}/api/Payment/create-payment-intent`,
       { total }
     );
   }

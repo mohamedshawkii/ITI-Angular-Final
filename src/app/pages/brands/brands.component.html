@@ -9,9 +9,11 @@
           unique products made with love and care.
         </p>
       </div>
-      <button class="add-brand-button" (click)="goToAddBrandPage()">
+      @if(DisplayBasedOnRole("BrandOwner")){
+      <button class="btn btn-primary" (click)="goToAddBrandPage()">
         Add New Brand
       </button>
+      }
     </div>
 
     <!-- Filters Section -->

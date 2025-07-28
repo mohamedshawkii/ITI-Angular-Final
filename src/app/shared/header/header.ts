@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../Services/auth';
-import { IProduct } from '../../interfaces/IProduct';
 import { CartService } from '../../Services/cart-service';
+import { IProduct } from '../../interfaces/IProduct';
 
 @Component({
   selector: 'app-header',
@@ -13,23 +13,39 @@ import { CartService } from '../../Services/cart-service';
   styleUrl: './header.scss'
 })
 export class HeaderComponent implements OnInit {
+  userRole: string | string[] | null = null;
+  isLoggedIn: boolean = false;
+  itemCount: number = 0;
   isMobileMenuOpen = false;
-  cartItems: IProduct[] = [];
-  cartCount = 0;
 
-  authService = inject(Auth);
-  router = inject(Router);
-  _CartService = inject(CartService);
-
+  constructor(public authService: Auth, private cartService: CartService) { }
   ngOnInit() {
-    this._CartService.cart$.subscribe(items => {
-      this.cartCount = items.length;
+    // اشترك مع UserToken
+    this.authService.UserToken.subscribe((token) => {
+      this.isLoggedIn = !!token;
+
+      if (this.isLoggedIn) {
+        const role = this.authService.getRole();
+        this.userRole = role;
+      } else {
+        this.userRole = null;
+      }
+    });
+
+    this.cartService.cart$.subscribe((cartItems: IProduct[]) => {
+      this.itemCount = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
     });
   }
 
+  showFor(roles: string[]): boolean {
+    const role = this.userRole;
+    if (!role) return false;
 
-  get isLoggedIn(): boolean {
-    return !!this.authService.UserToken.value;
+    if (Array.isArray(role)) {
+      return roles.some((r) => role.includes(r));
+    }
+
+    return roles.includes(role);
   }
 
   toggleMobileMenu() {
@@ -42,6 +58,7 @@ export class HeaderComponent implements OnInit {
 
   logOut() {
     this.authService.logOut();
+    this.isLoggedIn = false;
+    this.userRole = null;
   }
 }
-
