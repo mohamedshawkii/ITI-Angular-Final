@@ -1,46 +1,422 @@
-/* bazar-form.component.scss */
+/* Bazar Form Specific Styles */
+/* يجب إضافة هذا CSS إلى ملف admin-styles.css أو استيراده بشكل منفصل */
 
+/* Bazar Form Container */
+.bazar-form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bazar-form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: var(--border-radius-lg);
+  color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.bazar-form-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bazar-form-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* Form Wrapper */
+.bazar-form-wrapper {
+  background: #ffffff;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  overflow: visible;
+  flex: 1;
+  margin-bottom: 2rem;
+}
+
+.bazar-form-body {
+  padding: 2rem;
+  min-height: auto;
+}
+
+/* Grid Layout for Form */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Submit button should span full width */
+.grid-2 .btn.btn-primary.mt-2 {
+  grid-column: 1 / -1;
+  margin-top: 1.5rem;
+}
+
+/* Enhanced Form Group */
 .form-group {
-    margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Enhanced Form Label */
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  position: relative;
+}
+
+.form-label::after {
+  content: '*';
+  color: #ef4444;
+  margin-left: 0.25rem;
+  font-weight: 700;
+}
+
+.form-label.optional::after {
+  display: none;
+}
+
+/* Enhanced Form Input */
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  position: relative;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input:hover {
+  border-color: #d1d5db;
+}
+
+/* Input Icons */
+.form-group.has-icon {
+  position: relative;
+}
+
+.form-group.has-icon .form-input {
+  padding-left: 3rem;
+}
+
+.form-group.has-icon::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.form-group.title-input::before {
+  content: '📝';
+  font-size: 1.25rem;
+}
+
+.form-group.date-input::before {
+  content: '📅';
+  font-size: 1.25rem;
+}
+
+.form-group.time-input::before {
+  content: '🕐';
+  font-size: 1.25rem;
+}
+
+.form-group.location-input::before {
+  content: '📍';
+  font-size: 1.25rem;
+}
+
+.form-group.entry-input::before {
+  content: '🎫';
+  font-size: 1.25rem;
+}
+
+/* Input States */
+.form-input.error {
+  border-color: var(--danger-color);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.form-input.success {
+  border-color: var(--success-color);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* Error Message */
+.error-message {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.error-message::before {
+  content: '⚠️';
+  font-size: 1rem;
+}
+
+/* Success Message */
+.success-message {
+  color: var(--success-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.success-message::before {
+  content: '✅';
+  font-size: 1rem;
+}
+
+/* Enhanced Submit Button */
+.btn.btn-primary.mt-2 {
+  width: 100%;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn.btn-primary.mt-2:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.btn.btn-primary.mt-2:active {
+  transform: translateY(0);
+}
+
+/* Loading State for Button */
+.btn.btn-primary.mt-2.loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.btn.btn-primary.mt-2.loading::after {
+  content: '';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+/* Form Progress Indicator */
+.form-progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+}
+
+.progress-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.progress-step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+.progress-step.active::before {
+  background: var(--primary-color);
+}
+
+.progress-step.completed::before {
+  background: var(--success-color);
+}
+
+/* Form Validation Summary */
+.validation-summary {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: none;
+}
+
+.validation-summary.show {
+  display: block;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.validation-summary h4 {
+  color: var(--danger-color);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.validation-summary ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.validation-summary li {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.validation-summary li::before {
+  content: '•';
+  font-weight: bold;
+}
+
+/* Success State */
+.form-success {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1px solid #bbf7d0;
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.form-success h3 {
+  color: var(--success-color);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-success p {
+  color: #166534;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bazar-form-container {
+    padding: 0.5rem;
+    min-height: auto;
   }
   
-  .form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+  .bazar-form-header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .bazar-form-title {
+    font-size: 1.5rem;
+  }
+  
+  .bazar-form-body {
+    padding: 1.5rem;
+  }
+  
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
   .form-input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 0.875rem;
   }
   
-  .btn {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px var(--shadow-light);
+  .btn.btn-primary.mt-2 {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bazar-form-container {
+    padding: 0.25rem;
   }
   
-  .btn-primary {
-    background-color: var(--primary-terracotta);
-    color: var(--white);
+  .bazar-form-header {
+    padding: 0.75rem;
   }
   
-  .btn-primary:hover {
-    background-color: #d85a42;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--shadow-medium);
+  .bazar-form-title {
+    font-size: 1.25rem;
   }
   
-  .mt-2 {
-    margin-top: 2rem;
+  .bazar-form-subtitle {
+    font-size: 0.875rem;
   }
+  
+  .bazar-form-body {
+    padding: 1rem;
+  }
+}
+
