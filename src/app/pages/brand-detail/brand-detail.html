@@ -17,7 +17,7 @@
           <!-- لوجو البراند -->
           <div class="brand-logo">
             <img
-              src="https://i.pravatar.cc/150?u={{ brand.id }}"
+              [src]="EUrl + brand.image"
               alt="{{ brand.name }} Logo"
               class="logo-image"
             />
@@ -92,6 +92,37 @@
           }
         </div>
       </div>
+
+      <div class="section-header mt-4">
+        <h2 class="section-title">Our Product Reviews</h2>
+      </div>
+
+      <div class="reviews-section">
+        @for (review of ProductReviews; track review.id) {
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-rating">
+              ⭐ {{ review.rating }} / 5
+              <span class="stars">
+                @for (i of stars; track i) { @if (i <= review.rating) {
+                <span class="star filled">★</span>
+                } @else {
+                <span class="star empty">☆</span>
+                } }
+              </span>
+            </div>
+
+            <div class="review-date">
+              {{ review.createdAt | date : "mediumDate" }}
+            </div>
+          </div>
+
+          <div class="review-body">
+            <p class="review-comment">“{{ review.comment }}”</p>
+          </div>
+        </div>
+        }
+      </div>
     </div>
   </div>
 </div>
@@ -112,7 +143,7 @@
             id="comment"
             name="comment"
             class="form-control"
-            [(ngModel)]="newReview.Comment"
+            [(ngModel)]="newReview.comment"
             rows="3"
             required
           ></textarea>
@@ -124,7 +155,7 @@
             id="rating"
             name="rating"
             class="form-control"
-            [(ngModel)]="newReview.Rating"
+            [(ngModel)]="newReview.rating"
             required
           >
             <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">

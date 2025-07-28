@@ -20,7 +20,6 @@ import { Auth } from '../../Services/auth';
   styleUrl: './brand-detail.scss'
 })
 export class BrandDetailComponent implements OnInit {
-
   brand!: any;
   products: IProduct[] = [];
   productForm!: FormGroup;
@@ -30,16 +29,18 @@ export class BrandDetailComponent implements OnInit {
   EUrl = environment.apiUrl;
   selectedProduct: IProduct | null = null;
   newReview: IReview = {
-    Id: 0,
-    UserID: '',
-    Comment: '',
-    Rating: 1,
-    CreatedAt: new Date(),
-    ProductID: 0
+    id: 0,
+    userID: '',
+    comment: '',
+    rating: 1,
+    createdAt: new Date(),
+    productID: 0
   };
   showReviewForm = false;
   hasMoreProducts = false;
   showProductForm = false;
+  ProductReviews: IReview[] = [];
+  stars = [1, 2, 3, 4, 5];
 
   _AuthService = inject(Auth);
   _BrandService = inject(BrandService);
@@ -49,19 +50,6 @@ export class BrandDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder) { }
 
-  closeReviewForm() {
-    this.showReviewForm = false;
-
-  }
-
-  DisplayBasedOnRole(Role: string): boolean {
-    const userRole = this._AuthService.getRole();
-    return userRole == Role;
-  }
-
-  openReviewForm() {
-    this.showReviewForm = true;
-  }
   ngOnInit(): void {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -84,7 +72,34 @@ export class BrandDetailComponent implements OnInit {
     this.GetBrandById(this.BrandId);
     this.GetAllProducts(this.BrandId);
     this.productForm.patchValue({ brandID: this.BrandId });
+    this.GetProductReviews(this.BrandId);
   }
+
+  GetProductReviews(brandId: number) {
+    this._ReviewService.BrandReviews(brandId).subscribe({
+      next: (res) => {
+        this.ProductReviews = res;
+        console.log('Product Reviews:', this.ProductReviews);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  closeReviewForm() {
+    this.showReviewForm = false;
+
+  }
+
+  DisplayBasedOnRole(Role: string): boolean {
+    const userRole = this._AuthService.getRole();
+    return userRole == Role;
+  }
+  openReviewForm() {
+    this.showReviewForm = true;
+  }
+
   onImageSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -129,9 +144,9 @@ export class BrandDetailComponent implements OnInit {
   AddReviewProduct(form: NgForm): void {
     if (!this.selectedProduct) return;
 
-    this.newReview.CreatedAt = new Date();
-    this.newReview.ProductID = this.selectedProduct.id;
-    this.newReview.UserID = this._AuthService.getCurrentUserID()!;
+    this.newReview.createdAt = new Date();
+    this.newReview.productID = this.selectedProduct.id;
+    this.newReview.userID = this._AuthService.getCurrentUserID()!;
 
     this._ReviewService.AddReview(this.newReview).subscribe({
       next: (res) => {
@@ -145,7 +160,6 @@ export class BrandDetailComponent implements OnInit {
       }
     });
   }
-
 
   closeReviewModal(): void {
     const modalEl = document.getElementById('reviewModal');
