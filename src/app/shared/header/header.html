@@ -43,14 +43,12 @@
       </nav>
 
       <div class="user-actions">
-        <a
-          *ngIf="showFor(['Customer', 'BrandOwner'])"
-          routerLink="/cart"
-          class="cart-link"
-        >
+        @if(showFor(['Customer', 'BrandOwner'])){
+        <a routerLink="/cart" class="cart-link">
           <span class="cart-icon">🛒</span>
-          <span class="cart-count">{{ cartCount }}</span>
+          <span class="cart-count">{{ itemCount }}</span>
         </a>
+        }
 
         <ng-container *ngIf="!isLoggedIn">
           <a routerLink="/login" class="btn btn-outline">Login</a>

@@ -14,7 +14,7 @@ export interface RegisterData {
   phoneNumber: string;
   password: string;
   confirmPassword: string;
-  accountType: 'customer' | 'brand';
+  accountType: 'Customer' | 'BrandOwner' | 'DeliveryBoy';
 }
 
 // في نفس الملف أو في models.ts
@@ -46,7 +46,7 @@ export class RegisterComponent {
     phoneNumber: '',
     password: '',
     confirmPassword: '',
-    accountType: 'customer'
+    accountType: 'Customer'
   };
 
   showPassword = false;
@@ -123,8 +123,6 @@ export class RegisterComponent {
       }
     });
   }
-
-
   registerWithGoogle() {
     alert('Google registration would be implemented here.');
   }

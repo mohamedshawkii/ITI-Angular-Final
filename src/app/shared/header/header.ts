@@ -3,6 +3,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../Services/auth';
 import { CartService } from '../../Services/cart-service';
+import { IProduct } from '../../interfaces/IProduct';
 
 @Component({
   selector: 'app-header',
@@ -14,16 +15,15 @@ import { CartService } from '../../Services/cart-service';
 export class HeaderComponent implements OnInit {
   userRole: string | string[] | null = null;
   isLoggedIn: boolean = false;
-  cartCount: number = 0;
+  itemCount: number = 0;
   isMobileMenuOpen = false;
 
-  constructor(public authService: Auth, private cartService: CartService) {}
-
+  constructor(public authService: Auth, private cartService: CartService) { }
   ngOnInit() {
     // اشترك مع UserToken
     this.authService.UserToken.subscribe((token) => {
       this.isLoggedIn = !!token;
-      
+
       if (this.isLoggedIn) {
         const role = this.authService.getRole();
         this.userRole = role;
@@ -32,9 +32,9 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    // عدد المنتجات في الكارت (اختياري حسب ما عندك في CartService)
-    const products = this.cartService.getCartItems();
-    this.cartCount = products.length;
+    this.cartService.cart$.subscribe((cartItems: IProduct[]) => {
+      this.itemCount = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
+    });
   }
 
   showFor(roles: string[]): boolean {
