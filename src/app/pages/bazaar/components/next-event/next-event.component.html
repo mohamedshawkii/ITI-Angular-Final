@@ -4,7 +4,10 @@
       <div class="event-header">
         <div class="event-badge">Next Event</div>
         <h2 class="event-title">{{ nextEvent.title }}</h2>
-        <p class="event-date">{{ nextEvent.date }}</p>
+        <p class="event-date">
+          {{ nextEvent.eventDate | date : "EEEE, MMM d, y" }}
+          <!-- {{ nextEvent.startTime }} to {{ nextEvent.endTime }} -->
+        </p>
       </div>
 
       <div class="event-details">
@@ -12,7 +15,9 @@
           <span class="detail-icon">📅</span>
           <div class="detail-content">
             <span class="detail-label">Date & Time</span>
-            <span class="detail-value">{{ nextEvent.dateTime }}</span>
+            <span class="detail-value">{{
+              nextEvent.eventDate | date : "EEEE, MMM d, y"
+            }}</span>
           </div>
         </div>
         <div class="detail-item">
@@ -61,7 +66,13 @@
         </div>
       </div>
 
-      <div class="event-actions" *ngIf="authService.getRole() === 'Admin' || authService.getRole() === 'BrandOwner'">
+      <div
+        class="event-actions"
+        *ngIf="
+          authService.getRole() === 'Admin' ||
+          authService.getRole() === 'BrandOwner'
+        "
+      >
         <button class="btn btn-primary" (click)="register.emit()">
           Register Now
         </button>

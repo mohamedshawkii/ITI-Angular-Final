@@ -1,0 +1,88 @@
+<div class="mt-4 p-2">
+  <table class="table table-striped table-bordered mb-4 grid-4">
+    <thead class="table-dark">
+      <tr>
+        <th class="text-left">Order Date</th>
+        <th class="text-left">Status</th>
+        <th class="text-left">Order Details</th>
+        <th class="text-left">Paymnet Method</th>
+        <th class="text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (order of orders; track order.id) {
+      <tr>
+        <td>{{ order.orderDate }}</td>
+
+        @switch( order.status){ @case (1) {
+        <td>{{ "OutForDelivery" }}</td>
+        } @case (2) {
+        <td>{{ "delivered" }}</td>
+        } @case (3) {
+        <td>{{ "Cancelled" }}</td>
+        } @case (4) {
+        <td>{{ "DeliveryBrandHandingRequest" }}</td>
+        } @case (5) {
+        <td>{{ "DeliveryUserHandingRequest" }}</td>
+        } @case (6) {
+        <td>{{ "UserDeliveryHandingRequest" }}</td>
+        } @case (7) {
+        <td>{{ "Returning" }}</td>
+        } @default {
+        <td>{{ "Checking" }}</td>
+        } }
+
+        <td>
+          <ul>
+            @for (_order of order.orderDetails; track $index) {
+            <li>Price: {{ _order.price }}, Qty: {{ _order.quantity }}</li>
+            }
+          </ul>
+        </td>
+        <td>order.paymentMethod</td>
+
+        <td>
+          <div class="d-flex flex-column gap-3">
+            <!--user can Receive Order done-->
+            @if(order.status === 5) {
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="ReceiveOrder(order)"
+            >
+              Receive Order
+            </button>
+            }@else if(order.status == 2){
+            <!-- user asking delivery about handing the order-->
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="UserDeliveryHandingRequest(order)"
+            >
+              Giveback Order
+            </button>
+            }@else {
+            <p>{{ "Checking" }}</p>
+            }
+          </div>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  <nav>
+    <ul class="pagination justify-content-center mb-4">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button class="page-link" (click)="prevPage()">Previous</button>
+      </li>
+
+      @for (page of totalPagesArray; track page) {
+      <li class="page-item" [class.active]="currentPage === page">
+        <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+      </li>
+      }
+
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <button class="page-link" (click)="nextPage()">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>

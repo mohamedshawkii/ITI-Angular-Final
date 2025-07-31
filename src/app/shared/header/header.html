@@ -39,9 +39,24 @@
               >Bazaar</a
             >
           </li>
+          <li class="nav-item" *ngIf="showFor(['Customer'])">
+            <a
+              routerLink="/customerDashboard"
+              routerLinkActive="active"
+              class="nav-link"
+              >Orders</a
+            >
+          </li>
+          <li class="nav-item" *ngIf="showFor(['BrandOwner'])">
+            <a
+              routerLink="/brandDashboard"
+              routerLinkActive="active"
+              class="nav-link"
+              >Orders</a
+            >
+          </li>
         </ul>
       </nav>
-
       <div class="user-actions">
         @if(showFor(['Customer', 'BrandOwner'])){
         <a routerLink="/cart" class="cart-link">
@@ -49,7 +64,6 @@
           <span class="cart-count">{{ itemCount }}</span>
         </a>
         }
-
         <ng-container *ngIf="!isLoggedIn">
           <a routerLink="/login" class="btn btn-outline">Login</a>
           <a routerLink="/register" class="btn btn-primary">Sign Up</a>
@@ -123,6 +137,22 @@
             class="nav-link-mobile"
             (click)="closeMobileMenu()"
             >Cart</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="showFor(['Customer'])">
+          <a
+            routerLink="/customerDashboard"
+            routerLinkActive="active"
+            class="nav-link"
+            >Orders</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="showFor(['BrandOwner'])">
+          <a
+            routerLink="/brandDashboard"
+            routerLinkActive="active"
+            class="nav-link"
+            >Orders</a
           >
         </li>
         <li class="nav-item-mobile" *ngIf="!isLoggedIn">

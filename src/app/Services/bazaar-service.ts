@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { INextEvent } from '../interfaces/inext-event';
 import { Observable } from 'rxjs';
 import { IBazaar } from '../interfaces/ibazaar';
 import { IfeaturedBrand } from '../interfaces/ifeatured-brand';
@@ -11,7 +10,7 @@ import { Auth } from './auth';
   providedIn: 'root',
 })
 export class BazaarService {
-  constructor(private http: HttpClient, private auth: Auth) {}
+  constructor(private http: HttpClient, private auth: Auth) { }
 
   getAllBazaars(): Observable<IBazaar[]> {
     return this.http.get<IBazaar[]>(`${environment.apiUrl}/api/Bazaar/GetAllBazaars`);
@@ -20,8 +19,8 @@ export class BazaarService {
     return this.http.get<IBazaar>(`${environment.apiUrl}/api/Bazaar/GetBazaarById/${id}`);
   }
 
-  getNextEvent(id: number): Observable<INextEvent> {
-    return this.http.get<INextEvent>(`${environment.apiUrl}/api/Bazaar/next-event/${id}`);
+  getNextEvent(): Observable<IBazaar> {
+    return this.http.get<IBazaar>(`${environment.apiUrl}/api/Bazaar/next-event`);
   }
 
   createBazaar(data: IBazaar): Observable<IBazaar> {
@@ -43,9 +42,8 @@ export class BazaarService {
 
   addBrandToBazaar(bazaarId: number, brandId: number): Observable<any> {
     const token = this.auth.getToken();
-
     return this.http.post(
-      `${environment.apiUrl}/BazarBrand/AddBrandToBazar/${bazaarId}/${brandId}`,
+      `${environment.apiUrl}/api/BazarBrand/AddBrandToBazar/${bazaarId}/${brandId}`,
       {},
       {
         headers: new HttpHeaders({

@@ -1,7 +1,7 @@
 export interface IBazaar {
   id: number;
   title: string;
-  eventDate: string;
+  eventDate: Date;
   startTime: string;
   endTime: string;
   location: string;

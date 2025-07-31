@@ -5,6 +5,7 @@
         <th class="text-left">Order Date</th>
         <th class="text-left">Status</th>
         <th class="text-left">Order Details</th>
+        <th class="text-left">Paymnet Method</th>
         <th class="text-left">Actions</th>
       </tr>
     </thead>
@@ -12,12 +13,11 @@
       @for (order of orders; track order.id) {
       <tr>
         <td>{{ order.orderDate }}</td>
-        @if( order.status == 0){
+        @switch( order.status){ @case (0) {
         <td>{{ "Available" }}</td>
-        }@else {
-        <td>{{ "Pending" }}</td>
-        }
-
+        }@default {
+        <td>{{ "Checking" }}</td>
+        } }
         <td>
           <ul>
             @for (_order of order.orderDetails; track $index) {
@@ -25,16 +25,16 @@
             }
           </ul>
         </td>
-
+        <td>order.paymentMethod</td>
         <td>
-          <button
-            class="btn btn-sm btn-primary"
-            (click)="
-              takeOrder(order.id, 'b25a1b80-69b9-4553-960d-77212f40defc')
-            "
-          >
+          @if(hasReachedOrderLimit) {
+          <p>{{ "Reached Limit" }}</p>
+          }@else {
+          <!--request order from brand as delivery -->
+          <button class="btn btn-sm btn-primary" (click)="TakeOrder(order)">
             Take Order
           </button>
+          }
         </td>
       </tr>
       }

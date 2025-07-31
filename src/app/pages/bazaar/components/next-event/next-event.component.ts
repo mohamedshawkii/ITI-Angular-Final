@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { INextEvent } from '../../../../interfaces/inext-event';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../../../Services/auth';
+import { IBazaar } from '../../../../interfaces/ibazaar';
 
 @Component({
   selector: 'app-next-event',
@@ -12,11 +12,11 @@ import { Auth } from '../../../../Services/auth';
 })
 export class NextEventComponent implements OnInit {
 
-  constructor(public authService: Auth) {}
+  constructor(public authService: Auth) { }
 
   userRole: string | string[] | null = null;
 
-  @Input() nextEvent!: INextEvent;
+  @Input() nextEvent!: IBazaar;
   @Output() register = new EventEmitter<void>();
 
   ngOnInit(): void {

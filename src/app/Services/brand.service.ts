@@ -22,4 +22,7 @@ export class BrandService {
   GetBrandById(id: number): Observable<iBrand> {
     return this.http.get<iBrand>(`${environment.apiUrl}/api/Brand/${id}`);
   }
+  GetBrandByUserId(userId: string): Observable<iBrand[]> {
+    return this.http.get<iBrand[]>(`${environment.apiUrl}/api/Brand/user/${userId}`);
+  }
 }
