@@ -2,13 +2,5 @@
   [nextEvent]="nextEvent"
   (register)="registerForEvent()"
 ></app-next-event>
-
-<app-featured-brands
-  [featuredBrands]="featuredBrands"
-  [viewBrand]="viewBrand"
-  [followBrand]="followBrand"
-/>
-
+<app-featured-brands [featuredBrands]="featuredBrands" />
 <app-activities></app-activities>
-
-<!-- *ngIf="nextEvent" -->

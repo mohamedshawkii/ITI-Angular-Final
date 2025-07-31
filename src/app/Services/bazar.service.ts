@@ -15,4 +15,5 @@ export class BazarService {
   postBazar(Bazar: any, p0?: { responseType: "json"; }): Observable<any> {
     return this._httpClient.post(`${environment.apiUrl}/api/Bazaar/CreateBazaar`, Bazar);
   }
+  
 }

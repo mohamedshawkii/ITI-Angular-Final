@@ -5,8 +5,8 @@ export interface IOrder {
     orderDate: Date;
     status: number;
     totalAmount: number;
+    deliveryBoyID?: string | null;
     userID: string;
-    deliveryBoyID: string;
-    orderTypeID: number;
+    orderTypeID?: number | null;
     orderDetails: IOrderDetails[];
 }

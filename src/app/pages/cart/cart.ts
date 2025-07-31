@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { OrderService } from '../../Services/orders-service';
 import { IOrder } from '../../interfaces/IOrder';
 import { IProduct } from '../../interfaces/IProduct';
 import { CartService } from '../../Services/cart-service';
+import { Auth } from '../../Services/auth';
+import { OrderService } from '../../Services/order-service';
 
 @Component({
   selector: 'app-cart',
@@ -17,14 +18,19 @@ export class CartComponent implements OnInit {
   Orders!: IOrder;
   cartItems!: IProduct[];
   isDisabled!: boolean;
+  totalInDollars: number = 0;
+  UserId!: string;
 
   _Order = inject(OrderService);
   _CartService = inject(CartService);
+  _AuthService = inject(Auth);
 
   ngOnInit() {
     this._CartService.cart$.subscribe(cart => {
       this.cartItems = cart;
     });
+    this.calculateTotal(this.cartItems);
+    this.UserId = this._AuthService.getCurrentUserID()!;
   }
   getCartItems(): IProduct[] {
     return this._CartService.getCartItems();
@@ -34,40 +40,32 @@ export class CartComponent implements OnInit {
   }
   calculateTotal(cartItems: any[]): number {
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    this._CartService.totalAmount = total; // Update the total amount in the cart service
-    return total
+    const totalInCents = Math.round(total * 100);
+    this.totalInDollars = this._CartService.convertCentsToDollars(totalInCents);
+    this._CartService.totalInCents = totalInCents;
+    this._CartService.totalInDollars = this.totalInDollars;
+    return this.totalInDollars;
   }
 
   checkout(): void {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
     this.cartItems = this._CartService.getCartItems();
 
     this.Orders = {
       id: 0,
       status: 0,
-      deliveryBoyID: '',
-      orderTypeID: 1,
-      userID: user.id,
+      deliveryBoyID: null,
+      orderTypeID: null,
+      userID: this.UserId,
       orderDate: new Date(),
       totalAmount: this.calculateTotal(this.cartItems),
       orderDetails: this.cartItems.map((item) => ({
         orderID: 0,
         productID: item.id,
         quantity: item.quantity,
-        price: item.price
+        price: item.price,
       }))
     };
-
-    this._Order.createOrder(this.Orders).subscribe({
-      next: (value) => {
-        localStorage.removeItem('cart');
-        console.log('Order submitted!', value);
-      },
-      error: (err) => {
-        console.error(err)
-      }
-    });
+    console.log("cart", this.Orders);
+    this._CartService.SaveOrder(this.Orders);
   }
-
-
 }

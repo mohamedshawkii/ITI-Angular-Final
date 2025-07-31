@@ -1,0 +1,53 @@
+<div class="mt-4 p-2">
+  <table class="table table-striped table-bordered mb-4 grid-4">
+    <thead class="table-dark">
+      <tr>
+        <th class="text-left">Order Date</th>
+        <th class="text-left">Status</th>
+        <th class="text-left">Order Details</th>
+        <th class="text-left">Paymnet Method</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (order of orders; track order.id) {
+      <tr>
+        <td>{{ order.orderDate }}</td>
+
+        @switch( order.status){ @case (2) {
+        <td>{{ "Delivered" }}</td>
+        } @case (3) {
+        <td>{{ "Cancelled" }}</td>
+        } @default {
+        <td>{{ "Checking" }}</td>
+        } }
+
+        <td>
+          <ul>
+            @for (_order of order.orderDetails; track $index) {
+            <li>Price: {{ _order.price }}, Qty: {{ _order.quantity }}</li>
+            }
+          </ul>
+        </td>
+        <td>order.paymentMethod</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  <nav>
+    <ul class="pagination justify-content-center mb-4">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button class="page-link" (click)="prevPage()">Previous</button>
+      </li>
+
+      @for (page of totalPagesArray; track page) {
+      <li class="page-item" [class.active]="currentPage === page">
+        <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+      </li>
+      }
+
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <button class="page-link" (click)="nextPage()">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>

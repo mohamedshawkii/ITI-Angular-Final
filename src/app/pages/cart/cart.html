@@ -19,9 +19,10 @@
   <div class="cart-sidebar">
     <h1 class="cart-sidebar-title">Shopping Cart</h1>
     <div class="cart-sidebar-content">
-      <p class="cart-total">Total: {{ calculateTotal(getCartItems()) }}</p>
+      <p class="cart-total">Total: ${{ totalInDollars }}</p>
     </div>
     <a
+      (click)="checkout()"
       [routerLink]="cartItems.length === 0 ? null : '/payment'"
       [class.disabled]="cartItems.length === 0"
       class="nav-link btn btn-primary w-100 mr-auto"
