@@ -27,10 +27,15 @@ import { BrandDashboardComponent } from './pages/brand-dashboard/brand-dashboard
 import { DeliveryHistoryBrand } from './pages/brand-dashboard/components/delivery-history-brand/delivery-history-brand';
 import { MyOrdersBrand } from './pages/brand-dashboard/components/my-orders-brand/my-orders-brand';
 import { AvailableOrdersBrand } from './pages/brand-dashboard/components/available-orders-brand/available-orders-brand';
+import { NotDeliveryBoyGuard } from './guards/not-delivery-boy-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  {
+  path: 'home',
+  component: HomeComponent,
+  canActivate: [NotDeliveryBoyGuard]
+},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },

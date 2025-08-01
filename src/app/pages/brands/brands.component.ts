@@ -30,6 +30,7 @@ export class BrandsComponent implements OnInit {
   hasMoreBrands = false;
   currentFilter = '';
   currentSort = 'name';
+  showAddBrandButton: boolean = false;
   userRole: string | null | undefined;
   _AuthService = inject(Auth);
   constructor(private brandService: BrandService, private router: Router, public authService: Auth) { }
@@ -51,6 +52,17 @@ export class BrandsComponent implements OnInit {
     });
     const role = this.authService.getRole();
     this.userRole = role;
+
+    if (role === 'BrandOwner') {
+      this.authService.hasBrand().subscribe({
+        next: (hasBrand) => {
+          this.showAddBrandButton = !hasBrand;
+        },
+        error: () => {
+          this.showAddBrandButton = false;
+        }
+      });
+    }
   }
   DisplayBasedOnRole(Role: string): boolean {
     const userRole = this._AuthService.getRole();
