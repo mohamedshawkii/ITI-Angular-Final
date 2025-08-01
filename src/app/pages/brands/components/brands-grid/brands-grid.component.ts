@@ -8,11 +8,14 @@ import { iBrand } from '../../../../interfaces/ibrand';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './brands-grid.component.html',
-  styleUrls: ['./brands-grid.component.scss']
+  styleUrls: ['./brands-grid.component.scss'],
 })
 export class BrandsGridComponent {
   @Input() brands: iBrand[] = [];
+  //nahed
+  @Input() currentUserId!: number;
   @Output() follow = new EventEmitter<number>();
+  @Output() edit = new EventEmitter<number>();
 
   toggleFollow(id: number) {
     this.follow.emit(id);

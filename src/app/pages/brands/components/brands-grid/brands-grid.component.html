@@ -1,4 +1,4 @@
-<div class="brands-grid">
+<!-- <div class="brands-grid">
   <div class="brand-card" *ngFor="let brand of brands">
     <div class="brand-image">
       <span class="brand-icon">{{ brand.icon }}</span>
@@ -28,4 +28,13 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->
+
+<app-brand-card
+  *ngFor="let brand of brands"
+  [brand]="brand"
+  [currentUserId]="currentUserId"
+  (follow)="toggleFollow($event)"
+  (edit)="edit.emit($event)"
+></app-brand-card>
+<!-- nahed -->

@@ -5,24 +5,32 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environments';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BrandService {
-
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAllBrands(): Observable<iBrand[]> {
     return this.http.get<iBrand[]>(`${environment.apiUrl}/api/Brand/all`);
   }
 
   CreateBrand(formData: FormData): Observable<any> {
-    return this.http.post<iBrand>(`${environment.apiUrl}/api/Brand/add`, formData);
+    return this.http.post<iBrand>(
+      `${environment.apiUrl}/api/Brand/add`,
+      formData
+    );
   }
   GetBrandById(id: number): Observable<iBrand> {
     return this.http.get<iBrand>(`${environment.apiUrl}/api/Brand/${id}`);
   }
   GetBrandByUserId(userId: string): Observable<iBrand[]> {
-    return this.http.get<iBrand[]>(`${environment.apiUrl}/api/Brand/user/${userId}`);
+    return this.http.get<iBrand[]>(
+      `${environment.apiUrl}/api/Brand/user/${userId}`
+    );
+  }
+
+  //nahed
+  updateBrand(formData: FormData): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/Brand/update`, formData);
   }
 }
