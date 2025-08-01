@@ -11,6 +11,7 @@ import { Auth } from '../../../../Services/auth';
 })
 export class AvailableOrders implements OnInit {
   orders: IOrder[] = [];
+  filteredOrders: IOrder[] = [];
   CurrActiveOrders: IOrder[] = [];
   pageSize = 5;
   currentPage = 1;
@@ -54,8 +55,8 @@ export class AvailableOrders implements OnInit {
   GetAvailable() {
     this._OrderService.AvailableOrders().subscribe({
       next: (data: IOrder[]) => {
-        this.orders = data.filter(order => order.status === 0);
-        console.log(data);
+        this.filteredOrders = data.filter(order => order.status === 0);
+        this.orders = this.filteredOrders;
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
@@ -88,7 +89,7 @@ export class AvailableOrders implements OnInit {
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.orders = this.orders.slice(start, end);
+    this.orders = this.filteredOrders.slice(start, end);
   }
 
   goToPage(page: number): void {

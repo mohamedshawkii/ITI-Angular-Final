@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { iBrand } from '../../../../interfaces/ibrand';
+import { iBrand } from '../../../../interfaces/iBrand';
 import { RouterModule } from '@angular/router';
 
 @Component({

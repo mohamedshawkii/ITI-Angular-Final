@@ -65,7 +65,7 @@ export class CartComponent implements OnInit {
         price: item.price,
       }))
     };
-    console.log("cart", this.Orders);
+    // console.log("cart", this.Orders);
     this._CartService.SaveOrder(this.Orders);
   }
 }

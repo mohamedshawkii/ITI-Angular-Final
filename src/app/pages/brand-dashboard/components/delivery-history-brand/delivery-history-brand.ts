@@ -12,6 +12,7 @@ import { BrandService } from '../../../../Services/brand.service';
 })
 export class DeliveryHistoryBrand implements OnInit {
   orders: IOrder[] = [];
+  filteredOrders: IOrder[] = [];
   pageSize = 5;
   currentPage = 1;
   totalPages = 0;
@@ -32,8 +33,10 @@ export class DeliveryHistoryBrand implements OnInit {
   GetAvailable() {
     this._OrderService.GetOrderByBrandId(this.BrandID).subscribe({
       next: (data: IOrder[]) => {
-        this.orders = data.filter(order => order.status === 2 || order.status === 3);
-        console.log(data);
+        this.filteredOrders = data.filter(order => order.status === 2 || order.status === 3);
+
+        this.orders = this.filteredOrders;
+
         this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
         this.totalPages = Math.ceil(this.orders.length / this.pageSize);
         if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
@@ -66,7 +69,7 @@ export class DeliveryHistoryBrand implements OnInit {
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.orders = this.orders.slice(start, end);
+    this.orders = this.filteredOrders.slice(start, end);
   }
 
   goToPage(page: number): void {

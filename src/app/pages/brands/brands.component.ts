@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { iBrand } from '../../interfaces/ibrand';
+import { iBrand } from '../../interfaces/iBrand';
 import { BrandService } from '../../../../src/app/Services/brand.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';

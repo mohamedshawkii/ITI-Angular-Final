@@ -11,6 +11,7 @@ import { Auth } from '../../../../Services/auth';
 })
 export class MyOrders {
   orders: IOrder[] = [];
+  filteredOrders: IOrder[] = [];
   pageSize = 5;
   currentPage = 1;
   totalPages = 0;
@@ -30,22 +31,24 @@ export class MyOrders {
   GetAvailable() {
     this._OrderService.MyOrders(this.DeliveryID).subscribe({
       next: (data: any[]) => {
-        this.orders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
-        console.log(data);
+        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
+        this.orders = this.filteredOrders;
+
+        this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
+        this.totalPages = Math.ceil(this.orders.length / this.pageSize);
+
+        if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
+          this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+        } else {
+          this.totalPagesArray = [];
+        }
+        this.updateDisplayedUsers();
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
       }
     });
-    this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
-    this.totalPages = Math.ceil(this.orders.length / this.pageSize);
 
-    if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
-      this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    } else {
-      this.totalPagesArray = [];
-    }
-    this.updateDisplayedUsers();
   }
 
   ReturningOrder(Order: IOrder): void {

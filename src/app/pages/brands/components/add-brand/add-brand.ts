@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { iBrand } from '../../../../interfaces/ibrand';
+import { iBrand } from '../../../../interfaces/iBrand';
 import { ICategory } from '../../../../interfaces/ICategory';
 import { BrandService } from '../../../../Services/brand.service';
 import { CategoryService } from '../../../../Services/category-service';

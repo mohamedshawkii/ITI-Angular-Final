@@ -4,13 +4,14 @@ import { IOrder } from '../../../../interfaces/IOrder';
 import { Auth } from '../../../../Services/auth';
 
 @Component({
-  selector: 'app-delivery-history',
+  selector: 'app-delivery-history-user',
   imports: [],
   templateUrl: './delivery-history-user.html',
   styleUrl: './delivery-history-user.scss'
 })
 export class DeliveryHistoryUser implements OnInit {
   orders: IOrder[] = [];
+  filteredOrders: IOrder[] = [];
   pageSize = 5;
   currentPage = 1;
   totalPages = 0;
@@ -29,12 +30,10 @@ export class DeliveryHistoryUser implements OnInit {
   GetOrdersHistory(UserId: string) {
     this._OrderService.OrdersHistory(UserId).subscribe({
       next: (data: IOrder[]) => {
-        this.orders = data.filter(order => order.status === 2 || order.status === 3);
-        console.log(data);
-
+        this.filteredOrders = data.filter(order => order.status === 2 || order.status === 3);
+        this.orders = this.filteredOrders;
         this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
         this.totalPages = Math.ceil(this.orders.length / this.pageSize);
-
         if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
           this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
         } else {
@@ -42,18 +41,20 @@ export class DeliveryHistoryUser implements OnInit {
         }
 
         this.updateDisplayedUsers();
-        console.log(data);
+        // console.log(data);
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
       }
     });
+
+
   }
 
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.orders = this.orders.slice(start, end);
+    this.orders = this.filteredOrders.slice(start, end);
   }
 
   goToPage(page: number): void {

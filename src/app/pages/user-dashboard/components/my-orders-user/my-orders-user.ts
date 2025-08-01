@@ -11,6 +11,7 @@ import { Auth } from '../../../../Services/auth';
 })
 export class MyOrdersUser {
   orders: IOrder[] = [];
+  filteredOrders: IOrder[] = [];
   pageSize = 5;
   currentPage = 1;
   totalPages = 0;
@@ -32,8 +33,8 @@ export class MyOrdersUser {
   GetAvailable() {
     this._OrderService.GetMadeOrders(this.UserId).subscribe({
       next: (data: any[]) => {
-        this.orders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
-        console.log(data);
+        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
+        this.orders = this.filteredOrders;
 
         this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
         this.totalPages = Math.ceil(this.orders.length / this.pageSize);
@@ -44,7 +45,6 @@ export class MyOrdersUser {
           this.totalPagesArray = [];
         }
         this.updateDisplayedUsers();
-        console.log(data);
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
@@ -57,7 +57,7 @@ export class MyOrdersUser {
     this._OrderService.OrderUpdate(Order).subscribe({
       next: (data) => {
         alert('Order Received');
-        console.log('Order Received successfully:', data);
+        // console.log('Order Received successfully:', data);
         this.IsReceived = true;
         this.GetAvailable();
       },
@@ -71,7 +71,7 @@ export class MyOrdersUser {
     Order.status = 6;
     this._OrderService.OrderUpdate(Order).subscribe({
       next: (data) => {
-        console.log('request handing:', data);
+        // console.log('request handing:', data);
         this.GetAvailable();
       },
       error: (error) => {
@@ -83,7 +83,7 @@ export class MyOrdersUser {
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.orders = this.orders.slice(start, end);
+    this.orders = this.filteredOrders.slice(start, end);
   }
 
   goToPage(page: number): void {

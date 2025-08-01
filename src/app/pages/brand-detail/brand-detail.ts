@@ -11,6 +11,7 @@ import { environment } from '../../../environments/environments';
 import { IReview } from '../../interfaces/IReview';
 import { ReviewService } from '../../Services/review-service';
 import { Auth } from '../../Services/auth';
+import { iBrand } from '../../interfaces/iBrand';
 
 @Component({
   selector: 'app-brand-detail',
@@ -20,7 +21,7 @@ import { Auth } from '../../Services/auth';
   styleUrl: './brand-detail.scss'
 })
 export class BrandDetailComponent implements OnInit {
-  brand!: any;
+  brand!: iBrand;
   products: IProduct[] = [];
   productForm!: FormGroup;
   BrandId!: number;
@@ -65,7 +66,6 @@ export class BrandDetailComponent implements OnInit {
     // Get brand ID from route params
     const ParamId = this.route.snapshot.paramMap.get('id');
     if (!ParamId) {
-      console.error('Brand ID not found in route parameters.');
       return;
     }
     this.BrandId = parseInt(ParamId);
@@ -79,7 +79,7 @@ export class BrandDetailComponent implements OnInit {
     this._ReviewService.BrandReviews(brandId).subscribe({
       next: (res) => {
         this.ProductReviews = res;
-        console.log('Product Reviews:', this.ProductReviews);
+        // console.log('Product Reviews:', this.ProductReviews);
       },
       error: (err) => {
         console.log(err);
@@ -122,7 +122,7 @@ export class BrandDetailComponent implements OnInit {
 
       this._ProductService.CreateProduct(formData).subscribe({
         next: (res) => {
-          console.log('Product created:', res);
+          // console.log('Product created:', res);
           this.products.push(res);
           this.closeProductForm();
           this.productForm.reset();
@@ -150,7 +150,7 @@ export class BrandDetailComponent implements OnInit {
 
     this._ReviewService.AddReview(this.newReview).subscribe({
       next: (res) => {
-        console.log('Review added successfully:', res);
+        // console.log('Review added successfully:', res);
         form.resetForm();
         this.selectedProduct = null;
         this.closeReviewModal();
@@ -195,7 +195,7 @@ export class BrandDetailComponent implements OnInit {
     this._BrandService.GetBrandById(ID).subscribe({
       next: (res) => {
         this.brand = res;
-        // console.log(this.brand);
+        // console.log(res);
       },
       error: (err) => {
         console.log(err);
@@ -233,13 +233,13 @@ export class BrandDetailComponent implements OnInit {
   }
 
   viewProduct(productId: number) {
-    console.log('Viewing product:', productId);
+    // console.log('Viewing product:', productId);
     alert(`Redirecting to product detail page for product ID: ${productId}`);
   }
 
   quickView(productId: number, event: Event) {
     event.stopPropagation();
-    console.log('Quick view for product:', productId);
+    // console.log('Quick view for product:', productId);
     alert(`Quick view modal would open for product ID: ${productId}`);
   }
 

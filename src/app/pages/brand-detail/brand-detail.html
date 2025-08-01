@@ -1,7 +1,7 @@
 <div class="brand-detail-page">
+  @if(brand != null && brand != undefined) {
   <!-- Brand Header مثل بروفايل الفيسبوك -->
   <div class="brand-hero">
-    <!-- صورة الكفر -->
     <div class="brand-cover">
       <img
         [src]="EUrl + brand.image"
@@ -9,7 +9,6 @@
         class="cover-image"
       />
     </div>
-
     <!-- معلومات البراند -->
     <div class="container">
       <div class="hero-content">
@@ -39,6 +38,7 @@
       </div>
     </div>
   </div>
+  }
 
   <!-- Products Section -->
   <div class="products-section">

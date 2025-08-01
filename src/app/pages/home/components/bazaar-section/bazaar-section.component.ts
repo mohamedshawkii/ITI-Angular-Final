@@ -12,7 +12,6 @@ import { CommonModule } from '@angular/common';
 })
 export class BazaarSectionComponent implements OnInit {
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
   }
   userRole: string = '';
 

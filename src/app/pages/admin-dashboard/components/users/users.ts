@@ -26,13 +26,13 @@ export class Users {
   GetAll(): void {
     this._UserManagement.GetAll().subscribe({
       next: (value) => {
-        this.users = value;
+        this.displayedUsers = value;
+        this.users = this.displayedUsers;
         this.totalPages = Math.ceil(this.users.length / this.pageSize);
         this.totalPagesArray = Array(this.totalPages)
           .fill(0)
           .map((_, i) => i + 1);
         this.updateDisplayedUsers();
-        console.log(value);
       },
       error: (err) => {
         console.log(err);
@@ -55,7 +55,7 @@ export class Users {
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.displayedUsers = this.users.slice(start, end);
+    this.displayedUsers = this.displayedUsers.slice(start, end);
   }
 
   goToPage(page: number): void {

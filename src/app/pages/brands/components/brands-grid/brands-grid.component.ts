@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { iBrand } from '../../../../interfaces/ibrand';
+import { iBrand } from '../../../../interfaces/iBrand';
 
 @Component({
   selector: 'app-brands-grid',
