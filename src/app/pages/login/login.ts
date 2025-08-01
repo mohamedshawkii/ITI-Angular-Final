@@ -57,7 +57,13 @@ export class LoginComponent {
         if (token) {
           localStorage.setItem('token', token);
           this._auth.saveUser();
-          this._router.navigate(['/']);
+          
+          const role = this._auth.getRole();
+          if (role === 'DeliveryBoy') {
+            this._router.navigate(['/delivery']);
+          } else {
+            this._router.navigate(['/']);
+          }
         } else {
           this.errorMessage = 'Login failed: No token received';
         }
