@@ -1,17 +1,43 @@
-<aside class="Nav_Side col-md-3 col-lg-2 bg-light sidebar p-3 flex-shrink-0">
-  <nav class="">
-    <ul class="nav flex-column m-2">
-      <li class="nav-item d-flex flex-column gap-3">
-        <a routerLink="history" class="nav-link btn btn-primary w-100 mr-auto"
-          >history</a
-        >
-        <a routerLink="myorders" class="nav-link btn btn-primary w-100 mr-auto"
-          >progress</a
-        >
-        <a routerLink="available" class="nav-link btn btn-primary w-100 mr-auto"
-          >Rceived Orders</a
-        >
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h3 class="sidebar-title">Brand Panel</h3>
+  </div>
+
+  <div class="user-profile">
+    <div class="user-avatar">
+      <i class="fas fa-store"></i> <!-- Icon for brand/store -->
+    </div>
+    <p class="user-name">Brand Name</p> <!-- Placeholder for brand name -->
+    <p class="user-role">Brand Administrator</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a routerLink="available" class="nav-link" routerLinkActive="active">
+          <i class="fas fa-box-open"></i>
+          <span>Received Orders</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="myorders" class="nav-link" routerLinkActive="active">
+          <i class="fas fa-truck-moving"></i>
+          <span>My Orders (In Progress)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="history" class="nav-link" routerLinkActive="active">
+          <i class="fas fa-history"></i>
+          <span>Delivery History</span>
+        </a>
       </li>
     </ul>
   </nav>
+
+  <div class="sidebar-footer">
+    <button class="logout-btn" >
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+    </button>
+  </div>
 </aside>
