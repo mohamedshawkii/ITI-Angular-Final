@@ -30,6 +30,7 @@ export class BrandsComponent implements OnInit {
   hasMoreBrands = false;
   currentFilter = '';
   currentSort = 'name';
+  showAddBrandButton: boolean = false;
   userRole: string | null | undefined;
   _AuthService = inject(Auth);
   currentUserId: string | null = null;
@@ -62,7 +63,16 @@ export class BrandsComponent implements OnInit {
     const role = this.authService.getRole();
     this.userRole = role;
 
-    this.currentUserId = this.authService.getCurrentUserID();
+    if (role === 'BrandOwner') {
+      this.authService.hasBrand().subscribe({
+        next: (hasBrand) => {
+          this.showAddBrandButton = !hasBrand;
+        },
+        error: () => {
+          this.showAddBrandButton = false;
+        },
+      });
+    }
   }
 
   DisplayBasedOnRole(Role: string): boolean {

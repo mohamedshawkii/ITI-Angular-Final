@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { RegisterRequest } from '../pages/register/register';
 import { environment } from '../../environments/environments';
@@ -118,6 +118,17 @@ export class Auth {
     }
     return userRole === role;
   }
+
+  hasBrand(): Observable<boolean> {
+  const userId = this.getCurrentUserID();
+  if (!userId) return new Observable(observer => observer.next(true)); // treat as has brand by default
+
+  return this._httpClient.get<{ hasBrand: boolean }>(`${environment.apiUrl}/api/Brand/HasBrand/${userId}`)
+    .pipe(map(res => res.hasBrand));
+}
+
+
+
 
   // استخدام جاهز: هل المستخدم Admin؟
   isAdmin(): boolean {
