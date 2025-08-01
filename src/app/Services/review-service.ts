@@ -13,4 +13,7 @@ export class ReviewService {
   AddReview(review: IReview): Observable<IReview> {
     return this._httpClient.post<IReview>(`${environment.apiUrl}/api/Review/add`, review);
   }
+  BrandReviews(brandId: number): Observable<IReview[]> {
+    return this._httpClient.get<IReview[]>(`${environment.apiUrl}/api/Review/${brandId}/reviews`);
+  }
 }

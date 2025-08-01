@@ -17,10 +17,16 @@ import { DeliveryHistory } from './pages/delivery/components/delivery-history/de
 import { MyOrders } from './pages/delivery/components/my-orders/my-orders';
 import { AvailableOrders } from './pages/delivery/components/available-orders/available-orders';
 import { AddBrand } from './pages/brands/components/add-brand/add-brand';
-
-// Update the path below if the actual file name or location is different, e.g. './guards/role.guard.ts' or './guards/role.guard.service'
 import { RoleGuard } from '../app/guards/role-guard';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard';
+import { DeliveryHistoryUser } from './pages/user-dashboard/components/delivery-history-user/delivery-history-user';
+import { AvailableOrdersUser } from './pages/user-dashboard/components/available-orders-user/available-orders-user';
+import { MyOrdersUser } from './pages/user-dashboard/components/my-orders-user/my-orders-user';
+import { BrandDashboardComponent } from './pages/brand-dashboard/brand-dashboard';
+import { DeliveryHistoryBrand } from './pages/brand-dashboard/components/delivery-history-brand/delivery-history-brand';
+import { MyOrdersBrand } from './pages/brand-dashboard/components/my-orders-brand/my-orders-brand';
+import { AvailableOrdersBrand } from './pages/brand-dashboard/components/available-orders-brand/available-orders-brand';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -28,74 +34,72 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
-
-
   {
     path: 'brands',
     component: BrandsComponent,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['Customer', 'BrandOwner'] }
+    canActivate: [RoleGuard],
+    data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'brands/add',
     component: AddBrand,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['BrandOwner'] }
+    canActivate: [RoleGuard],
+    data: { roles: ['BrandOwner'] }
   },
   {
     path: 'brand/:id',
     component: BrandDetailComponent,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['Customer', 'BrandOwner'] }
+    canActivate: [RoleGuard],
+    data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'product/:id',
     component: ProductDetailComponent,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['Customer', 'BrandOwner'] }
+    canActivate: [RoleGuard],
+    data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'cart',
     component: CartComponent,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['Customer', 'BrandOwner'] }
+    canActivate: [RoleGuard],
+    data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'bazaar',
     component: BazaarComponent,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['Customer', 'BrandOwner'] }
+    canActivate: [RoleGuard],
+    data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'payment',
     component: StripePayment,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['Customer', 'BrandOwner'] }
+    canActivate: [RoleGuard],
+    data: { roles: ['Customer', 'BrandOwner'] }
   },
   {
     path: 'subscriptions',
     component: SubscriptionsComponent,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['Customer', 'BrandOwner'] }
+    canActivate: [RoleGuard],
+    data: { roles: ['Customer', 'BrandOwner'] }
   },
 
   {
     path: 'admin',
     component: AdminDashboardComponent,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['ADMIN'] },
+    canActivate: [RoleGuard],
+    data: { roles: ['ADMIN'] },
     children: [
       {
         path: 'users',
         component: Users,
-        // canActivate: [RoleGuard],
-        // data: { roles: ['ADMIN'] }
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN'] }
       },
       {
         path: 'createBazar',
         component: Bazar,
-        // canActivate: [RoleGuard],
-        // data: { roles: ['ADMIN'] }
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN'] }
       }
     ]
   },
@@ -103,26 +107,80 @@ export const routes: Routes = [
   {
     path: 'delivery',
     component: Delivery,
-    // canActivate: [RoleGuard],
-    // data: { roles: ['DeliveryBoy'] },
+    canActivate: [RoleGuard],
+    data: { roles: ['DeliveryBoy'] },
     children: [
       {
         path: 'history',
         component: DeliveryHistory,
-        // canActivate: [RoleGuard],
-        // data: { roles: ['DeliveryBoy'] }
+        canActivate: [RoleGuard],
+        data: { roles: ['DeliveryBoy'] }
       },
       {
         path: 'myorders',
         component: MyOrders,
-        // canActivate: [RoleGuard],
-        // data: { roles: ['DeliveryBoy'] }
+        canActivate: [RoleGuard],
+        data: { roles: ['DeliveryBoy'] }
       },
       {
         path: 'available',
         component: AvailableOrders,
-        // canActivate: [RoleGuard],
-        // data: { roles: ['DeliveryBoy'] }
+        canActivate: [RoleGuard],
+        data: { roles: ['DeliveryBoy'] }
+      }
+    ]
+  },
+
+  {
+    path: 'customerDashboard',
+    component: UserDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['Customer'] },
+    children: [
+      {
+        path: 'history',
+        component: DeliveryHistoryUser,
+        canActivate: [RoleGuard],
+        data: { roles: ['Customer'] }
+      },
+      {
+        path: 'myorders',
+        component: MyOrdersUser,
+        canActivate: [RoleGuard],
+        data: { roles: ['Customer'] }
+      },
+      {
+        path: 'available',
+        component: AvailableOrdersUser,
+        canActivate: [RoleGuard],
+        data: { roles: ['Customer'] }
+      }
+    ]
+  },
+
+  {
+    path: 'brandDashboard',
+    component: BrandDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['BrandOwner'] },
+    children: [
+      {
+        path: 'history',
+        component: DeliveryHistoryBrand,
+        canActivate: [RoleGuard],
+        data: { roles: ['BrandOwner'] }
+      },
+      {
+        path: 'myorders',
+        component: MyOrdersBrand,
+        canActivate: [RoleGuard],
+        data: { roles: ['BrandOwner'] }
+      },
+      {
+        path: 'available',
+        component: AvailableOrdersBrand,
+        canActivate: [RoleGuard],
+        data: { roles: ['BrandOwner'] }
       }
     ]
   },

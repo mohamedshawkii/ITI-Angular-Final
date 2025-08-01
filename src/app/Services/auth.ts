@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { RegisterRequest } from '../pages/register/register';
 import { environment } from '../../environments/environments';
+import { CartService } from './cart-service';
 
 export interface DecodedToken {
   [key: string]: unknown;
@@ -19,7 +20,7 @@ export interface DecodedToken {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class Auth {
   UserToken: BehaviorSubject<string> = new BehaviorSubject('');
@@ -28,8 +29,7 @@ export class Auth {
   _Router = inject(Router);
   currentUser: string | null = null;
   currentRole: string | null = null;
-
-
+  _CartService = inject(CartService);
   constructor() {
     if (isPlatformBrowser(this._PLATFORM_ID)) {
       const token = localStorage.getItem('token');
@@ -67,29 +67,32 @@ export class Auth {
 
   logOut() {
     localStorage.removeItem('token');
+    this._CartService.clearCart();
     this.UserToken.next('');
     this._Router.navigate(['/login']);
-  }
 
+  }
   // ✅ فك التوكن
   getDecodedToken(): DecodedToken | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
     try {
       const Decoded = jwtDecode<DecodedToken>(token);
-      // console.log('Decoding token:', Decoded);
       return Decoded;
     } catch (error) {
       console.error('Error decoding token', error);
       return null;
     }
   }
+  //modified nahed
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
 
   getCurrentUserID(): string | null {
     const decoded = this.getDecodedToken();
     const userId = decoded?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
 
-    console.log('Decoding token userId:', userId);
     if (Array.isArray(userId)) {
       return userId.join(',');
     }
@@ -101,7 +104,6 @@ export class Auth {
     const decoded = this.getDecodedToken();
     const role = decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
-    // console.log('Decoding token role:', role);
     if (Array.isArray(role)) {
       return role.join(',');
     }

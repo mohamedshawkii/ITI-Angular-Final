@@ -5,6 +5,7 @@
         <th class="text-left">Order Date</th>
         <th class="text-left">Status</th>
         <th class="text-left">Order Details</th>
+        <th class="text-left">Paymnet Method</th>
       </tr>
     </thead>
     <tbody>
@@ -12,13 +13,13 @@
       <tr>
         <td>{{ order.orderDate }}</td>
 
-        @if( order.status == 2){
+        @switch( order.status){ @case (2) {
         <td>{{ "Delivered" }}</td>
-        }@else if(order.status == 3){
+        } @case (3) {
         <td>{{ "Cancelled" }}</td>
-        }@else {
-        <td>{{ "Pending" }}</td>
-        }
+        }@default {
+        <td>{{ "Checking" }}</td>
+        } }
 
         <td>
           <ul>
@@ -27,6 +28,7 @@
             }
           </ul>
         </td>
+        <td>order.paymentMethod</td>
       </tr>
       }
     </tbody>

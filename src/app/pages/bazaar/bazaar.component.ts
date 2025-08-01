@@ -7,10 +7,9 @@ import { NextEventComponent } from './components/next-event/next-event.component
 import { FeaturedBrandsComponent } from './components/featured-brands/featured-brands.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
 import { IfeaturedBrand } from '../../interfaces/ifeatured-brand';
-
-import { INextEvent } from '../../interfaces/inext-event';
 import { BazaarService } from '../../Services/bazaar-service';
 import { Auth } from '../../Services/auth';
+import { IBazaar } from '../../interfaces/ibazaar';
 
 @Component({
   selector: 'app-bazaar',
@@ -27,53 +26,81 @@ import { Auth } from '../../Services/auth';
   styleUrls: ['./bazaar.component.scss'],
 })
 export class BazaarComponent implements OnInit {
-  nextEvent!: INextEvent;
+  nextEvent!: IBazaar;
   featuredBrands: IfeaturedBrand[] = [];
+  brandId!: number;
 
   constructor(private bazaarService: BazaarService, public authService: Auth) { }
 
   ngOnInit(): void {
-    const bazaarId = 1;
-    // this.bazaarService.getNextEvent(bazaarId).subscribe((data) => {
-    //   this.nextEvent = data;
-console.log(this.nextEvent);
-    this.bazaarService.getNextEvent(bazaarId).subscribe(
-      {
-        next: (data) => {
-          console.log('Next event data:', data);
-          this.nextEvent = data;
-        },
-        error: (error) => {
-          console.error('Error fetching next event:', error);
-        },
+    this.getLatestBazaar();
+    this.nextEvent.eventDate = new Date(this.nextEvent.eventDate);
+  }
+
+  AddBrandToBazar(): void {
+    this.bazaarService.addBrandToBazaar(this.nextEvent.id, this.brandId).subscribe({
+      next: () => {
+        alert('✅ Brand successfully registered for the event!');
+        this.bazaarService
+          .getBrandsForBazaar(this.nextEvent.id)
+          .subscribe((data) => {
+            this.featuredBrands = data.map((brand) => ({
+              ...brand,
+              icon: '✨',
+              isNew: false,
+              isFollowed: false,
+              specialOffer: '',
+            }));
+          });
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        alert(err);
       }
-    );
-
-    // });
-
-    this.bazaarService.getBrandsForBazaar(bazaarId).subscribe((data) => {
-      this.featuredBrands = data.map((brand) => ({
-        ...brand,
-        icon: '✨',
-        isNew: false,
-        isFollowed: false,
-        specialOffer: '',
-      }));
+    });
+  }
+  
+  getLatestBazaar(): void {
+    this.bazaarService.getNextEvent().subscribe({
+      next: (res) => {
+        console.log("next event", res);
+        this.nextEvent = res;
+      },
+      error: (err) => {
+        console.error('Error fetching the next event.', err);
+      }
     });
   }
 
   registerForEvent(): void {
-    alert(
-      'Registration for the Summer Artisan Showcase is now open! You will receive a confirmation email shortly.'
-    );
-  }
+    if (!this.nextEvent || !this.nextEvent.id) {
+      alert('Event is currently unavailable.');
+      return;
+    }
 
-  viewBrand(brandId: number) {
-    console.log('Viewing brand:', brandId);
-    alert(`Redirecting to brand page for brand ID: ${brandId}`);
-  }
-
-  followBrand(brandId: number) {
-    alert(`Toggling follow for brand ID: ${brandId}`);
+    this.bazaarService
+      .addBrandToBazaar(this.nextEvent.id, this.brandId)
+      .subscribe({
+        next: () => {
+          alert('✅ Brand successfully registered for the event!');
+          this.bazaarService
+            .getBrandsForBazaar(this.nextEvent.id)
+            .subscribe((data) => {
+              this.featuredBrands = data.map((brand) => ({
+                ...brand,
+                icon: '✨',
+                isNew: false,
+                isFollowed: false,
+                specialOffer: '',
+              }));
+            });
+        },
+        error: (err) => {
+          console.error('Error:', err);
+          alert(
+            err?.error?.message || ' An error occurred during registration.'
+          );
+        },
+      });
   }
 }

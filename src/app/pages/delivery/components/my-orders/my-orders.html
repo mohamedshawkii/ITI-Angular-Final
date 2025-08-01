@@ -5,6 +5,7 @@
         <th class="text-left">Order Date</th>
         <th class="text-left">Status</th>
         <th class="text-left">Order Details</th>
+        <th class="text-left">Paymnet Method</th>
         <th class="text-left">Actions</th>
       </tr>
     </thead>
@@ -12,7 +13,24 @@
       @for (order of orders; track order.id) {
       <tr>
         <td>{{ order.orderDate }}</td>
-        <td>{{ order.status == 1 ? "Out for Delivery" : "Pending" }}</td>
+
+        @switch( order.status){ @case (1) {
+        <td>{{ "OutForDelivery" }}</td>
+        } @case (2) {
+        <td>{{ "delivered" }}</td>
+        } @case (3) {
+        <td>{{ "Cancelled" }}</td>
+        } @case (4) {
+        <td>{{ "DeliveryBrandHandingRequest" }}</td>
+        } @case (5) {
+        <td>{{ "DeliveryUserHandingRequest" }}</td>
+        } @case (6) {
+        <td>{{ "UserDeliveryHandingRequest" }}</td>
+        } @case (7) {
+        <td>{{ "Returning" }}</td>
+        } @default {
+        <td>{{ "Checking" }}</td>
+        } }
 
         <td>
           <ul>
@@ -21,11 +39,33 @@
             }
           </ul>
         </td>
+        <td>order.paymentMethod</td>
 
         <td>
           <div class="d-flex flex-column gap-3">
-            <button class="btn btn-sm btn-primary" (click)="GiveUpOrder(order.id,'Out for Delivery')">Give Up Order</button>
-            <button class="btn btn-sm btn-primary" (click)="DeliverdOrder(order.id,'Out for Delivery')">delivered</button>
+            @if(order.status == 6){
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="ReturningOrder(order)"
+            >
+              Returning Order
+            </button>
+            } @else if(order.status == 1){
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="GiveUpOrder(order.id, DeliveryID)"
+            >
+              Cancel Order
+            </button>
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="DeliveryUserHandingRequest(order)"
+            >
+              Deliver
+            </button>
+            }@else {
+            <p>{{ "Checking" }}</p>
+            }
           </div>
         </td>
       </tr>

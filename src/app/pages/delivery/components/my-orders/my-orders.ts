@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { OrderService } from '../../../../Services/Delivery-service';
+import { OrderService } from '../../../../Services/order-service';
 import { IOrder } from '../../../../interfaces/IOrder';
+import { Auth } from '../../../../Services/auth';
 
 @Component({
   selector: 'app-my-orders',
@@ -14,56 +15,73 @@ export class MyOrders {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
-  deliveryBoyId: string = '';
+  DeliveryID!: string;
+
   _OrderService = inject(OrderService);
+  _AuthService = inject(Auth);
 
   constructor() { }
 
   ngOnInit(): void {
+    this.DeliveryID = this._AuthService.getCurrentUserID()!;
     this.GetAvailable();
   }
+
   GetAvailable() {
-    this._OrderService.AvailableOrders().subscribe({
+    this._OrderService.MyOrders(this.DeliveryID).subscribe({
       next: (data: any[]) => {
-        this.orders = data;
-        console.log(data);
-
-        this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
-        this.totalPages = Math.ceil(this.orders.length / this.pageSize);
-
-        if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
-          this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        } else {
-          this.totalPagesArray = [];
-        }
-        this.updateDisplayedUsers();
+        this.orders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
         console.log(data);
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
       }
     });
+    this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
+    this.totalPages = Math.ceil(this.orders.length / this.pageSize);
+
+    if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
+      this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    } else {
+      this.totalPagesArray = [];
+    }
+    this.updateDisplayedUsers();
   }
-  GiveUpOrder(orderId: number, deliveryBoyId: string): void {
-    this._OrderService.ReleaseOrder(orderId, deliveryBoyId).subscribe({
+
+  ReturningOrder(Order: IOrder): void {
+    Order.status = 7;
+    this._OrderService.OrderUpdate(Order).subscribe({
       next: (data) => {
-        console.log('Order released successfully:', data);
+        console.log('Returning Order:', data);
         this.GetAvailable();
       },
       error: (error) => {
-        console.error('Error releasing order:', error);
+        console.error('Error Returning Order:', error);
       }
     });
   }
 
-  DeliverdOrder(orderId: number, deliveryBoyId: string): void {
-    this._OrderService.DeliverdOrder(orderId, deliveryBoyId).subscribe({
+  DeliveryUserHandingRequest(Order: IOrder): void {
+    Order.status = 5;
+    this._OrderService.OrderUpdate(Order).subscribe({
       next: (data) => {
-        console.log('Order delivered successfully:', data);
+        console.log('request handing:', data);
         this.GetAvailable();
       },
       error: (error) => {
-        console.error('Error delivering order:', error);
+        console.error('Error handing order:', error);
+      }
+    });
+  }
+
+  GiveUpOrder(orderId: number, DeliveryID: string): void {
+    this._OrderService.ReleaseOrder(orderId, DeliveryID).subscribe({
+      next: (data) => {
+        console.log('request handing to brand:', data);
+        this.GetAvailable();
+      },
+      error: (error) => {
+        console.error('Error releasing order:', error);
       }
     });
   }

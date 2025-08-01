@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { OrderService } from '../../../../Services/Delivery-service';
+import { OrderService } from '../../../../Services/order-service';
 import { IOrder } from '../../../../interfaces/IOrder';
+import { Auth } from '../../../../Services/auth';
 
 @Component({
   selector: 'app-delivery-history',
@@ -9,7 +10,7 @@ import { IOrder } from '../../../../interfaces/IOrder';
   styleUrl: './delivery-history.scss'
 })
 export class DeliveryHistory implements OnInit {
-  DeliveryID: string = 'b25a1b80-69b9-4553-960d-77212f40defc';
+  DeliveryID!: string;
   orders: IOrder[] = [];
   pageSize = 5;
   currentPage = 1;
@@ -17,34 +18,32 @@ export class DeliveryHistory implements OnInit {
   totalPagesArray: number[] = [];
 
   _OrderService = inject(OrderService);
-
+  _AuthService = inject(Auth);
   constructor() { }
 
   ngOnInit(): void {
+    this.DeliveryID = this._AuthService.getCurrentUserID()!;
     this.GetOrdersHistory(this.DeliveryID);
   }
   GetOrdersHistory(DeliveryID: string) {
     this._OrderService.OrdersHistory(DeliveryID).subscribe({
       next: (data: IOrder[]) => {
-        this.orders = data;
-        console.log(data);
-
-        this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
-        this.totalPages = Math.ceil(this.orders.length / this.pageSize);
-
-        if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
-          this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        } else {
-          this.totalPagesArray = [];
-        }
-
-        this.updateDisplayedUsers();
+        this.orders = data.filter(order => order.status === 2 || order.status === 3);
         console.log(data);
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
       }
     });
+    this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
+    this.totalPages = Math.ceil(this.orders.length / this.pageSize);
+
+    if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
+      this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    } else {
+      this.totalPagesArray = [];
+    }
+    this.updateDisplayedUsers();
   }
 
   updateDisplayedUsers(): void {

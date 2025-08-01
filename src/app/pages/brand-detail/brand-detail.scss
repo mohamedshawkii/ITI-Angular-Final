@@ -717,3 +717,83 @@ html {
   justify-content: space-between;
   margin-top: 15px;
 }
+
+//review style
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 3px solid #007bff;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.reviews-section {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  padding: 1rem;
+}
+
+.review-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-left: 5px solid #007bff;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.review-card:hover {
+  transform: scale(1.02);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+}
+
+.review-rating {
+  font-weight: 600;
+  color: #ff9900;
+}
+
+.review-date {
+  font-style: italic;
+}
+
+.review-body {
+  color: #333;
+}
+
+.review-comment {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-name {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.star {
+  font-size: 1rem;
+  margin-left: 2px;
+}
+
+.star.filled {
+  color: gold;
+}
+
+.star.empty {
+  color: lightgray;
+}
