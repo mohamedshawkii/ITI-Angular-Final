@@ -3,10 +3,12 @@ import { OrderService } from '../../../../Services/order-service';
 import { IOrder } from '../../../../interfaces/IOrder';
 import { Auth } from '../../../../Services/auth';
 import { BrandService } from '../../../../Services/brand.service';
+import { CommonModule } from '@angular/common'; // Import CommonModule for pipes
 
 @Component({
   selector: 'app-delivery-history-brand',
-  imports: [],
+  standalone: true, // Mark as standalone
+  imports: [CommonModule], // Add CommonModule
   templateUrl: './delivery-history-brand.html',
   styleUrl: './delivery-history-brand.scss'
 })
@@ -17,16 +19,17 @@ export class DeliveryHistoryBrand implements OnInit {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
-  UserId!: string;
+  UserID!: string;
   BrandID!: number;
 
   _OrderService = inject(OrderService);
-  _BrandService = inject(BrandService);
   _AuthService = inject(Auth);
+  _BrandService = inject(BrandService);
+
   constructor() { }
 
   ngOnInit(): void {
-    this.UserId = this._AuthService.getCurrentUserID()!;
+    this.UserID = this._AuthService.getCurrentUserID()!;
     this.GetBrandId();
   }
 
@@ -73,21 +76,23 @@ export class DeliveryHistoryBrand implements OnInit {
   }
 
   goToPage(page: number): void {
-    this.currentPage = page;
-    this.updateDisplayedUsers();
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updateDisplayedOrders();
+    }
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updateDisplayedUsers();
+      this.updateDisplayedOrders();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updateDisplayedUsers();
+      this.updateDisplayedOrders();
     }
   }
 }

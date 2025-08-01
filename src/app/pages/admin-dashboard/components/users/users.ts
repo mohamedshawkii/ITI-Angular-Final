@@ -12,10 +12,14 @@ import { IUser } from '../../../../interfaces/IUser';
 export class Users {
   users: IUser[] = [];
   displayedUsers: IUser[] = [];
+  filteredUsers: IUser[] = [];
   pageSize = 5;
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
+  
+  // Search functionality
+  searchQuery: string = '';
 
   _UserManagement = inject(UserManagementServic)
 
@@ -52,6 +56,21 @@ export class Users {
     });
   }
 
+  /**
+   * Calculate pagination based on filtered users
+   */
+  calculatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
+    this.totalPagesArray = Array(this.totalPages)
+      .fill(0)
+      .map((_, i) => i + 1);
+    
+    // Reset to first page if current page exceeds total pages
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = 1;
+    }
+  }
+
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
@@ -75,5 +94,21 @@ export class Users {
       this.currentPage++;
       this.updateDisplayedUsers();
     }
+  }
+
+  /**
+   * Handle filter button click
+   */
+  onFilter(): void {
+    console.log('Filter clicked');
+    // Implement filter logic here
+  }
+
+  /**
+   * Handle add user button click
+   */
+  onAddUser(): void {
+    console.log('Add user clicked');
+    // Implement add user logic here
   }
 }
