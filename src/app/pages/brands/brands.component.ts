@@ -19,10 +19,10 @@ import { Auth } from '../../Services/auth';
     BrandsFilterComponent,
     BrandsGridComponent,
     LoadMoreComponent,
-    BrandsEmptyStateComponent
+    BrandsEmptyStateComponent,
   ],
   templateUrl: './brands.component.html',
-  styleUrls: ['./brands.component.scss']
+  styleUrls: ['./brands.component.scss'],
 })
 export class BrandsComponent implements OnInit {
   allBrands: iBrand[] = [];
@@ -30,28 +30,51 @@ export class BrandsComponent implements OnInit {
   hasMoreBrands = false;
   currentFilter = '';
   currentSort = 'name';
+  showAddBrandButton: boolean = false;
   userRole: string | null | undefined;
   _AuthService = inject(Auth);
-  constructor(private brandService: BrandService, private router: Router, public authService: Auth) { }
+  currentUserId: string | null = null;
+
+  constructor(
+    private brandService: BrandService,
+    private router: Router,
+    public authService: Auth
+  ) {}
 
   goToAddBrandPage(): void {
     // سنقوم بتوجيه المستخدم إلى مسار '/brands/add' الذي سننشئه في الخطوة التالية
     this.router.navigate(['/brands/add']);
   }
+  editBrand(id: number) {
+    this.router.navigate(['/brands/edit', id]);
+  }
+
   ngOnInit(): void {
     this.brandService.getAllBrands().subscribe((brands) => {
-      this.allBrands = brands.map(b => ({
+      this.allBrands = brands.map((b) => ({
         ...b,
         icon: this.getIconForCategory(b.categoryID),
         location: 'Online Store', // مؤقتًا
-        isFollowed: false         // مؤقتًا
+        isFollowed: false, // مؤقتًا
       }));
       this.filteredBrands = [...this.allBrands];
       this.applySorting();
     });
     const role = this.authService.getRole();
     this.userRole = role;
+
+    if (role === 'BrandOwner') {
+      this.authService.hasBrand().subscribe({
+        next: (hasBrand) => {
+          this.showAddBrandButton = !hasBrand;
+        },
+        error: () => {
+          this.showAddBrandButton = false;
+        },
+      });
+    }
   }
+
   DisplayBasedOnRole(Role: string): boolean {
     const userRole = this._AuthService.getRole();
     return userRole == Role;
@@ -69,8 +92,8 @@ export class BrandsComponent implements OnInit {
 
   applyFilters(): void {
     if (this.currentFilter) {
-      this.filteredBrands = this.allBrands.filter(brand =>
-        brand.categoryID === this.currentFilter
+      this.filteredBrands = this.allBrands.filter(
+        (brand) => brand.categoryID === this.currentFilter
       );
     } else {
       this.filteredBrands = [...this.allBrands];
@@ -93,7 +116,7 @@ export class BrandsComponent implements OnInit {
   }
 
   followBrand(brandId: number): void {
-    const brand = this.allBrands.find(b => b.id === brandId);
+    const brand = this.allBrands.find((b) => b.id === brandId);
     if (brand) {
       brand.isFollowed = !brand.isFollowed;
     }
@@ -112,13 +135,16 @@ export class BrandsComponent implements OnInit {
 
   private getIconForCategory(category: string): string {
     switch (category) {
-      case 'Food & Beverages': return '🍽️';
-      case 'Fashion & Accessories': return '👜';
-      case 'Home Decor': return '🏠';
-      case 'Beauty & Wellness': return '💄';
-      default: return '🏷️';
+      case 'Food & Beverages':
+        return '🍽️';
+      case 'Fashion & Accessories':
+        return '👜';
+      case 'Home Decor':
+        return '🏠';
+      case 'Beauty & Wellness':
+        return '💄';
+      default:
+        return '🏷️';
     }
   }
-
 }
-

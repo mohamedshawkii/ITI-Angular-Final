@@ -1,9 +1,10 @@
 <div class="form-container">
-  <h2>Add New Brand</h2>
+  <h2>Edit Brand</h2>
 
-  <form class="brand-form" [formGroup]="brandForm" (ngSubmit)="OnSubmtit()">
+  <form class="brand-form" [formGroup]="brandForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <input type="hidden" id="OwnerID" formControlName="OwnerID" />
+      <input type="hidden" formControlName="OwnerID" />
+      <input type="hidden" formControlName="Id" />
       <label for="brandName"
         >Brand Name <span class="required-star">*</span></label
       >
@@ -37,12 +38,6 @@
 
     <div class="form-group">
       <label for="ImageFile">Image URL</label>
-      <!-- <input
-        type="file"
-        (change)="onImageSelected($event)"
-        class="form-control"
-      /> -->
-
       <input type="file" id="ImageFile" (change)="onImageSelected($event)" />
     </div>
 
@@ -51,9 +46,10 @@
         >Category <span class="required-star">*</span></label
       >
       <select id="CategoryID" formControlName="CategoryID">
-        @for(category of Categories; track category.id) {
-        <option [value]="category.id">{{ category.name }}</option>
-        }
+        <option value="">اختار التصنيف</option>
+        <option *ngFor="let category of Categories" [value]="category.id">
+          {{ category.name }}
+        </option>
       </select>
     </div>
 
@@ -61,12 +57,13 @@
       <button type="button" class="cancel-button" (click)="onCancel()">
         Close
       </button>
+
       <button
         type="submit"
         class="submit-button"
         [disabled]="brandForm.invalid"
       >
-        Add Brand
+        Update
       </button>
     </div>
   </form>

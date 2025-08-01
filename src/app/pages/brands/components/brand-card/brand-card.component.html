@@ -30,5 +30,13 @@
     <button class="btn btn-outline" (click)="toggleFollow()">
       {{ brand.isFollowed ? "Following" : "Follow" }}
     </button>
+
+    <button
+      *ngIf="brand.ownerId?.toString() === currentUserId"
+      class="btn btn-warning"
+      (click)="editBrand(brand.id)"
+    >
+      Edit Brand
+    </button>
   </div>
 </div>

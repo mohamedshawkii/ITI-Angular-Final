@@ -6,25 +6,33 @@ import { environment } from '../../environments/environments';
 import { IBazaar } from '../interfaces/ibazaar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BrandService {
-
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAllBrands(): Observable<iBrand[]> {
     return this.http.get<iBrand[]>(`${environment.apiUrl}/api/Brand/all`);
   }
 
   CreateBrand(formData: FormData): Observable<any> {
-    return this.http.post<iBrand>(`${environment.apiUrl}/api/Brand/add`, formData);
+    return this.http.post<iBrand>(
+      `${environment.apiUrl}/api/Brand/add`,
+      formData
+    );
   }
   GetBrandById(id: number): Observable<iBrand> {
     return this.http.get<iBrand>(`${environment.apiUrl}/api/Brand/${id}`);
   }
   GetBrandByUserId(userId: string): Observable<iBrand[]> {
-    return this.http.get<iBrand[]>(`${environment.apiUrl}/api/Brand/user/${userId}`);
+    return this.http.get<iBrand[]>(
+      `${environment.apiUrl}/api/Brand/user/${userId}`
+    );
+  }
+
+  //nahed
+  updateBrand(formData: FormData): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/Brand/update`, formData);
   }
   GetRegisteredBrandInBazar(brandId: number): Observable<IBazaar[]> { return this.http.get<IBazaar[]>(`${environment.apiUrl}/api/BazarBrand/brand/${brandId}/bazars`); }
   GetBrandByBazarId(bazarId: number): Observable<iBrand[]> {
