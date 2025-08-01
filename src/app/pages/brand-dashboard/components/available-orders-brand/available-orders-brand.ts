@@ -1,15 +1,13 @@
-import { AvailableOrders } from './../../../delivery/components/available-orders/available-orders';
 import { Component, inject, OnInit } from '@angular/core';
 import { OrderService } from '../../../../Services/order-service';
 import { IOrder } from '../../../../interfaces/IOrder';
 import { Auth } from '../../../../Services/auth';
 import { BrandService } from '../../../../Services/brand.service';
-import { CommonModule } from '@angular/common'; // Import CommonModule for pipes
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-available-orders-brand',
-  standalone: true, // Mark as standalone
-  imports: [CommonModule], // Add CommonModule
+  imports: [DatePipe, DecimalPipe],
   templateUrl: './available-orders-brand.html',
   styleUrl: './available-orders-brand.scss'
 })
@@ -20,8 +18,10 @@ export class AvailableOrdersBrand implements OnInit {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
+  OrderId: number = 0;
   BrandID!: number;
   UserID!: string;
+  IsHanded: boolean = false;
 
   _OrderService = inject(OrderService);
   _AuthService = inject(Auth);
@@ -34,25 +34,7 @@ export class AvailableOrdersBrand implements OnInit {
     this.GetBrandId();
   }
 
-  GetBrandId() {
-    this._BrandService.GetBrandByUserId(this.UserID).subscribe({
-      next: (data) => {
-        if (data && data.length > 0) {
-          this.BrandID = data[0].id;
-          this.GetAvailableOrders();
-        } else {
-          console.warn('No brand found for this user. Generating dummy available orders.');
-          // this.generateDummyOrders(); // Fallback to dummy data
-        }
-      },
-      error: (error) => {
-        console.error('Error fetching brand ID:', error);
-        // this.generateDummyOrders(); // Fallback to dummy data on error
-      }
-    });
-  }
-
-  GetAvailableOrders() {
+  GetAvailable() {
     this._OrderService.GetOrderByBrandId(this.BrandID).subscribe({
       next: (data: IOrder[]) => {
         this.filteredOrders = data.filter(order => order.status === 0);
@@ -93,23 +75,22 @@ export class AvailableOrdersBrand implements OnInit {
   }
 
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updateDisplayedOrders();
-    }
+    this.currentPage = page;
+    this.updateDisplayedUsers();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updateDisplayedOrders();
+      this.updateDisplayedUsers();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updateDisplayedOrders();
+      this.updateDisplayedUsers();
     }
   }
+
 }

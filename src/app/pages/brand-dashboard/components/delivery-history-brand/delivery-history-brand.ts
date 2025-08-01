@@ -3,12 +3,11 @@ import { OrderService } from '../../../../Services/order-service';
 import { IOrder } from '../../../../interfaces/IOrder';
 import { Auth } from '../../../../Services/auth';
 import { BrandService } from '../../../../Services/brand.service';
-import { CommonModule } from '@angular/common'; // Import CommonModule for pipes
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-delivery-history-brand',
-  standalone: true, // Mark as standalone
-  imports: [CommonModule], // Add CommonModule
+  imports: [DatePipe, DecimalPipe],
   templateUrl: './delivery-history-brand.html',
   styleUrl: './delivery-history-brand.scss'
 })
@@ -19,17 +18,16 @@ export class DeliveryHistoryBrand implements OnInit {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
-  UserID!: string;
+  UserId!: string;
   BrandID!: number;
 
   _OrderService = inject(OrderService);
-  _AuthService = inject(Auth);
   _BrandService = inject(BrandService);
-
+  _AuthService = inject(Auth);
   constructor() { }
 
   ngOnInit(): void {
-    this.UserID = this._AuthService.getCurrentUserID()!;
+    this.UserId = this._AuthService.getCurrentUserID()!;
     this.GetBrandId();
   }
 
@@ -76,23 +74,21 @@ export class DeliveryHistoryBrand implements OnInit {
   }
 
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updateDisplayedOrders();
-    }
+    this.currentPage = page;
+    this.updateDisplayedUsers();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updateDisplayedOrders();
+      this.updateDisplayedUsers();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updateDisplayedOrders();
+      this.updateDisplayedUsers();
     }
   }
 }

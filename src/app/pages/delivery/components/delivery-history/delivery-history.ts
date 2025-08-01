@@ -2,12 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { OrderService } from '../../../../Services/order-service';
 import { IOrder } from '../../../../interfaces/IOrder';
 import { Auth } from '../../../../Services/auth';
-import { CommonModule } from '@angular/common'; // Import CommonModule for pipes
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-delivery-history',
-  standalone: true, // Mark as standalone
-  imports: [CommonModule], // Add CommonModule
+  imports: [DatePipe, DecimalPipe],
   templateUrl: './delivery-history.html',
   styleUrl: './delivery-history.scss'
 })
@@ -22,12 +21,11 @@ export class DeliveryHistory implements OnInit {
 
   _OrderService = inject(OrderService);
   _AuthService = inject(Auth);
-
   constructor() { }
 
   ngOnInit(): void {
     this.DeliveryID = this._AuthService.getCurrentUserID()!;
-    this.GetOrdersHistory();
+    this.GetOrdersHistory(this.DeliveryID);
   }
   GetOrdersHistory(DeliveryID: string) {
     this._OrderService.OrdersHistory(DeliveryID).subscribe({
@@ -52,30 +50,28 @@ export class DeliveryHistory implements OnInit {
 
   }
 
-  updateDisplayedOrders(): void {
+  updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.orders = this.filteredOrders.slice(start, end);
   }
 
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updateDisplayedOrders();
-    }
+    this.currentPage = page;
+    this.updateDisplayedUsers();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updateDisplayedOrders();
+      this.updateDisplayedUsers();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updateDisplayedOrders();
+      this.updateDisplayedUsers();
     }
   }
 }

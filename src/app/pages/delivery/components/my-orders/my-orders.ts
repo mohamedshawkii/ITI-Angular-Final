@@ -1,17 +1,16 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { OrderService } from '../../../../Services/order-service';
 import { IOrder } from '../../../../interfaces/IOrder';
 import { Auth } from '../../../../Services/auth';
-import { CommonModule } from '@angular/common'; // Import CommonModule for pipes
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-my-orders',
-  standalone: true, // Mark as standalone
-  imports: [CommonModule], // Add CommonModule
+  imports: [DatePipe, DecimalPipe],
   templateUrl: './my-orders.html',
   styleUrl: './my-orders.scss'
 })
-export class MyOrders implements OnInit {
+export class MyOrders {
   orders: IOrder[] = [];
   filteredOrders: IOrder[] = [];
   pageSize = 5;
@@ -27,7 +26,7 @@ export class MyOrders implements OnInit {
 
   ngOnInit(): void {
     this.DeliveryID = this._AuthService.getCurrentUserID()!;
-    this.GetMyOrders();
+    this.GetAvailable();
   }
 
   GetAvailable() {
@@ -54,69 +53,65 @@ export class MyOrders implements OnInit {
   }
 
   ReturningOrder(Order: IOrder): void {
-    // Simulate API call
-    console.log('Simulating ReturningOrder for order:', Order.id);
-    // In a real app, you'd call this._OrderService.OrderUpdate(Order).subscribe(...)
-    setTimeout(() => {
-      console.log('Order marked for returning successfully (simulated).');
-      this.GetMyOrders(); // Refresh data
-    }, 500);
+    Order.status = 7;
+    this._OrderService.OrderUpdate(Order).subscribe({
+      next: (data) => {
+        console.log('Returning Order:', data);
+        this.GetAvailable();
+      },
+      error: (error) => {
+        console.error('Error Returning Order:', error);
+      }
+    });
   }
 
   DeliveryUserHandingRequest(Order: IOrder): void {
-    // Simulate API call
-    console.log('Simulating DeliveryUserHandingRequest for order:', Order.id);
-    // In a real app, you'd call this._OrderService.OrderUpdate(Order).subscribe(...)
-    setTimeout(() => {
-      console.log('Delivery handing request sent successfully (simulated).');
-      this.GetMyOrders(); // Refresh data
-    }, 500);
+    Order.status = 5;
+    this._OrderService.OrderUpdate(Order).subscribe({
+      next: (data) => {
+        console.log('request handing:', data);
+        this.GetAvailable();
+      },
+      error: (error) => {
+        console.error('Error handing order:', error);
+      }
+    });
   }
 
   GiveUpOrder(orderId: number, DeliveryID: string): void {
-    // Simulate API call
-    console.log('Simulating GiveUpOrder for order:', orderId);
-    // In a real app, you'd call this._OrderService.ReleaseOrder(orderId, DeliveryID).subscribe(...)
-    setTimeout(() => {
-      console.log('Order released successfully (simulated).');
-      this.GetMyOrders(); // Refresh data
-    }, 500);
+    this._OrderService.ReleaseOrder(orderId, DeliveryID).subscribe({
+      next: (data) => {
+        console.log('request handing to brand:', data);
+        this.GetAvailable();
+      },
+      error: (error) => {
+        console.error('Error releasing order:', error);
+      }
+    });
   }
 
-  calculatePagination(): void {
-    this.totalPages = Math.ceil(this.orders.length / this.pageSize);
-    this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    if (this.currentPage > this.totalPages && this.totalPages > 0) {
-      this.currentPage = this.totalPages;
-    } else if (this.totalPages === 0) {
-      this.currentPage = 1;
-    }
-  }
-
-  updateDisplayedOrders(): void {
+  updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.displayedOrders = this.orders.slice(start, end);
+    this.orders = this.orders.slice(start, end);
   }
 
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updateDisplayedOrders();
-    }
+    this.currentPage = page;
+    this.updateDisplayedUsers();
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updateDisplayedOrders();
+      this.updateDisplayedUsers();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updateDisplayedOrders();
+      this.updateDisplayedUsers();
     }
   }
 }
