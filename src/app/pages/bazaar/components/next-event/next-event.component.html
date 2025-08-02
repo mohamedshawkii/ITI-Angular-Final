@@ -66,14 +66,9 @@
           </div>
         </div>
       </div>
-      @if(!this.IsRegisted){
-      <div
-        class="event-actions"
-        *ngIf="
-          _AuthService.getRole() === 'Admin' ||
-          _AuthService.getRole() === 'BrandOwner'
-        "
-      >
+      @if(!this.IsRegisted && this.IsHasBrand &&
+      _AuthService.getRole().includes('BrandOwner')){
+      <div class="event-actions">
         <button (click)="RegisterInEvent()" class="btn btn-primary">
           Register Now
         </button>

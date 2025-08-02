@@ -1,10 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BazarService } from '../../../../Services/bazar.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-bazar',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './bazar.html',
   styleUrl: './bazar.scss',
 })
@@ -12,7 +13,7 @@ export class Bazar implements OnInit {
   bazarForm!: FormGroup;
 
   _bazarService = inject(BazarService);
-isSubmitting: any;
+  isSubmitting:  boolean = false;
 
   constructor(private fb: FormBuilder) { }
 
@@ -44,11 +45,12 @@ isSubmitting: any;
         entry: raw.entry
       };
 
-      console.log('Sending to backend:', payload);
+      // console.log('Sending to backend:', payload);
 
       this._bazarService.postBazar(payload).subscribe({
         next: (res) => {
-          console.log('Created:', res);
+          // console.log('Created:', res);
+          this.isSubmitting = true;
           this.bazarForm.reset();
         },
         error: (err) => {

@@ -33,7 +33,12 @@
         </div>
         <!-- أزرار التفاعل -->
         <div class="brand-actions">
-          <button class="btn btn-outline" (click)="shareBrand()">Share</button>
+          <!-- <button class="btn btn-outline" (click)="shareBrand()">Share</button> -->
+          @if(IsBrandOwner()) {
+          <button class="btn btn-warning" (click)="editBrand(brand.id)">
+            Edit Brand
+          </button>
+          }
         </div>
       </div>
     </div>
@@ -43,7 +48,7 @@
   <!-- Products Section -->
   <div class="products-section">
     <div class="container">
-      @if(DisplayBasedOnRole("BrandOwner")) {
+      @if(IsBrandOwner()) {
       <div class="section-header">
         <h2 class="section-title">Our Products</h2>
         <button class="btn btn-primary" (click)="openProductForm()">
@@ -67,7 +72,7 @@
             </div>
             <div class="product-price">${{ product.price }}</div>
           </div>
-          @if(!DisplayBasedOnRole("BrandOwner")) {
+          @if(!IsBrandOwner() && !hasAnyRole(['BrandOwner'], userRole)) {
           <div class="product-actions">
             <button class="btn btn-primary" (click)="addToCart(product)">
               Add to Cart
@@ -81,12 +86,19 @@
               Remove
             </button>
           </div>
+
           <div class="product-actions">
             <button
               class="btn btn-primary"
               (click)="selectProduct(product); openReviewForm()"
             >
-              إضافة تقييم
+              Add review
+            </button>
+          </div>
+          } @if(IsBrandOwner()) {
+          <div class="product-actions">
+            <button class="btn btn-warning" (click)="editProduct(product)">
+              Edit Product
             </button>
           </div>
           }
@@ -127,11 +139,11 @@
   </div>
 </div>
 
-@if(!DisplayBasedOnRole("BrandOwner")) {
+@if(!IsBrandOwner()) {
 <div class="modal-overlay" *ngIf="showReviewForm">
   <div class="modal-content">
     <div class="modal-header">
-      <h2>أضف تقييمك</h2>
+      <h2>Add review</h2>
       <button class="close-btn" (click)="closeReviewForm()">&times;</button>
     </div>
 
@@ -171,18 +183,18 @@
             class="btn btn-secondary"
             (click)="closeReviewForm()"
           >
-            إلغاء
+            Cancel
           </button>
         </div>
       </form>
     </div>
   </div>
 </div>
-} @if(DisplayBasedOnRole("BrandOwner")) {
+} @if(IsBrandOwner()) {
 <div class="modal-overlay" *ngIf="showProductForm">
   <div class="modal-content">
     <div class="modal-header">
-      <h2>Add New Product</h2>
+      <h2>{{ selectedProduct ? "Edit Product" : "Add Product" }}</h2>
       <button class="close-btn" (click)="closeProductForm()">&times;</button>
     </div>
     <div class="modal-body">

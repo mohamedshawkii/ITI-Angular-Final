@@ -13,41 +13,52 @@
         <ul class="nav-list">
           <li
             class="nav-item"
-            *ngIf="showFor(['Customer', 'BrandOwner', 'ADMIN'])"
+            *ngIf="hasAnyRole(['BrandOwner', 'Customer'], userRole)"
           >
             <a routerLink="/home" routerLinkActive="active" class="nav-link"
               >Home</a
             >
           </li>
-          <li class="nav-item" *ngIf="showFor(['Customer', 'BrandOwner'])">
+
+          <li
+            class="nav-item"
+            *ngIf="hasAnyRole(['Customer', 'BrandOwner'], userRole)"
+          >
             <a routerLink="/brands" routerLinkActive="active" class="nav-link"
               >Brands</a
             >
           </li>
-          <li class="nav-item" *ngIf="showFor(['ADMIN'])">
+
+          <li class="nav-item" *ngIf="hasAnyRole(['ADMIN'], userRole)">
             <a routerLink="/admin" routerLinkActive="active" class="nav-link"
               >Admin</a
             >
           </li>
-          <li class="nav-item" *ngIf="showFor(['DeliveryBoy'])">
+
+          <li class="nav-item" *ngIf="hasAnyRole(['DeliveryBoy'], userRole)">
             <a routerLink="/delivery" routerLinkActive="active" class="nav-link"
               >Delivery</a
             >
           </li>
-          <li class="nav-item" *ngIf="showFor(['Customer', 'BrandOwner'])">
+
+          <li
+            class="nav-item"
+            *ngIf="hasAnyRole(['Customer', 'BrandOwner'], userRole)"
+          >
             <a routerLink="/bazaar" routerLinkActive="active" class="nav-link"
               >Bazaar</a
             >
           </li>
-          <li class="nav-item" *ngIf="showFor(['Customer'])">
+          <li class="nav-item" *ngIf="hasAnyRole(['Customer'], userRole)">
             <a
               routerLink="/customerDashboard"
               routerLinkActive="active"
               class="nav-link"
-              >Orders</a
             >
+              Orders
+            </a>
           </li>
-          <li class="nav-item" *ngIf="showFor(['BrandOwner'])">
+          <li class="nav-item" *ngIf="hasAnyRole(['BrandOwner'], userRole)">
             <a
               routerLink="/brandDashboard"
               routerLinkActive="active"
@@ -57,8 +68,9 @@
           </li>
         </ul>
       </nav>
+
       <div class="user-actions">
-        @if(showFor(['Customer', 'BrandOwner'])){
+        @if(hasAnyRole(['Customer', 'BrandOwner'], this.userRole)){
         <a routerLink="/cart" class="cart-link">
           <span class="cart-icon">🛒</span>
           <span class="cart-count">{{ itemCount }}</span>
@@ -85,7 +97,7 @@
       <ul class="nav-list-mobile">
         <li
           class="nav-item-mobile"
-          *ngIf="showFor(['Customer', 'BrandOwner', 'ADMIN'])"
+          *ngIf="hasAnyRole(['BrandOwner', 'Customer'], userRole)"
         >
           <a
             routerLink="/home"
@@ -95,7 +107,10 @@
             >Home</a
           >
         </li>
-        <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
+        <li
+          class="nav-item-mobile"
+          *ngIf="hasAnyRole(['Customer', 'BrandOwner'], userRole)"
+        >
           <a
             routerLink="/brands"
             routerLinkActive="active"
@@ -104,7 +119,10 @@
             >Brands</a
           >
         </li>
-        <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
+        <li
+          class="nav-item-mobile"
+          *ngIf="hasAnyRole(['Customer', 'BrandOwner'], userRole)"
+        >
           <a
             routerLink="/bazaar"
             routerLinkActive="active"
@@ -113,7 +131,10 @@
             >Bazaar</a
           >
         </li>
-        <li class="nav-item-mobile" *ngIf="showFor(['DeliveryBoy'])">
+        <li
+          class="nav-item-mobile"
+          *ngIf="hasAnyRole(['DeliveryBoy'], userRole)"
+        >
           <a
             routerLink="/delivery"
             routerLinkActive="active"
@@ -122,7 +143,7 @@
             >Delivery</a
           >
         </li>
-        <li class="nav-item-mobile" *ngIf="showFor(['ADMIN'])">
+        <li class="nav-item-mobile" *ngIf="hasAnyRole(['ADMIN'], userRole)">
           <a
             routerLink="/admin"
             routerLinkActive="active"
@@ -131,7 +152,10 @@
             >Admin</a
           >
         </li>
-        <li class="nav-item-mobile" *ngIf="showFor(['Customer', 'BrandOwner'])">
+        <li
+          class="nav-item-mobile"
+          *ngIf="hasAnyRole(['Customer', 'BrandOwner'], userRole)"
+        >
           <a
             routerLink="/cart"
             class="nav-link-mobile"
@@ -139,7 +163,7 @@
             >Cart</a
           >
         </li>
-        <li class="nav-item" *ngIf="showFor(['Customer'])">
+        <li class="nav-item" *ngIf="hasAnyRole(['Customer'], userRole)">
           <a
             routerLink="/customerDashboard"
             routerLinkActive="active"
@@ -147,7 +171,7 @@
             >Orders</a
           >
         </li>
-        <li class="nav-item" *ngIf="showFor(['BrandOwner'])">
+        <li class="nav-item" *ngIf="hasAnyRole(['BrandOwner'], userRole)">
           <a
             routerLink="/brandDashboard"
             routerLinkActive="active"

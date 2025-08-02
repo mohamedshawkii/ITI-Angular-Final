@@ -20,7 +20,7 @@ export class ProductService {
   GetProductById(ProductID: number): Observable<IProduct> {
     return this._httpClient.get<IProduct>(`${environment.apiUrl}/api/Product/${ProductID}`);
   }
-  UpdateProduct(formData: FormData): Observable<IProduct> {
-    return this._httpClient.put<IProduct>(`${environment.apiUrl}/api/Product/update`, formData);
+  UpdateProduct(productId: number,formData: FormData): Observable<IProduct> {
+    return this._httpClient.put<IProduct>(`${environment.apiUrl}/api/Product/update/${productId}`, formData);
   }
 }

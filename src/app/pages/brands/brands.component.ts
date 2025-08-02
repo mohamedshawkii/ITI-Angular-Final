@@ -31,7 +31,7 @@ export class BrandsComponent implements OnInit {
   currentFilter = '';
   currentSort = 'name';
   showAddBrandButton: boolean = false;
-  userRole: string | null | undefined;
+  userRole!: string[];
   _AuthService = inject(Auth);
   currentUserId: string | null = null;
 
@@ -39,23 +39,20 @@ export class BrandsComponent implements OnInit {
     private brandService: BrandService,
     private router: Router,
     public authService: Auth
-  ) {}
+  ) { }
 
   goToAddBrandPage(): void {
-    // سنقوم بتوجيه المستخدم إلى مسار '/brands/add' الذي سننشئه في الخطوة التالية
     this.router.navigate(['/brands/add']);
   }
-  editBrand(id: number) {
-    this.router.navigate(['/brands/edit', id]);
-  }
+
 
   ngOnInit(): void {
     this.brandService.getAllBrands().subscribe((brands) => {
       this.allBrands = brands.map((b) => ({
         ...b,
         icon: this.getIconForCategory(b.categoryID),
-        location: 'Online Store', // مؤقتًا
-        isFollowed: false, // مؤقتًا
+        location: 'Online Store',
+        isFollowed: false,
       }));
       this.filteredBrands = [...this.allBrands];
       this.applySorting();
@@ -63,7 +60,7 @@ export class BrandsComponent implements OnInit {
     const role = this.authService.getRole();
     this.userRole = role;
 
-    if (role === 'BrandOwner') {
+    if (role.includes('BrandOwner')) {
       this.authService.hasBrand().subscribe({
         next: (hasBrand) => {
           this.showAddBrandButton = !hasBrand;
@@ -75,9 +72,9 @@ export class BrandsComponent implements OnInit {
     }
   }
 
-  DisplayBasedOnRole(Role: string): boolean {
+  DisplayBasedOnRole(Role: string[]): boolean {
     const userRole = this._AuthService.getRole();
-    return userRole == Role;
+    return Role.some(role => userRole.includes(role));
   }
 
   filterByCategory(category: string): void {

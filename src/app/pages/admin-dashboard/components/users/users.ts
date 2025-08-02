@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { UserManagementServic } from '../../../../Services/user-management-servic';
 import { IUser } from '../../../../interfaces/IUser';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-users',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
@@ -17,7 +18,7 @@ export class Users {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
-  
+
   // Search functionality
   searchQuery: string = '';
 
@@ -32,6 +33,7 @@ export class Users {
       next: (value) => {
         this.displayedUsers = value;
         this.users = this.displayedUsers;
+
         this.totalPages = Math.ceil(this.users.length / this.pageSize);
         this.totalPagesArray = Array(this.totalPages)
           .fill(0)
@@ -44,10 +46,14 @@ export class Users {
     });
   }
 
+  hasAnyRole(rolesToCheck: string[], userRoles: string[]): boolean {
+    return rolesToCheck.some(role => userRoles.includes(role));
+  }
+
   Promotion(userId: string): void {
     this._UserManagement.Promotion(userId).subscribe({
       next: (value) => {
-        console.log('Promoted', value);
+        // console.log('Promoted', value);
         this.GetAll();
       },
       error: (err) => {
@@ -55,7 +61,17 @@ export class Users {
       }
     });
   }
-
+  Demote(userId: string): void {
+    this._UserManagement.Demotion(userId).subscribe({
+      next: (value) => {
+        console.log('DemoteToUser', value);
+        this.GetAll();
+      },
+      error: (err) => {
+        console.error('error', err);
+      }
+    });
+  }
   /**
    * Calculate pagination based on filtered users
    */
@@ -64,7 +80,7 @@ export class Users {
     this.totalPagesArray = Array(this.totalPages)
       .fill(0)
       .map((_, i) => i + 1);
-    
+
     // Reset to first page if current page exceeds total pages
     if (this.currentPage > this.totalPages) {
       this.currentPage = 1;
@@ -74,7 +90,7 @@ export class Users {
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.displayedUsers = this.displayedUsers.slice(start, end);
+    this.displayedUsers = this.users.slice(start, end);
   }
 
   goToPage(page: number): void {

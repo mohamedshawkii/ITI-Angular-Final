@@ -64,7 +64,6 @@ export class Auth {
     }
   }
 
-
   logOut() {
     localStorage.removeItem('token');
     this._CartService.clearCart();
@@ -72,7 +71,7 @@ export class Auth {
     this._Router.navigate(['/login']);
 
   }
-  // ✅ فك التوكن
+
   getDecodedToken(): DecodedToken | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
@@ -84,7 +83,7 @@ export class Auth {
       return null;
     }
   }
-  //modified nahed
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -98,19 +97,28 @@ export class Auth {
     }
     return userId ?? null;
   }
+  getRole(): string[] {
+    const token = localStorage.getItem('token');
+    if (!token) return [];
 
-  // ✅ قراءة الدور
-  getRole(): string | null {
-    const decoded = this.getDecodedToken();
-    const role = decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const roleClaim =
+        payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
-    if (Array.isArray(role)) {
-      return role.join(',');
+      if (Array.isArray(roleClaim)) {
+        return roleClaim;
+      } else if (typeof roleClaim === "string") {
+        return [roleClaim];
+      } else {
+        return [];
+      }
+    } catch (e) {
+      console.error("❌ Failed to decode token:", e);
+      return [];
     }
-    return role ?? null;
   }
 
-  // ✅ التحقق من دور معين
   hasRole(role: string): boolean {
     const userRole = this.getRole();
     if (Array.isArray(userRole)) {
@@ -120,17 +128,13 @@ export class Auth {
   }
 
   hasBrand(): Observable<boolean> {
-  const userId = this.getCurrentUserID();
-  if (!userId) return new Observable(observer => observer.next(true)); // treat as has brand by default
+    const userId = this.getCurrentUserID();
+    if (!userId) return new Observable(observer => observer.next(true));
 
-  return this._httpClient.get<{ hasBrand: boolean }>(`${environment.apiUrl}/api/Brand/HasBrand/${userId}`)
-    .pipe(map(res => res.hasBrand));
-}
+    return this._httpClient.get<{ hasBrand: boolean }>(`${environment.apiUrl}/api/Brand/HasBrand/${userId}`)
+      .pipe(map(res => res.hasBrand));
+  }
 
-
-
-
-  // استخدام جاهز: هل المستخدم Admin؟
   isAdmin(): boolean {
     return this.hasRole('Admin');
   }

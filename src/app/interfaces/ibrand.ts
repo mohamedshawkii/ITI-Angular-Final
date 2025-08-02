@@ -5,7 +5,7 @@ export interface iBrand {
   address?: string;
   image?: string;
   categoryID: string;
-  OwnerID: string;
+  ownerID: string;
   productCount?: number;
   averageRating?: number;
   icon?: string;

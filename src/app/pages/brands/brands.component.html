@@ -9,7 +9,7 @@
           unique products made with love and care.
         </p>
       </div>
-      @if(DisplayBasedOnRole("BrandOwner")){
+      @if(DisplayBasedOnRole(['BrandOwner'])){
       <button class="btn btn-primary" *ngIf="showAddBrandButton" (click)="goToAddBrandPage()">
         Add New Brand
       </button>
@@ -25,9 +25,8 @@
 
     <app-brands-grid
       [brands]="filteredBrands"
-      [currentUserId]="currentUserId"
+      [currentUserId]="currentUserId!"
       (follow)="followBrand($event)"
-      (edit)="editBrand($event)"
     ></app-brands-grid>
 
     <!-- Load More Button -->

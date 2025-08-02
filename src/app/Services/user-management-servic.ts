@@ -14,8 +14,10 @@ export class UserManagementServic {
   GetAll(): Observable<any> {
     return this._httpClient.get(`${environment.apiUrl}/api/Admin/AllUsers`)
   }
-
   Promotion(userId: string): Observable<any> {
     return this._httpClient.post(`${environment.apiUrl}/api/Admin/promotion/${userId}`, {})
+  }
+  Demotion(userId: string): Observable<any> {
+    return this._httpClient.post(`${environment.apiUrl}/api/Admin/demotion/${userId}`, {})
   }
 }

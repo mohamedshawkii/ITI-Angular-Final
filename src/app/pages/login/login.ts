@@ -59,7 +59,7 @@ export class LoginComponent {
           this._auth.saveUser();
           
           const role = this._auth.getRole();
-          if (role === 'DeliveryBoy') {
+          if (role.includes('DeliveryBoy')) {
             this._router.navigate(['/delivery']);
           } else {
             this._router.navigate(['/']);

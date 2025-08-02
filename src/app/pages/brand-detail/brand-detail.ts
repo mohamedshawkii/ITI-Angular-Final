@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms'; // Import FormsModule
@@ -21,6 +21,8 @@ import { iBrand } from '../../interfaces/iBrand';
   styleUrl: './brand-detail.scss'
 })
 export class BrandDetailComponent implements OnInit {
+  currentUserId!: string;
+  userRole!: string[];
   brand!: iBrand;
   products: IProduct[] = [];
   productForm!: FormGroup;
@@ -48,6 +50,7 @@ export class BrandDetailComponent implements OnInit {
   _ProductService = inject(ProductService);
   _CartService = inject(CartService);
   _ReviewService = inject(ReviewService);
+  _Router = inject(Router);
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder) { }
 
@@ -59,7 +62,8 @@ export class BrandDetailComponent implements OnInit {
       quantity: ['', Validators.required],
       brandID: ['', Validators.required],
     });
-
+    this.currentUserId = this._AuthService.getCurrentUserID()!; // Ensure user ID is fetched
+    this.userRole = this._AuthService.getRole();
     this._CartService.cart$.subscribe(items => {
       this.cartItems = items;
     });
@@ -75,6 +79,10 @@ export class BrandDetailComponent implements OnInit {
     this.GetProductReviews(this.BrandId);
   }
 
+  hasAnyRole(rolesToCheck: string[], userRoles: string[]): boolean {
+    return rolesToCheck.some(role => userRoles.includes(role));
+  }
+
   GetProductReviews(brandId: number) {
     this._ReviewService.BrandReviews(brandId).subscribe({
       next: (res) => {
@@ -87,15 +95,33 @@ export class BrandDetailComponent implements OnInit {
     });
   }
 
+  editBrand(BrandId: number): void {
+    if (BrandId !== null && BrandId !== undefined) {
+      this._Router.navigateByUrl(`/edit-brand/${BrandId}`);
+    }
+  }
+
+  editProduct(product: IProduct): void {
+    this.selectedProduct = product;  // <== VERY IMPORTANT
+    this.productForm.patchValue({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      quantity: product.quantity,
+      brandID: product.brandID
+    });
+    this.showProductForm = true;
+  }
+
   closeReviewForm() {
     this.showReviewForm = false;
 
   }
 
-  DisplayBasedOnRole(Role: string): boolean {
-    const userRole = this._AuthService.getRole();
-    return userRole == Role;
+  IsBrandOwner(): boolean {
+    return !!this.brand?.ownerID && this.brand.ownerID === this.currentUserId;
   }
+
   openReviewForm() {
     this.showReviewForm = true;
   }
@@ -106,51 +132,71 @@ export class BrandDetailComponent implements OnInit {
       this.selectedImageFile = file;
     }
   }
+
   SaveProduct() {
-    if (!this.productForm.invalid) {
-      const formData = new FormData();
+    if (this.productForm.invalid) {
+      console.log('Form is invalid');
+      return;
+    }
 
-      formData.append('name', this.productForm.value.name);
-      formData.append('description', this.productForm.value.description);
-      formData.append('price', this.productForm.value.price.toString());
-      formData.append('quantity', this.productForm.value.quantity.toString());
-      formData.append('brandID', this.productForm.value.brandID.toString());
+    const formData = new FormData();
+    formData.append('name', this.productForm.value.name);
+    formData.append('description', this.productForm.value.description);
+    formData.append('price', this.productForm.value.price.toString());
+    formData.append('quantity', this.productForm.value.quantity.toString());
+    formData.append('brandID', this.productForm.value.brandID.toString());
 
-      if (this.selectedImageFile) {
-        formData.append('ImageFile', this.selectedImageFile);
-      }
+    if (this.selectedImageFile) {
+      formData.append('ImageFile', this.selectedImageFile);
+    }
 
+    if (this.selectedProduct) {
+      // EDIT MODE
+      this._ProductService.UpdateProduct(this.selectedProduct.id, formData).subscribe({
+        next: (res) => {
+          const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
+          if (index > -1) this.products[index] = res;
+
+          this.closeProductForm();
+          this.productForm.reset();
+          this.selectedProduct = null;
+        },
+        error: (err) => console.error('Error updating product:', err)
+      });
+    } else {
+      // CREATE MODE
       this._ProductService.CreateProduct(formData).subscribe({
         next: (res) => {
-          // console.log('Product created:', res);
           this.products.push(res);
           this.closeProductForm();
           this.productForm.reset();
         },
-        error: (err) => {
-          console.error('Error creating product:', err);
-        }
+        error: (err) => console.error('Error creating product:', err)
       });
-    }
-    else {
-      console.log('Form is invalid');
     }
   }
 
+
   selectProduct(product: IProduct): void {
     this.selectedProduct = { ...product };
+    this.productForm.patchValue({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      quantity: product.quantity,
+      brandID: product.brandID,
+    });
+    this.selectedImageFile = null;
   }
 
   AddReviewProduct(form: NgForm): void {
     if (!this.selectedProduct) return;
-
     this.newReview.createdAt = new Date();
     this.newReview.productID = this.selectedProduct.id;
     this.newReview.userID = this._AuthService.getCurrentUserID()!;
 
     this._ReviewService.AddReview(this.newReview).subscribe({
       next: (res) => {
-        // console.log('Review added successfully:', res);
         form.resetForm();
         this.selectedProduct = null;
         this.closeReviewModal();
@@ -195,7 +241,7 @@ export class BrandDetailComponent implements OnInit {
     this._BrandService.GetBrandById(ID).subscribe({
       next: (res) => {
         this.brand = res;
-        // console.log(res);
+        this.IsBrandOwner()
       },
       error: (err) => {
         console.log(err);
@@ -203,8 +249,18 @@ export class BrandDetailComponent implements OnInit {
     });
   }
 
-  openProductForm(): void { this.showProductForm = true; }
-  closeProductForm(): void { this.showProductForm = false; }
+  openProductForm(): void {
+    this.selectedProduct = null;
+    this.productForm.reset();
+    this.selectedImageFile = null;
+    this.showProductForm = true;
+  }
+  closeProductForm(): void {
+    this.productForm.reset();
+    this.selectedProduct = null;
+    this.selectedImageFile = null;
+    this.showProductForm = false;
+  }
 
   getStars(rating: number): boolean[] {
     const stars = [];

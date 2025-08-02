@@ -12,16 +12,17 @@ import { Auth } from '../Services/auth';
 })
 export class NotDeliveryBoyGuard implements CanActivate {
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: Auth, private router: Router) { }
 
   canActivate(): boolean {
-    const role = this.auth.getRole();
+    const roles = this.auth.getRole(); 
 
-    if (role === 'DeliveryBoy') {
+    if (roles.includes('DeliveryBoy')) {
       this.router.navigate(['/unauthorized']);
       return false;
     }
 
     return true;
   }
+
 }

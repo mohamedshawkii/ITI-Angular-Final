@@ -20,6 +20,7 @@ export class NextEventComponent implements OnInit {
   BrandID!: number;
   registerForm!: FormGroup;
   IsRegisted: boolean = false;
+  IsHasBrand: boolean = false;
 
   _BazaarService = inject(BazaarService);
   _BrandService = inject(BrandService);
@@ -72,6 +73,9 @@ export class NextEventComponent implements OnInit {
     this._BrandService.GetBrandByUserId(this.userID).subscribe({
       next: (data) => {
         this.BrandID = data[0].id;
+        if (this.BrandID !== null && this.BrandID !== undefined) {
+          this.IsHasBrand = true;
+        }
         this.CheckIfRegistered();
         // console.log(data);
       },

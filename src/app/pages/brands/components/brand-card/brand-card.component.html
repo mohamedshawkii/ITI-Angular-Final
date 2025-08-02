@@ -7,14 +7,9 @@
     <p class="brand-category">{{ brand.categoryID }}</p>
     <p class="brand-description">{{ brand.description }}</p>
     <div class="brand-stats">
-      <span class="brand-rating">
-        ⭐
-        {{
-          brand.averageRating! > 0
-            ? (brand.averageRating | number : "1.1-1")
-            : "No ratings yet"
-        }}
-      </span>
+      <span class="brand-rating"
+        >⭐ {{ brand.averageRating | number : "1.1-1" }}</span
+      >
 
       <span class="brand-products">{{ brand.productCount }} products</span>
     </div>
@@ -27,16 +22,8 @@
     <a [routerLink]="['/brand', brand.id]" class="btn btn-primary"
       >View Brand</a
     >
-    <button class="btn btn-outline" (click)="toggleFollow()">
+    <!-- <button class="btn btn-outline" (click)="toggleFollow()">
       {{ brand.isFollowed ? "Following" : "Follow" }}
-    </button>
-
-    <button
-      *ngIf="brand.ownerId?.toString() === currentUserId"
-      class="btn btn-warning"
-      (click)="editBrand(brand.id)"
-    >
-      Edit Brand
-    </button>
+    </button> -->
   </div>
 </div>

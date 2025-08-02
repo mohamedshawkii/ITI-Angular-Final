@@ -11,12 +11,13 @@ import { BrandService } from '../../../../Services/brand.service';
 import { CategoryService } from '../../../../Services/category-service';
 import { Auth } from '../../../../Services/auth';
 import { ICategory } from '../../../../interfaces/ICategory';
-import { iBrand } from '../../../../interfaces/ibrand';
+import { iBrand } from '../../../../interfaces/iBrand';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-brand',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './edit-brand.component.html',
   styleUrls: ['./edit-brand.component.scss'],
 })
@@ -41,10 +42,9 @@ export class EditBrandComponent implements OnInit {
       Description: [''],
       Address: [''],
       CategoryID: ['', Validators.required],
-      ImageFile: [null], // ده مش مربوط بinput، هنحط فيه الفايل يدوي
+      ImageFile: [null], 
     });
 
-    // نجيب الـ owner من التوكن
     const ownerId = this._AuthService.getCurrentUserID();
     if (ownerId) {
       this.brandForm.patchValue({ OwnerID: ownerId });
@@ -52,7 +52,6 @@ export class EditBrandComponent implements OnInit {
 
     this.loadCategories();
 
-    // نجيب الـ id من الـ route ونعبي البيانات
     const param = this.route.snapshot.paramMap.get('id');
     if (param) {
       this.brandId = Number(param);
@@ -131,16 +130,3 @@ export class EditBrandComponent implements OnInit {
     });
   }
 }
-//   if (this.selectedImageFile) {
-//     formData.append('ImageFile', this.selectedImageFile);
-//   }
-
-//   this.service.updateBrand(formData).subscribe(
-//     res => {
-//       console.log('Brand updated successfully', res);
-//     },
-//     err => {
-//       console.error('Update failed', err);
-//     }
-//   );
-// }}

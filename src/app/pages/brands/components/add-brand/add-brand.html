@@ -1,9 +1,8 @@
 <div class="form-container">
   <h2>Add New Brand</h2>
 
-  <form class="brand-form" [formGroup]="brandForm" (ngSubmit)="OnSubmtit()">
+  <form class="brand-form" [formGroup]="brandForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <input type="hidden" id="OwnerID" formControlName="OwnerID" />
       <label for="brandName"
         >Brand Name <span class="required-star">*</span></label
       >
