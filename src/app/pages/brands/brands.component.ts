@@ -33,7 +33,7 @@ export class BrandsComponent implements OnInit {
   showAddBrandButton: boolean = false;
   userRole: string | null | undefined;
   _AuthService = inject(Auth);
-  currentUserId: string | null = null;
+  currentUserId!: string;
 
   constructor(
     private brandService: BrandService,

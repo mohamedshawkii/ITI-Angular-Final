@@ -32,9 +32,9 @@
     </button>
 
     <button
-      *ngIf="brand.ownerId?.toString() === currentUserId"
+      *ngIf="brand.OwnerID?.toString() === currentUserId"
       class="btn btn-warning"
-      (click)="editBrand(brand.id)"
+      (click)="edit.emit(brand.id)"
     >
       Edit Brand
     </button>

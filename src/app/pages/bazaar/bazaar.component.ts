@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NextEventComponent } from './components/next-event/next-event.component';
 import { FeaturedBrandsComponent } from './components/featured-brands/featured-brands.component';
@@ -21,6 +21,7 @@ import { IBazaar } from '../../interfaces/ibazaar';
     NextEventComponent,
     FeaturedBrandsComponent,
     ActivitiesComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './bazaar.component.html',
   styleUrls: ['./bazaar.component.scss'],
@@ -30,7 +31,7 @@ export class BazaarComponent implements OnInit {
   featuredBrands: IfeaturedBrand[] = [];
   brandId!: number;
 
-  constructor(private bazaarService: BazaarService, public authService: Auth) { }
+  constructor(private bazaarService: BazaarService, public authService: Auth) {}
 
   ngOnInit(): void {
     this.getLatestBazaar();
@@ -38,37 +39,39 @@ export class BazaarComponent implements OnInit {
   }
 
   AddBrandToBazar(): void {
-    this.bazaarService.addBrandToBazaar(this.nextEvent.id, this.brandId).subscribe({
-      next: () => {
-        alert('✅ Brand successfully registered for the event!');
-        this.bazaarService
-          .getBrandsForBazaar(this.nextEvent.id)
-          .subscribe((data) => {
-            this.featuredBrands = data.map((brand) => ({
-              ...brand,
-              icon: '✨',
-              isNew: false,
-              isFollowed: false,
-              specialOffer: '',
-            }));
-          });
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        alert(err);
-      }
-    });
+    this.bazaarService
+      .addBrandToBazaar(this.nextEvent.id, this.brandId)
+      .subscribe({
+        next: () => {
+          alert('✅ Brand successfully registered for the event!');
+          this.bazaarService
+            .getBrandsForBazaar(this.nextEvent.id)
+            .subscribe((data) => {
+              this.featuredBrands = data.map((brand) => ({
+                ...brand,
+                icon: '✨',
+                isNew: false,
+                isFollowed: false,
+                specialOffer: '',
+              }));
+            });
+        },
+        error: (err) => {
+          console.error('Error:', err);
+          alert(err);
+        },
+      });
   }
-  
+
   getLatestBazaar(): void {
     this.bazaarService.getNextEvent().subscribe({
       next: (res) => {
-        console.log("next event", res);
+        console.log('next event', res);
         this.nextEvent = res;
       },
       error: (err) => {
         console.error('Error fetching the next event.', err);
-      }
+      },
     });
   }
 

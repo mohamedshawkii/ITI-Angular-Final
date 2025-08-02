@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 })
 export class BrandCardComponent {
   @Input() brand!: iBrand;
-  @Input() currentUserId!: string | null;
+  @Input() currentUserId!: string;
 
   @Output() follow = new EventEmitter<number>();
   @Output() edit = new EventEmitter<number>();
