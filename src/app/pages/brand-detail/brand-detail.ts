@@ -1,8 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms'; // Import FormsModule
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { IProduct } from '../../interfaces/IProduct';
 import { BrandService } from '../../Services/brand.service';
 import { ProductService } from '../../Services/product-service';
@@ -11,15 +18,16 @@ import { environment } from '../../../environments/environments';
 import { IReview } from '../../interfaces/IReview';
 import { ReviewService } from '../../Services/review-service';
 import { Auth } from '../../Services/auth';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-brand-detail',
   standalone: true,
   imports: [RouterLink, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './brand-detail.html',
-  styleUrl: './brand-detail.scss'
+  styleUrls: ['./brand-detail.scss'], // صححت هنا
 })
-export class BrandDetailComponent implements OnInit {
+export class BrandDetailComponent implements OnInit, OnDestroy {
   brand!: any;
   products: IProduct[] = [];
   productForm!: FormGroup;
@@ -34,13 +42,14 @@ export class BrandDetailComponent implements OnInit {
     comment: '',
     rating: 1,
     createdAt: new Date(),
-    productID: 0
+    productID: 0,
   };
   showReviewForm = false;
-  hasMoreProducts = false;
   showProductForm = false;
   ProductReviews: IReview[] = [];
   stars = [1, 2, 3, 4, 5];
+
+  private cartSubscription!: Subscription;
 
   _AuthService = inject(Auth);
   _BrandService = inject(BrandService);
@@ -48,26 +57,28 @@ export class BrandDetailComponent implements OnInit {
   _CartService = inject(CartService);
   _ReviewService = inject(ReviewService);
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder) { }
+  constructor(private route: ActivatedRoute, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      price: ['', Validators.required],
-      quantity: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]],
+      quantity: ['', [Validators.required, Validators.min(0)]],
       brandID: ['', Validators.required],
     });
 
-    this._CartService.cart$.subscribe(items => {
+    // الاشتراك في الكارت
+    this.cartSubscription = this._CartService.cart$.subscribe((items) => {
       this.cartItems = items;
     });
-    // Get brand ID from route params
+
     const ParamId = this.route.snapshot.paramMap.get('id');
     if (!ParamId) {
       console.error('Brand ID not found in route parameters.');
       return;
     }
+
     this.BrandId = parseInt(ParamId);
     this.GetBrandById(this.BrandId);
     this.GetAllProducts(this.BrandId);
@@ -75,27 +86,26 @@ export class BrandDetailComponent implements OnInit {
     this.GetProductReviews(this.BrandId);
   }
 
+  ngOnDestroy(): void {
+    // إلغاء الاشتراك لتفادي تسرب الذاكرة
+    this.cartSubscription.unsubscribe();
+  }
+
   GetProductReviews(brandId: number) {
     this._ReviewService.BrandReviews(brandId).subscribe({
-      next: (res) => {
-        this.ProductReviews = res;
-        console.log('Product Reviews:', this.ProductReviews);
-      },
-      error: (err) => {
-        console.log(err);
-      }
+      next: (res) => (this.ProductReviews = res),
+      error: (err) => console.log(err),
     });
   }
 
   closeReviewForm() {
     this.showReviewForm = false;
-
   }
 
   DisplayBasedOnRole(Role: string): boolean {
-    const userRole = this._AuthService.getRole();
-    return userRole == Role;
+    return this._AuthService.getRole() === Role;
   }
+
   openReviewForm() {
     this.showReviewForm = true;
   }
@@ -106,39 +116,64 @@ export class BrandDetailComponent implements OnInit {
       this.selectedImageFile = file;
     }
   }
+
   SaveProduct() {
-    if (!this.productForm.invalid) {
-      const formData = new FormData();
-
-      formData.append('name', this.productForm.value.name);
-      formData.append('description', this.productForm.value.description);
-      formData.append('price', this.productForm.value.price.toString());
-      formData.append('quantity', this.productForm.value.quantity.toString());
-      formData.append('brandID', this.productForm.value.brandID.toString());
-
-      if (this.selectedImageFile) {
-        formData.append('ImageFile', this.selectedImageFile);
-      }
-
-      this._ProductService.CreateProduct(formData).subscribe({
-        next: (res) => {
-          console.log('Product created:', res);
-          this.products.push(res);
-          this.closeProductForm();
-          this.productForm.reset();
-        },
-        error: (err) => {
-          console.error('Error creating product:', err);
-        }
-      });
-    }
-    else {
+    if (this.productForm.invalid) {
       console.log('Form is invalid');
+      return;
     }
+
+    const formData = new FormData();
+    formData.append('name', this.productForm.value.name);
+    formData.append('description', this.productForm.value.description);
+    formData.append('price', this.productForm.value.price.toString());
+    formData.append('quantity', this.productForm.value.quantity.toString());
+    formData.append('brandID', this.productForm.value.brandID.toString());
+
+    if (this.selectedImageFile) {
+      formData.append('ImageFile', this.selectedImageFile);
+    }
+
+    if (this.selectedProduct) {
+      formData.append('id', this.selectedProduct.id.toString());
+    }
+
+    const request = this.selectedProduct
+      ? this._ProductService.UpdateProduct(formData)
+      : this._ProductService.CreateProduct(formData);
+
+    request.subscribe({
+      next: (res) => {
+        if (this.selectedProduct) {
+          const index = this.products.findIndex((p) => p.id === res.id);
+          if (index !== -1) this.products[index] = res;
+        } else {
+          this.products.push(res);
+        }
+        this.resetProductForm();
+      },
+      error: (err) => console.error('Error saving product:', err),
+    });
+  }
+
+  resetProductForm() {
+    this.selectedProduct = null;
+    this.selectedImageFile = null;
+    this.productForm.reset();
+    this.productForm.patchValue({ brandID: this.BrandId });
+    this.closeProductForm();
   }
 
   selectProduct(product: IProduct): void {
     this.selectedProduct = { ...product };
+    this.productForm.patchValue({
+      name: product.name ?? '',
+      description: product.description ?? '',
+      price: product.price ?? 0,
+      quantity: product.quantity ?? 0,
+      brandID: product.brandID ?? this.BrandId,
+    });
+    this.openProductForm();
   }
 
   AddReviewProduct(form: NgForm): void {
@@ -150,82 +185,57 @@ export class BrandDetailComponent implements OnInit {
 
     this._ReviewService.AddReview(this.newReview).subscribe({
       next: (res) => {
-        console.log('Review added successfully:', res);
         form.resetForm();
         this.selectedProduct = null;
-        this.closeReviewModal();
+        this.showReviewForm = false; // بدل استخدام Bootstrap JS modal
       },
-      error: (err) => {
-        console.error('Error adding review:', err);
-      }
+      error: (err) => console.error('Error adding review:', err),
     });
-  }
-
-  closeReviewModal(): void {
-    const modalEl = document.getElementById('reviewModal');
-    if (modalEl) {
-      const modalInstance = (window as any).bootstrap.Modal.getInstance(modalEl);
-      modalInstance?.hide();
-    }
   }
 
   getCartItems(): IProduct[] {
     return this._CartService.getCartItems();
   }
+
   addToCart(product: IProduct): void {
     this._CartService.addToCart(product);
   }
+
   removeFromCart(productId: number): void {
     this._CartService.removeFromCart(productId);
   }
 
   GetAllProducts(Id: number) {
     this._ProductService.GetAllProducts(Id).subscribe({
-      next: (res) => {
-        // console.log('Products-api:', res);
-        this.products = res;
-      },
-      error: (err) => {
-        console.log(err);
-      }
+      next: (res) => (this.products = res),
+      error: (err) => console.log(err),
     });
   }
 
   GetBrandById(ID: number) {
     this._BrandService.GetBrandById(ID).subscribe({
-      next: (res) => {
-        this.brand = res;
-        // console.log(this.brand);
-      },
-      error: (err) => {
-        console.log(err);
-      }
+      next: (res) => (this.brand = res),
+      error: (err) => console.log(err),
     });
   }
 
-  openProductForm(): void { this.showProductForm = true; }
-  closeProductForm(): void { this.showProductForm = false; }
-
-  getStars(rating: number): boolean[] {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(i <= rating);
-    }
-    return stars;
+  openProductForm(): void {
+    this.showProductForm = true;
   }
 
-  // followBrand() {
-  //   this.brand.isFollowed = !this.brand.isFollowed;
-  //   const action = this.brand.isFollowed ? 'following' : 'unfollowed';
-  //   alert(`You are now ${action} ${this.brand.name}!`);
-  // }
+  closeProductForm(): void {
+    this.showProductForm = false;
+  }
+
+  getStars(rating: number): boolean[] {
+    return Array.from({ length: 5 }, (_, i) => i < rating);
+  }
 
   contactBrand() {
     alert('Opening contact form...');
-    const contactSection = document.querySelector('.contact-section');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    document
+      .querySelector('.contact-section')
+      ?.scrollIntoView({ behavior: 'smooth' });
   }
 
   shareBrand() {
@@ -233,13 +243,11 @@ export class BrandDetailComponent implements OnInit {
   }
 
   viewProduct(productId: number) {
-    console.log('Viewing product:', productId);
     alert(`Redirecting to product detail page for product ID: ${productId}`);
   }
 
   quickView(productId: number, event: Event) {
     event.stopPropagation();
-    console.log('Quick view for product:', productId);
     alert(`Quick view modal would open for product ID: ${productId}`);
   }
 
@@ -255,5 +263,13 @@ export class BrandDetailComponent implements OnInit {
     alert('Loading more reviews...');
   }
 
-}
+  trackByProductId(index: number, product: IProduct): number {
+    return product.id;
+  }
 
+  openEditForm(product: IProduct): void {
+    this.selectedProduct = { ...product }; // ننسخ بيانات المنتج المحدد
+    this.productForm.patchValue(product); // نملأ الفورم بالبيانات دي
+    this.openProductForm(); // نفتح المودال
+  }
+}

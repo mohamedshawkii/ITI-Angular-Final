@@ -1,7 +1,6 @@
 <div class="brand-detail-page">
-  <!-- Brand Header مثل بروفايل الفيسبوك -->
+  <!-- Brand Header -->
   <div class="brand-hero">
-    <!-- صورة الكفر -->
     <div class="brand-cover">
       <img
         [src]="EUrl + brand.image"
@@ -10,11 +9,9 @@
       />
     </div>
 
-    <!-- معلومات البراند -->
     <div class="container">
       <div class="hero-content">
         <div class="brand-info">
-          <!-- لوجو البراند -->
           <div class="brand-logo">
             <img
               [src]="EUrl + brand.image"
@@ -22,7 +19,6 @@
               class="logo-image"
             />
           </div>
-          <!-- تفاصيل البراند -->
           <div class="brand-details">
             <h1 class="brand-name">{{ brand.name }}</h1>
             <div class="brand-stats">
@@ -32,7 +28,7 @@
             </div>
           </div>
         </div>
-        <!-- أزرار التفاعل -->
+
         <div class="brand-actions">
           <button class="btn btn-outline" (click)="shareBrand()">Share</button>
         </div>
@@ -40,214 +36,214 @@
     </div>
   </div>
 
-  <!-- Products Section -->
   <div class="products-section">
     <div class="container">
-      @if(DisplayBasedOnRole("BrandOwner")) {
-      <div class="section-header">
-        <h2 class="section-title">Our Products</h2>
-        <button class="btn btn-primary" (click)="openProductForm()">
-          <i class="fa fa-plus"></i> Add Product
-        </button>
-      </div>
-      }
-      <div class="products-grid">
-        <div class="product-card" *ngFor="let product of products">
-          <div class="product-info">
-            <h3 class="product-name">{{ product.name }}</h3>
-            <p class="product-description">
-              {{ product.description | slice : 0 : 60 }}...
-            </p>
-            <div class="product-image">
-              <img
-                [src]="EUrl + product.image"
-                alt="{{ product.name }}"
-                class="img-fluid"
-              />
-            </div>
-            <div class="product-price">${{ product.price }}</div>
-          </div>
-          @if(!DisplayBasedOnRole("BrandOwner")) {
-          <div class="product-actions">
-            <button class="btn btn-primary" (click)="addToCart(product)">
-              Add to Cart
-            </button>
-          </div>
-          <div class="product-actions">
-            <button
-              class="btn btn-secondary"
-              (click)="removeFromCart(product.id)"
-            >
-              Remove
-            </button>
-          </div>
-          <div class="product-actions">
-            <button
-              class="btn btn-primary"
-              (click)="selectProduct(product); openReviewForm()"
-            >
-              إضافة تقييم
-            </button>
-          </div>
-          }
-        </div>
-      </div>
-
-      <div class="section-header mt-4">
-        <h2 class="section-title">Our Product Reviews</h2>
-      </div>
-
-      <div class="reviews-section">
-        @for (review of ProductReviews; track review.id) {
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-rating">
-              ⭐ {{ review.rating }} / 5
-              <span class="stars">
-                @for (i of stars; track i) { @if (i <= review.rating) {
-                <span class="star filled">★</span>
-                } @else {
-                <span class="star empty">☆</span>
-                } }
-              </span>
-            </div>
-
-            <div class="review-date">
-              {{ review.createdAt | date : "mediumDate" }}
-            </div>
-          </div>
-
-          <div class="review-body">
-            <p class="review-comment">“{{ review.comment }}”</p>
-          </div>
-        </div>
-        }
-      </div>
-    </div>
-  </div>
-</div>
-
-@if(!DisplayBasedOnRole("BrandOwner")) {
-<div class="modal-overlay" *ngIf="showReviewForm">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>أضف تقييمك</h2>
-      <button class="close-btn" (click)="closeReviewForm()">&times;</button>
-    </div>
-
-    <div class="modal-body">
-      <form #reviewForm="ngForm" (ngSubmit)="AddReviewProduct(reviewForm)">
-        <div class="form-group">
-          <label for="comment">التعليق</label>
-          <textarea
-            id="comment"
-            name="comment"
-            class="form-control"
-            [(ngModel)]="newReview.comment"
-            rows="3"
-            required
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="rating">التقييم</label>
-          <select
-            id="rating"
-            name="rating"
-            class="form-control"
-            [(ngModel)]="newReview.rating"
-            required
-          >
-            <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">
-              {{ r }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn btn-success">Add Review</button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="closeReviewForm()"
-          >
-            إلغاء
+      <!-- عرض للمالك -->
+      <div *ngIf="DisplayBasedOnRole('BrandOwner')">
+        <div class="section-header">
+          <h2 class="section-title">Our Products</h2>
+          <button class="btn btn-success" (click)="openProductForm()">
+            Add Product
           </button>
         </div>
-      </form>
+
+        <div class="products-grid">
+          <div class="product-card" *ngFor="let product of products">
+            <div class="product-info">
+              <h3 class="product-name">{{ product.name }}</h3>
+              <p class="product-description">
+                {{ product.description | slice : 0 : 60 }}...
+              </p>
+              <div class="product-image">
+                <img
+                  [src]="EUrl + product.image"
+                  alt="{{ product.name }}"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="product-price">{{ product.price }} EGP</div>
+              <div class="product-actions">
+                <button class="btn btn-warning" (click)="openEditForm(product)">
+                  <i class="fa fa-edit"></i> Edit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- مودال إضافة/تعديل المنتج -->
+      <div class="modal-overlay" *ngIf="showProductForm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>{{ selectedProduct ? "Edit Product" : "Add New Product" }}</h2>
+            <button class="close-btn" (click)="closeProductForm()">
+              &times;
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form [formGroup]="productForm" (ngSubmit)="SaveProduct()">
+              <div class="form-group">
+                <label>Product Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="name"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Price</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="price"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  class="form-control"
+                  rows="3"
+                  formControlName="description"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Quantity</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="quantity"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  (change)="onImageSelected($event)"
+                />
+              </div>
+
+              <div class="form-actions mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-success">
+                  {{ selectedProduct ? "Update Product" : "Add Product" }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="closeProductForm()"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- عرض للعميل (غير المالك) -->
+      <div *ngIf="!DisplayBasedOnRole('BrandOwner')">
+        <div class="products-grid">
+          <div class="product-card" *ngFor="let product of products">
+            <div class="product-info">
+              <h3 class="product-name">{{ product.name }}</h3>
+              <p class="product-description">
+                {{ product.description | slice : 0 : 60 }}...
+              </p>
+              <div class="product-image">
+                <img
+                  [src]="EUrl + product.image"
+                  alt="{{ product.name }}"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="product-price">{{ product.price }} EGP</div>
+
+              <div class="product-actions">
+                <button class="btn btn-primary" (click)="addToCart(product)">
+                  Add to Cart
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  (click)="removeFromCart(product.id)"
+                >
+                  Remove
+                </button>
+                <button
+                  class="btn btn-primary"
+                  (click)="selectProduct(product); openReviewForm()"
+                >
+                  إضافة تقييم
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- مودال إضافة تقييم -->
+        <div class="modal-overlay" *ngIf="showReviewForm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2>أضف تقييمك</h2>
+              <button class="close-btn" (click)="closeReviewForm()">
+                &times;
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <form
+                #reviewForm="ngForm"
+                (ngSubmit)="AddReviewProduct(reviewForm)"
+              >
+                <div class="form-group">
+                  <label for="comment">التعليق</label>
+                  <textarea
+                    id="comment"
+                    name="comment"
+                    class="form-control"
+                    [(ngModel)]="newReview.comment"
+                    rows="3"
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="rating">التقييم</label>
+                  <select
+                    id="rating"
+                    name="rating"
+                    class="form-control"
+                    [(ngModel)]="newReview.rating"
+                    required
+                  >
+                    <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">
+                      {{ r }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-success">
+                    Add Review
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="closeReviewForm()"
+                  >
+                    إلغاء
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-} @if(DisplayBasedOnRole("BrandOwner")) {
-<div class="modal-overlay" *ngIf="showProductForm">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Add New Product</h2>
-      <button class="close-btn" (click)="closeProductForm()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <form [formGroup]="productForm" (ngSubmit)="SaveProduct()">
-        <div class="form-group">
-          <label for="productName">Product Name</label>
-          <input
-            type="text"
-            id="name"
-            class="form-control"
-            formControlName="name"
-            placeholder="e.g., Whole Wheat Bread"
-          />
-        </div>
-        <div class="form-group">
-          <label for="productPrice">Price</label>
-          <input
-            type="number"
-            id="Price"
-            class="form-control"
-            formControlName="price"
-            placeholder="e.g., 25.00"
-          />
-        </div>
-        <div class="form-group">
-          <label for="productDescription">Description</label>
-          <textarea
-            id="Description"
-            class="form-control"
-            formControlName="description"
-            rows="3"
-          ></textarea>
-        </div>
-        <div class="form-group">
-          <label for="productPrice">Quantity</label>
-          <input
-            type="number"
-            id="quantity"
-            class="form-control"
-            formControlName="quantity"
-            placeholder="e.g., 10"
-          />
-        </div>
-        <div class="form-group">
-          <label for="productImage">Image</label>
-          <input
-            type="file"
-            (change)="onImageSelected($event)"
-            id="Image"
-            class="form-control"
-            placeholder="https://example.com/image.jpg"
-          />
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-success">Save Product</button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="closeProductForm()"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-}
