@@ -6,16 +6,22 @@
       <h1>Users Management</h1>
       <p>Manage user accounts and permissions</p>
     </div>
-    <button class="btn btn-primary add-user-btn">
+    <button class="btn btn-primary add-user-btn" (click)="openAddForm()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C13.6783 15.4214 12.0609 15 10.5 15H5.5C3.93913 15 2.32172 15.4214 1.17157 16.1716C0.421427 16.9217 0 17.9391 0 19V21" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
         <circle cx="8" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
         <line x1="20" y1="8" x2="20" y2="14" stroke="currentColor" stroke-width="2"/>
         <line x1="17" y1="11" x2="23" y2="11" stroke="currentColor" stroke-width="2"/>
       </svg>
-      Add User
+      Add Delivery Boy
     </button>
   </div>
+
+  <div class="modal-overlay" *ngIf="showAddForm">
+  <div class="modal-content">
+    <app-add-delivery-boy (formClosed)="closeAddForm()"></app-add-delivery-boy>
+  </div>
+</div>
 
   <!-- Search and Filter Bar -->
   <div class="users-controls">

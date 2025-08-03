@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { UserManagementServic } from '../../../../Services/user-management-servic';
 import { IUser } from '../../../../interfaces/IUser';
+import { AddDeliveryBoyComponent } from '../add-delivery-boy/add-delivery-boy';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-users',
-  imports: [],
+  imports: [AddDeliveryBoyComponent,CommonModule],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
@@ -18,6 +20,23 @@ export class Users {
   totalPages = 0;
   totalPagesArray: number[] = [];
   
+  // متغير للتحكم في عرض الفورم
+  showAddForm = false;
+
+  // دالة لفتح الفورم
+  openAddForm(): void {
+        console.log('تم الضغط على الزر! قيمة showAddForm قبل التغيير:', this.showAddForm);
+
+    this.showAddForm = true;
+  }
+
+  // دالة لإغلاق الفورم
+  closeAddForm(): void {
+    this.showAddForm = false;
+    // يمكنك عمل إعادة تحميل للبيانات هنا إذا أردت
+    // this.loadUsers(); 
+  }
+
   // Search functionality
   searchQuery: string = '';
 
