@@ -4,6 +4,7 @@ export interface iBrand {
   description?: string;
   address?: string;
   image?: string;
+  profileImage?: string;
   categoryID: string;
   ownerID: string;
   productCount?: number;

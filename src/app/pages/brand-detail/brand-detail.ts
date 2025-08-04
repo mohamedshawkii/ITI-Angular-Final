@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms'; // Import FormsModule
+import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IProduct } from '../../interfaces/IProduct';
 import { BrandService } from '../../Services/brand.service';
 import { ProductService } from '../../Services/product-service';
@@ -62,12 +62,12 @@ export class BrandDetailComponent implements OnInit {
       quantity: ['', Validators.required],
       brandID: ['', Validators.required],
     });
-    this.currentUserId = this._AuthService.getCurrentUserID()!; // Ensure user ID is fetched
+    this.currentUserId = this._AuthService.getCurrentUserID()!;
     this.userRole = this._AuthService.getRole();
     this._CartService.cart$.subscribe(items => {
       this.cartItems = items;
     });
-    // Get brand ID from route params
+
     const ParamId = this.route.snapshot.paramMap.get('id');
     if (!ParamId) {
       return;
@@ -241,6 +241,7 @@ export class BrandDetailComponent implements OnInit {
     this._BrandService.GetBrandById(ID).subscribe({
       next: (res) => {
         this.brand = res;
+        // console.log('Brand-api:', this.brand);
         this.IsBrandOwner()
       },
       error: (err) => {

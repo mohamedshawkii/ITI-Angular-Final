@@ -11,49 +11,61 @@
       </tr>
     </thead>
     <tbody>
-      @for (order of filteredOrders; track order.id) {
+      @for (order of orders; track order.id) {
       <tr>
-        <td>{{ order.orderDate  }}</td>
-
+        <td>{{ order.orderDate }}</td>
         <td>
-          @switch( order.status){
-            @case (1) { <span class="badge bg-primary">Out For Delivery</span> }
-            @case (2) { <span class="badge bg-success">Delivered</span> }
-            @case (3) { <span class="badge bg-danger">Cancelled</span> }
-            @case (4) { <span class="badge bg-warning text-dark">Delivery Brand Handing Request</span> }
-            @case (5) { <span class="badge bg-info">Delivery User Handing Request</span> }
-            @case (6) { <span class="badge bg-secondary">User Delivery Handing Request</span> }
-            @case (7) { <span class="badge bg-dark">Returning</span> }
-            @default { <span class="badge bg-secondary">Checking</span> }
-          }
+          @switch( order.status){ @case (1) {
+          <span class="badge bg-primary">Out For Delivery</span> } @case (2) {
+          <span class="badge bg-success">Delivered</span> } @case (3) {
+          <span class="badge bg-danger">Cancelled</span> } @case (4) {
+          <span class="badge bg-warning text-dark"
+            >Delivery Brand Handing Request</span
+          >
+          } @case (5) {
+          <span class="badge bg-info">Delivery User Handing Request</span> }
+          @case (6) {
+          <span class="badge bg-secondary">User Delivery Handing Request</span>
+          } @case (7) { <span class="badge bg-dark">Returning</span> } @default
+          { <span class="badge bg-secondary">Checking</span> } }
         </td>
 
         <td>
           <ul class="list-unstyled order-details-list">
             @for (_order of order.orderDetails; track $index) {
-            <li>Price: \${{ _order.price  }}, Qty: {{ _order.quantity }}</li>
+            <li>Price: ${{ _order.price }}, Qty: {{ _order.quantity }}</li>
             }
           </ul>
         </td>
-        <td>{{ order.orderDetails }}</td>
+        <td>{{ order.paymentMethod || "checking" }}</td>
         <td>
           @if(order.status === 4){
-          <button class="btn btn-sm btn-primary action-btn" (click)="HandOrder(order)">
+          <button
+            class="btn btn-sm btn-primary action-btn"
+            (click)="HandOrder(order)"
+          >
             <i class="fas fa-handshake"></i> Hand Over
           </button>
           }@else if(order.status === 7){
-          <button class="btn btn-sm btn-success action-btn" (click)="ReceiveReturning(order)">
+          <button
+            class="btn btn-sm btn-success action-btn"
+            (click)="ReceiveReturning(order)"
+          >
             <i class="fas fa-undo"></i> Receive Returning
           </button>
           }@else {
-          <p class="no-action-text"><i class="fas fa-info-circle"></i> No Action needed</p>
+          <p class="no-action-text">
+            <i class="fas fa-info-circle"></i> No Action needed
+          </p>
           }
         </td>
       </tr>
       } @empty {
-        <tr>
-          <td colspan="5" class="text-center py-3">No in-progress orders found.</td>
-        </tr>
+      <tr>
+        <td colspan="5" class="text-center py-3">
+          No in-progress orders found.
+        </td>
+      </tr>
       }
     </tbody>
   </table>

@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { UserManagementServic } from '../../../../Services/user-management-servic';
 import { IUser } from '../../../../interfaces/IUser';
+import { AddDeliveryBoyComponent } from '../add-delivery-boy/add-delivery-boy';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-users',
-  imports: [CommonModule],
+  imports: [AddDeliveryBoyComponent,CommonModule],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
@@ -18,6 +19,23 @@ export class Users {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
+  
+  // متغير للتحكم في عرض الفورم
+  showAddForm = false;
+
+  // دالة لفتح الفورم
+  openAddForm(): void {
+        console.log('تم الضغط على الزر! قيمة showAddForm قبل التغيير:', this.showAddForm);
+
+    this.showAddForm = true;
+  }
+
+  // دالة لإغلاق الفورم
+  closeAddForm(): void {
+    this.showAddForm = false;
+    // يمكنك عمل إعادة تحميل للبيانات هنا إذا أردت
+    // this.loadUsers(); 
+  }
 
   // Search functionality
   searchQuery: string = '';
@@ -53,7 +71,6 @@ export class Users {
   Promotion(userId: string): void {
     this._UserManagement.Promotion(userId).subscribe({
       next: (value) => {
-        // console.log('Promoted', value);
         this.GetAll();
       },
       error: (err) => {
@@ -72,16 +89,12 @@ export class Users {
       }
     });
   }
-  /**
-   * Calculate pagination based on filtered users
-   */
+
   calculatePagination(): void {
     this.totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
     this.totalPagesArray = Array(this.totalPages)
       .fill(0)
       .map((_, i) => i + 1);
-
-    // Reset to first page if current page exceeds total pages
     if (this.currentPage > this.totalPages) {
       this.currentPage = 1;
     }

@@ -26,7 +26,7 @@ export class EditBrandComponent implements OnInit {
   Categories: ICategory[] = [];
   brandId!: number;
   selectedImageFile: File | null = null;
-
+  selectedProfileImageFile: File | null = null;
   private _BrandService = inject(BrandService);
   private _CategoryService = inject(CategoryService);
   private _AuthService = inject(Auth);
@@ -37,18 +37,18 @@ export class EditBrandComponent implements OnInit {
   ngOnInit(): void {
     this.brandForm = this.fb.group({
       Id: [''],
-      OwnerID: [''],
       Name: ['', Validators.required],
       Description: [''],
       Address: [''],
+      ImageFile: [null],
+      profileImage: [null],
       CategoryID: ['', Validators.required],
-      ImageFile: [null], 
+      OwnerID: ['', Validators.required],
     });
 
-    const ownerId = this._AuthService.getCurrentUserID();
-    if (ownerId) {
-      this.brandForm.patchValue({ OwnerID: ownerId });
-    }
+    this.brandForm.patchValue({
+      OwnerID: this._AuthService.getCurrentUserID() as string,
+    });
 
     this.loadCategories();
 
@@ -78,12 +78,11 @@ export class EditBrandComponent implements OnInit {
     this._BrandService.GetBrandById(id).subscribe({
       next: (brand: iBrand) => {
         this.brandForm.patchValue({
+          Id: brand.id,
           Name: brand.name,
           Description: brand.description,
           Address: brand.address,
           CategoryID: brand.categoryID,
-          Id: brand.id,
-          // OwnerID ما نغيروش لأن هو من التوكن
         });
       },
       error: (err) => {
@@ -92,12 +91,20 @@ export class EditBrandComponent implements OnInit {
     });
   }
 
-  onImageSelected(event: Event) {
+  onImageCoverSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.selectedImageFile = file;
       this.brandForm.patchValue({ ImageFile: file });
       this.brandForm.get('ImageFile')?.updateValueAndValidity();
+    }
+  }
+  onImageProfileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedProfileImageFile = file;
+      this.brandForm.patchValue({ profileImage: file });
+      this.brandForm.get('profileImage')?.updateValueAndValidity();
     }
   }
 
@@ -106,7 +113,6 @@ export class EditBrandComponent implements OnInit {
       console.log('Form invalid');
       return;
     }
-
     const formData = new FormData();
     formData.append('Id', this.brandForm.value.Id);
     formData.append('Name', this.brandForm.value.Name);
@@ -114,18 +120,20 @@ export class EditBrandComponent implements OnInit {
     formData.append('Address', this.brandForm.value.Address || '');
     formData.append('CategoryID', this.brandForm.value.CategoryID.toString());
     formData.append('OwnerID', this.brandForm.value.OwnerID);
-
     if (this.selectedImageFile) {
       formData.append('ImageFile', this.selectedImageFile);
     }
-
+    if (this.selectedProfileImageFile) {
+      formData.append('ProfileImage', this.selectedProfileImageFile);
+    }
     this._BrandService.updateBrand(formData).subscribe({
-      next: () => {
-        alert('Brand Updated successfully');
+      next: (res) => {
+        alert('Brand updated successfully!');
+        // console.log('Brand created successfully', res);
         this.router.navigate(['/brands']);
       },
       error: (err) => {
-        console.error('Error updating brand', err);
+        console.error('Error creating brand', err);
       },
     });
   }

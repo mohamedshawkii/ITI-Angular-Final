@@ -36,7 +36,6 @@ export class AvailableOrders implements OnInit {
     return (this.CurrActiveOrders?.length ?? 0) > 2;
   }
 
-
   ActiveOrders() {
     if (this.DeliveryID !== null && this.DeliveryID !== undefined) {
       this._OrderService.GetActiveOrders(this.DeliveryID).subscribe({
@@ -52,26 +51,18 @@ export class AvailableOrders implements OnInit {
 
   }
 
-
   GetAvailable() {
     this._OrderService.AvailableOrders().subscribe({
       next: (data: IOrder[]) => {
         this.filteredOrders = data.filter(order => order.status === 0);
         this.orders = this.filteredOrders;
+        this.calculatePagination();
+        this.updateDisplayedUsers();
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
       }
     });
-
-    this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
-    this.totalPages = Math.ceil(this.orders.length / this.pageSize);
-    if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
-      this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    } else {
-      this.totalPagesArray = [];
-    }
-    this.updateDisplayedUsers();
   }
 
   TakeOrder(Order: IOrder): void {
@@ -86,6 +77,15 @@ export class AvailableOrders implements OnInit {
     });
   }
 
+  calculatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize);
+    this.totalPagesArray = Array(this.totalPages)
+      .fill(0)
+      .map((_, i) => i + 1);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = 1;
+    }
+  }
 
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;

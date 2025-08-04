@@ -34,15 +34,8 @@ export class MyOrders {
       next: (data: any[]) => {
         this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
         this.orders = this.filteredOrders;
-
-        this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
-        this.totalPages = Math.ceil(this.orders.length / this.pageSize);
-
-        if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
-          this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        } else {
-          this.totalPagesArray = [];
-        }
+        
+        this.calculatePagination();
         this.updateDisplayedUsers();
       },
       error: (error) => {
@@ -88,6 +81,16 @@ export class MyOrders {
         console.error('Error releasing order:', error);
       }
     });
+  }
+
+  calculatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize);
+    this.totalPagesArray = Array(this.totalPages)
+      .fill(0)
+      .map((_, i) => i + 1);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = 1;
+    }
   }
 
   updateDisplayedUsers(): void {

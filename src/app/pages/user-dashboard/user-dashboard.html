@@ -1,6 +1,17 @@
-<div class="admin_container">
-  <app-side-bare-user class="h-100"></app-side-bare-user>
-  <main class="p-4 w-100">
-    <router-outlet></router-outlet>
+<div class="dashboard-layout">
+  <app-side-bare-user></app-side-bare-user>
+  <main class="dashboard-content">
+    <div class="content-header">
+      <h1 class="content-title">My Orders Dashboard</h1>
+      <div class="user-info">
+        <span class="user-greeting">Welcome back, user</span>
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+      </div>
+    </div>
+    <div class="content-body">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 </div>

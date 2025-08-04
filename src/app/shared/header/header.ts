@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Auth } from '../../Services/auth';
 import { CartService } from '../../Services/cart-service';
 import { IProduct } from '../../interfaces/IProduct';
+import { BrandService } from '../../Services/brand.service';
 
 @Component({
   selector: 'app-header',
@@ -13,10 +14,13 @@ import { IProduct } from '../../interfaces/IProduct';
   styleUrl: './header.scss'
 })
 export class HeaderComponent implements OnInit {
+  BrandId!: number;
   userRole!: string[];
   isLoggedIn: boolean = false;
   itemCount: number = 0;
   isMobileMenuOpen = false;
+
+  _BrandService = inject(BrandService);
 
   constructor(public authService: Auth, private cartService: CartService) { }
   ngOnInit() {
@@ -25,7 +29,9 @@ export class HeaderComponent implements OnInit {
 
       if (this.isLoggedIn) {
         this.userRole = this.authService.getRole();
-        // console.log('Roles:', this.userRole);
+        if (this.userRole.includes('BrandOwner')) {
+          this.GetBrandByUserId(this.authService.getCurrentUserID()!);
+        }
       } else {
         this.userRole = [];
       }
@@ -33,6 +39,17 @@ export class HeaderComponent implements OnInit {
 
     this.cartService.cart$.subscribe((cartItems: IProduct[]) => {
       this.itemCount = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
+    });
+  }
+
+  GetBrandByUserId(UserId: string) {
+    this._BrandService.GetBrandByUserId(UserId).subscribe({
+      next: (data) => {
+        this.BrandId = data[0].id
+      },
+      error: (error) => {
+        // console.error('Error fetching available brands:', error);
+      }
     });
   }
 

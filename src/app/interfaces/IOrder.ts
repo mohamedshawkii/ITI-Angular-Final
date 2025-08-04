@@ -4,6 +4,7 @@ export interface IOrder {
     id: number;
     orderDate: Date;
     status: number;
+    paymentMethod: string;
     totalAmount: number;
     deliveryBoyID?: string | null;
     userID: string;
