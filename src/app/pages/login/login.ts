@@ -57,7 +57,7 @@ export class LoginComponent {
         if (token) {
           localStorage.setItem('token', token);
           this._auth.saveUser();
-          
+
           const role = this._auth.getRole();
           if (role.includes('DeliveryBoy')) {
             this._router.navigate(['/delivery']);
