@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { BrandsComponent } from './pages/brands/brands.component';
 import { BrandDetailComponent } from './pages/brand-detail/brand-detail';
 import { ProductDetailComponent } from './pages/product-detail/product-detail';
-import { SubscriptionsComponent } from './pages/subscriptions/subscriptions';
 import { CartComponent } from './pages/cart/cart';
 import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
@@ -30,7 +29,6 @@ import { AvailableOrdersBrand } from './pages/brand-dashboard/components/availab
 import { NotDeliveryBoyGuard } from './guards/not-delivery-boy-guard';
 import { EditBrandComponent } from './pages/brands/components/edit-brand/edit-brand.component';
 
-
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
@@ -45,7 +43,7 @@ export const routes: Routes = [
     path: 'brands',
     component: BrandsComponent,
     canActivate: [RoleGuard],
-    data: { roles: [ 'Customer', 'BrandOwner'] },
+    data: { roles: ['Customer', 'BrandOwner'] },
   },
   {
     path: 'brands/add',
@@ -89,12 +87,12 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { roles: ['ADMIN', 'Customer', 'BrandOwner'] },
   },
-  {
-    path: 'subscriptions',
-    component: SubscriptionsComponent,
-    canActivate: [RoleGuard],
-    data: { roles: ['ADMIN', 'Customer', 'BrandOwner'] },
-  },
+  // {
+  //   path: 'subscriptions',
+  //   component: SubscriptionsComponent,
+  //   canActivate: [RoleGuard],
+  //   data: { roles: ['ADMIN', 'Customer', 'BrandOwner'] },
+  // },
 
   {
     path: 'admin',

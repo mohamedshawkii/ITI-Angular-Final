@@ -5,7 +5,11 @@
       <div class="card-tools">
         <div class="search-box">
           <i class="fas fa-search search-icon"></i>
-          <input type="text" placeholder="Search orders..." class="search-input">
+          <input
+            type="text"
+            placeholder="Search orders..."
+            class="search-input"
+          />
         </div>
       </div>
     </div>
@@ -25,28 +29,35 @@
             @for (order of orders; track order.id) {
             <tr>
               <td class="order-date">{{ order.orderDate }}</td>
-              
+
               <td class="order-status">
-                @switch( order.status){ 
-                @case (1) {
-                <span class="status-badge status-delivery">Out For Delivery</span>
+                @switch( order.status){ @case (1) {
+                <span class="status-badge status-delivery"
+                  >Out For Delivery</span
+                >
                 } @case (2) {
                 <span class="status-badge status-delivered">Delivered</span>
                 } @case (3) {
                 <span class="status-badge status-cancelled">Cancelled</span>
                 } @case (4) {
-                <span class="status-badge status-request">Delivery Brand Request</span>
+                <span class="status-badge status-request"
+                  >Delivery Brand Request</span
+                >
                 } @case (5) {
-                <span class="status-badge status-request">Delivery User Request</span>
+                <span class="status-badge status-request"
+                  >Delivery User Request</span
+                >
                 } @case (6) {
-                <span class="status-badge status-return">User Return Request</span>
+                <span class="status-badge status-return"
+                  >User Return Request</span
+                >
                 } @case (7) {
                 <span class="status-badge status-returning">Returning</span>
                 } @default {
                 <span class="status-badge status-checking">Checking</span>
                 } }
               </td>
-              
+
               <td class="order-details">
                 <div class="details-list">
                   @for (_order of order.orderDetails; track $index) {
@@ -59,16 +70,24 @@
                   }
                 </div>
               </td>
-              
-              <td class="payment-method">order.paymentMethod</td>
-              
+
+              <td class="payment-method">
+                {{ order.paymentMethod || "checking" }}
+              </td>
+
               <td class="order-actions">
                 @if(order.status === 5) {
-                <button class="action-button receive-button" (click)="ReceiveOrder(order)">
+                <button
+                  class="action-button receive-button"
+                  (click)="ReceiveOrder(order)"
+                >
                   <i class="fas fa-handshake"></i> Receive Order
                 </button>
                 } @else if(order.status == 2) {
-                <button class="action-button return-button" (click)="UserDeliveryHandingRequest(order)">
+                <button
+                  class="action-button return-button"
+                  (click)="UserDeliveryHandingRequest(order)"
+                >
                   <i class="fas fa-undo-alt"></i> Return Order
                 </button>
                 } @else {
@@ -76,8 +95,7 @@
                 }
               </td>
             </tr>
-            }
-            @if (orders.length === 0) {
+            } @if (orders.length === 0) {
             <tr class="no-orders">
               <td colspan="5">
                 <div class="empty-state">
@@ -102,7 +120,9 @@
 
           @for (page of totalPagesArray; track page) {
           <li class="page-item" [class.active]="currentPage === page">
-            <button class="page-link page-number" (click)="goToPage(page)">{{ page }}</button>
+            <button class="page-link page-number" (click)="goToPage(page)">
+              {{ page }}
+            </button>
           </li>
           }
 

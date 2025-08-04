@@ -33,7 +33,7 @@
             }
           </ul>
         </td>
-        <td>{{ order.id }}</td>
+        <td>{{ order.paymentMethod || "checking" }}</td>
       </tr>
       } @empty {
       <tr>

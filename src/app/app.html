@@ -6,5 +6,7 @@
   <router-outlet></router-outlet>
 </main>
 
+<!-- <p>Current Route: {{ currentRoute }}</p>
+<p>Hide footer? {{ hideFooter }}</p> -->
 <!-- Footer Section -->
-<app-footer></app-footer>
+<app-footer *ngIf="!hideFooter"></app-footer>

@@ -4,7 +4,7 @@
   <div class="brand-hero">
     <div class="brand-cover">
       <img
-        [src]="EUrl + brand.image"
+        [src]="EUrl + '/' + brand.image"
         alt="{{ brand.name }} Cover Image"
         class="cover-image"
       />
@@ -16,7 +16,7 @@
           <!-- لوجو البراند -->
           <div class="brand-logo">
             <img
-              [src]="EUrl + brand.image"
+              [src]="EUrl + '/' + brand.profileImage"
               alt="{{ brand.name }} Logo"
               class="logo-image"
             />

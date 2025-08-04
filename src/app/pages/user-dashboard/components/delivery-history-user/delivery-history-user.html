@@ -5,7 +5,11 @@
       <div class="card-tools">
         <div class="search-box">
           <i class="fas fa-search search-icon"></i>
-          <input type="text" placeholder="Search history..." class="search-input">
+          <input
+            type="text"
+            placeholder="Search history..."
+            class="search-input"
+          />
         </div>
       </div>
     </div>
@@ -24,10 +28,9 @@
             @for (order of orders; track order.id) {
             <tr>
               <td class="order-date">{{ order.orderDate }}</td>
-              
+
               <td class="order-status">
-                @switch( order.status){ 
-                @case (2) {
+                @switch( order.status){ @case (2) {
                 <span class="status-badge status-delivered">Delivered</span>
                 } @case (3) {
                 <span class="status-badge status-cancelled">Cancelled</span>
@@ -35,7 +38,7 @@
                 <span class="status-badge status-checking">Processing</span>
                 } }
               </td>
-              
+
               <td class="order-details">
                 <div class="details-list">
                   @for (_order of order.orderDetails; track $index) {
@@ -48,11 +51,12 @@
                   }
                 </div>
               </td>
-              
-              <td class="payment-method">order.paymentMethod </td>
+
+              <td class="payment-method">
+                {{ order.paymentMethod || "checking" }}
+              </td>
             </tr>
-            }
-            @if (orders.length === 0) {
+            } @if (orders.length === 0) {
             <tr class="no-orders">
               <td colspan="4">
                 <div class="empty-state">
@@ -77,7 +81,9 @@
 
           @for (page of totalPagesArray; track page) {
           <li class="page-item" [class.active]="currentPage === page">
-            <button class="page-link page-number" (click)="goToPage(page)">{{ page }}</button>
+            <button class="page-link page-number" (click)="goToPage(page)">
+              {{ page }}
+            </button>
           </li>
           }
 

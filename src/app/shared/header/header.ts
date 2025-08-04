@@ -28,8 +28,10 @@ export class HeaderComponent implements OnInit {
       this.isLoggedIn = !!token;
 
       if (this.isLoggedIn) {
-        this.GetBrandByUserId(this.authService.getCurrentUserID()!);
         this.userRole = this.authService.getRole();
+        if (this.userRole.includes('BrandOwner')) {
+          this.GetBrandByUserId(this.authService.getCurrentUserID()!);
+        }
       } else {
         this.userRole = [];
       }
@@ -44,10 +46,9 @@ export class HeaderComponent implements OnInit {
     this._BrandService.GetBrandByUserId(UserId).subscribe({
       next: (data) => {
         this.BrandId = data[0].id
-        console.log(data);
       },
       error: (error) => {
-        console.error('Error fetching available brands:', error);
+        // console.error('Error fetching available brands:', error);
       }
     });
   }

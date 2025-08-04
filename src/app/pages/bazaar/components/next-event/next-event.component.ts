@@ -64,7 +64,8 @@ export class NextEventComponent implements OnInit {
 
   GetUserId(): void {
     this.userID = this._AuthService.getCurrentUserID()!;
-    if (this.userID !== null && this.userID !== undefined) {
+    this.userRole = this._AuthService.getRole()!;
+    if (this.userID !== null && this.userID !== undefined && this.userRole.includes('BrandOwner')) {
       this.GetBrandId();
     }
   }
@@ -80,7 +81,7 @@ export class NextEventComponent implements OnInit {
         // console.log(data);
       },
       error: (error) => {
-        console.error('Error fetching available brands:', error);
+        // console.error('Error fetching available brands:', error);
       }
     });
   }

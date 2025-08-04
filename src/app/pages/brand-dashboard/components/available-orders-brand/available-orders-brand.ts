@@ -62,6 +62,19 @@ export class AvailableOrdersBrand implements OnInit {
     });
   }
 
+  CancelOrder(Order: IOrder): void {
+    Order.status = 3;
+    this._OrderService.OrderUpdate(Order).subscribe({
+      next: (data) => {
+        alert('Order Canceled');
+        this.GetAvailable();
+      },
+      error: (error) => {
+        console.error('Error taking order:', error);
+      }
+    });
+  }
+
   calculatePagination(): void {
     this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize);
     this.totalPagesArray = Array(this.totalPages)

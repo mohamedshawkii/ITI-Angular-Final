@@ -25,6 +25,7 @@ export class AddBrand implements OnInit {
   Brand!: iBrand;
   Categories!: ICategory[];
   selectedImageFile: File | null = null;
+  selectedProfileImageFile: File | null = null;
 
   _BrandService = inject(BrandService);
   _CategoryService = inject(CategoryService);
@@ -39,6 +40,7 @@ export class AddBrand implements OnInit {
       Description: [''],
       Address: [''],
       ImageFile: [null],
+      ProfileImage: [null],
       CategoryID: ['', Validators.required],
       OwnerID: ['', Validators.required],
     });
@@ -54,12 +56,20 @@ export class AddBrand implements OnInit {
     this.router.navigate(['/brands']);
   }
 
-  onImageSelected(event: Event) {
+  onImageCoverSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.selectedImageFile = file;
       this.brandForm.patchValue({ ImageFile: file });
       this.brandForm.get('ImageFile')?.updateValueAndValidity();
+    }
+  }
+  onImageProfileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedProfileImageFile = file;
+      this.brandForm.patchValue({ profileImage: file });
+      this.brandForm.get('profileImage')?.updateValueAndValidity();
     }
   }
 
@@ -88,6 +98,9 @@ export class AddBrand implements OnInit {
     formData.append('OwnerID', this.brandForm.value.OwnerID);
     if (this.selectedImageFile) {
       formData.append('ImageFile', this.selectedImageFile);
+    }
+    if (this.selectedProfileImageFile) {
+      formData.append('ProfileImage', this.selectedProfileImageFile);
     }
     this._BrandService.CreateBrand(formData).subscribe({
       next: (res) => {

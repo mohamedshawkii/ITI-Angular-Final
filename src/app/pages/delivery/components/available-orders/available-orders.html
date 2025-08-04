@@ -31,7 +31,7 @@
             }
           </ul>
         </td>
-        <td>{{ order.orderDetails }}</td>
+        <td>{{ order.paymentMethod || "checking" }}</td>
         <td>
           @if(hasReachedOrderLimit) {
           <p class="limit-reached-text">

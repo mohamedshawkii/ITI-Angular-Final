@@ -17,13 +17,28 @@
     }
   </div>
   <div class="cart-sidebar">
-    <h1 class="cart-sidebar-title">Shopping Cart</h1>
+    <h1 class="cart-sidebar-title">Payment</h1>
     <div class="cart-sidebar-content">
       <p class="cart-total">Total: ${{ totalInDollars }}</p>
     </div>
+
+    <div class="d-flex gap-2 align-items-center mb-3">
+      <input
+        type="checkbox"
+        name="isCashOnDelivery"
+        id="isCashOnDelivery"
+        class="form-check form-check-input"
+        [(ngModel)]="isCashOnDelivery"
+        [disabled]="cartItems.length === 0"
+        (change)="toggleCashOnDelivery()"
+      />
+      <span>Pay with Cash on Delivery</span>
+    </div>
     <a
       (click)="checkout()"
-      [routerLink]="cartItems.length === 0 ? null : '/payment'"
+      [routerLink]="
+        cartItems.length > 0 && !isCashOnDelivery ? '/payment' : null
+      "
       [class.disabled]="cartItems.length === 0"
       class="nav-link btn btn-primary w-100 mr-auto"
     >

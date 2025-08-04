@@ -35,8 +35,8 @@ export class MyOrdersUser {
       next: (data: any[]) => {
         this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
         this.orders = this.filteredOrders;
-        this.calculatePagination();
         this.updateDisplayedUsers();
+        this.calculatePagination();
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
