@@ -1,95 +1,148 @@
+//===============================================
+// 1. المتغيرات (Variables)
+//===============================================
+$primary-color: #0d6efd;
+$primary-gradient: linear-gradient(45deg, #0d6efd, #3d8bfd);
+$success-color: #198754;
+$text-color: #212529;
+$text-color-muted: #6c757d;
+$border-color: #dee2e6;
+$card-background: rgba(255, 255, 255, 0.9); // خلفية شبه شفافة للتأثير الزجاجي
+$sidebar-background: rgba(248, 249, 250, 0.85);
+
+$base-padding: 1.5rem;
+$base-border-radius: 16px; // زيادة الانحناء لمظهر أنعم
+$card-box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+$transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر سلاسة
+
+//===============================================
+// 2. تعريفات الأنيميشن (Keyframes)
+//===============================================
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7); }
+  70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(13, 110, 253, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+}
+
+//===============================================
+// 3. الكود الأساسي للكارت
+//===============================================
 .cart-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  a.disabled {
-    pointer-events: none;
-    opacity: 0.6;
-  }
-  .cart-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+  // التأثير الزجاجي يتطلب وجود خلفية للصفحة (صورة أو لون)
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   
+  background-color: $card-background;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: $base-border-radius;
+  box-shadow: $card-box-shadow;
+  padding: $base-padding;
+  display: flex;
+  gap: $base-padding;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  animation: fadeInUp 0.5s $transition-speed;
+
   .cart-content {
-    flex: 1;
-    padding: 20px;
+    flex: 2;
+
+    .cart-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: $text-color;
+      margin: 0 0 $base-padding 0;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid $border-color;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.25rem 0.5rem;
+      border-bottom: 1px solid $border-color;
+      transition: transform $transition-speed, box-shadow $transition-speed;
+      border-radius: $base-border-radius;
+      opacity: 0; // تبدأ مخفية ليتم إظهارها بالأنيميشن
+      animation: fadeInUp 0.5s $transition-speed forwards;
+
+      // هذا هو سر الأنيميشن المتتابع
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{$i * 0.1}s;
+        }
+      }
+
+      &:hover {
+        transform: translateY(-5px) scale(1.01);
+        box-shadow: $card-box-shadow;
+        background-color: $card-background;
+      }
+    }
   }
-  
-  .cart-empty-message {
-    font-size: 18px;
-    color: #666;
-  }
-  
-  .cart-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .cart-item-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .cart-item-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .cart-item-price {
-    font-size: 16px;
-    color: #666;
-  }
-  
-  .cart-item-quantity {
-    font-size: 14px;
-    color: #666;
-  }
-  
+
   .cart-sidebar {
-    display: flex;
+    flex: 1;
+    background-color: $sidebar-background;
+    padding: $base-padding;
+    border-radius: $base-border-radius;
+    height: fit-content;
+
+    .sidebar-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    
+    .summary-row, .cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .cart-total {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid $border-color;
+      
+      span { font-size: 1.25rem; font-weight: 700; }
+      span:last-child { color: $success-color; }
+    }
+    
+    .checkout-btn {
+        width: 100%;
+        padding: 14px 20px;
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: white;
+        background-image: $primary-gradient;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform $transition-speed, box-shadow $transition-speed;
+        animation: pulse 2s infinite 3s; // يبدأ الأنيميشن بعد 3 ثواني
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+        }
+    }
+  }
+
+  @media (max-width: 992px) {
     flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border-left: 1px solid #ddd;
+    backdrop-filter: none; // إلغاء التأثير على الموبايل لتحسين الأداء
+    background-color: #ffffff; // الرجوع للخلفية العادية
   }
-  
-  .cart-sidebar-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .cart-sidebar-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .cart-subtotal {
-    font-size: 16px;
-    color: #666;
-  }
-  
-  .cart-tax {
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .cart-total {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-  }
+}
