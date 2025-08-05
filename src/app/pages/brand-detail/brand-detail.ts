@@ -3,15 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IProduct } from '../../interfaces/IProduct';
-import { BrandService } from '../../Services/brand.service';
-import { ProductService } from '../../Services/product-service';
-import { CartService } from '../../Services/cart-service';
-import { environment } from '../../../environments/environments';
-import { IReview } from '../../interfaces/IReview';
-import { ReviewService } from '../../Services/review-service';
-import { Auth } from '../../Services/auth';
-import { IBrand } from '../../interfaces/IBrand';
+import { IProduct } from '@interfaces/IProduct';
+import { BrandService } from '@services/brand.service';
+import { ProductService } from '@services/product-service';
+import { CartService } from '@services/cart-service';
+import { environment } from '@env/environments';
+import { IReview } from '@interfaces/IReview';
+import { ReviewService } from '@services/review-service';
+import { Auth } from '@services/auth';
+import { IBrand } from '@interfaces/IBrand';
 
 @Component({
   selector: 'app-brand-detail',

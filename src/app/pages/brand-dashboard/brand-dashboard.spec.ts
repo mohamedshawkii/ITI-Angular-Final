@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrandDashboardComponent } from './brand-dashboard';
+import { BrandDashboardComponent } from './brand-dashboard'; 
 
 describe('AdminDashboard', () => {
   let component: BrandDashboardComponent;

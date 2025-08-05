@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { OrderService } from '../../../../Services/order-service';
-import { IOrder } from '../../../../interfaces/IOrder';
-import { Auth } from '../../../../Services/auth';
-import { BrandService } from '../../../../Services/brand.service';
+import { OrderService } from '@services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { Auth } from '@services/auth';
+import { BrandService } from '@services/brand.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({

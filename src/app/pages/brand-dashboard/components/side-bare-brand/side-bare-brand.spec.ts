@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SideBare } from './side-bare-brand';
-
 describe('SideBare', () => {
   let component: SideBare;
   let fixture: ComponentFixture<SideBare>;

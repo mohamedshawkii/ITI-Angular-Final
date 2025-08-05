@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IBrand } from '../interfaces/IBrand';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environments';
-import { IBazaar } from '../interfaces/IBazaar';
+import { IBrand } from '@interfaces/IBrand'; 
+import { environment } from '@env/environments'; 
+import { IBazaar } from '@interfaces/IBazaar'; 
 
 @Injectable({
   providedIn: 'root',

@@ -6,6 +6,7 @@ export interface IBrand {
   image?: string;
   profileImage?: string;
   categoryID: string;
+  categoryName: string;
   ownerID: string;
   productCount?: number;
   averageRating?: number;

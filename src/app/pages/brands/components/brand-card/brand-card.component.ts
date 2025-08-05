@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IBrand } from '../../../../interfaces/IBrand';
+import { IBrand } from '@interfaces/IBrand';
 import { RouterModule } from '@angular/router';
-import { environment } from '../../../../../environments/environments';
+import { environment } from '@env/environments';
 
 @Component({
   selector: 'app-brand-card',

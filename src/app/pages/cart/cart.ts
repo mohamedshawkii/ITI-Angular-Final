@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { IOrder } from '../../interfaces/IOrder';
-import { IProduct } from '../../interfaces/IProduct';
-import { CartService } from '../../Services/cart-service';
-import { Auth } from '../../Services/auth';
-import { OrderService } from '../../Services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { IProduct } from '@interfaces/IProduct';
+import { CartService } from '@services/cart-service';
+import { Auth } from '@services/auth';
+import { OrderService } from '@services/order-service';
 import { FormsModule } from '@angular/forms';
 
 @Component({

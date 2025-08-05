@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../../Services/auth';
-import { CartService } from '../../Services/cart-service';
-import { IProduct } from '../../interfaces/IProduct';
-import { BrandService } from '../../Services/brand.service';
+import { Auth } from '@services/auth';
+import { CartService } from '@services/cart-service';
+import { IProduct } from '@interfaces/IProduct';
+import { BrandService } from '@services/brand.service';
 
 @Component({
   selector: 'app-header',

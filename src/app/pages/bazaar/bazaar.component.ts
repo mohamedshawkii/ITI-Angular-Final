@@ -6,9 +6,9 @@ import { CommonModule } from '@angular/common';
 import { NextEventComponent } from './components/next-event/next-event.component';
 import { FeaturedBrandsComponent } from './components/featured-brands/featured-brands.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
-import { BrandService } from '../../Services/brand.service';
-import { IBrand } from '../../interfaces/IBrand';
-import { BazaarService } from '../../Services/bazaar-service';
+import { BrandService } from '@services/brand.service'; 
+import { IBrand } from '@interfaces/IBrand'; 
+import { BazaarService } from '@services/bazaar-service'; 
 
 @Component({
   selector: 'app-bazaar',

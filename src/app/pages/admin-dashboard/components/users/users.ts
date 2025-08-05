@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { UserManagementServic } from '../../../../Services/user-management-servic';
-import { IUser } from '../../../../interfaces/IUser';
-import { AddDeliveryBoyComponent } from '../add-delivery-boy/add-delivery-boy';
+import { UserManagementServic } from '@services/user-management-servic';
+import { IUser } from '@interfaces/IUser';
+
 import { CommonModule } from '@angular/common';
+import { AddDeliveryBoyComponent } from "@pages/admin-dashboard/components/add-delivery-boy/add-delivery-boy";
 
 @Component({
   selector: 'app-users',
-  imports: [AddDeliveryBoyComponent,CommonModule],
+  imports: [CommonModule, AddDeliveryBoyComponent],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
@@ -19,31 +20,23 @@ export class Users {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
-  
-  // متغير للتحكم في عرض الفورم
   showAddForm = false;
-
-  // دالة لفتح الفورم
-  openAddForm(): void {
-        console.log('تم الضغط على الزر! قيمة showAddForm قبل التغيير:', this.showAddForm);
-
-    this.showAddForm = true;
-  }
-
-  // دالة لإغلاق الفورم
-  closeAddForm(): void {
-    this.showAddForm = false;
-    // يمكنك عمل إعادة تحميل للبيانات هنا إذا أردت
-    // this.loadUsers(); 
-  }
-
-  // Search functionality
   searchQuery: string = '';
 
   _UserManagement = inject(UserManagementServic)
 
   ngOnInit(): void {
     this.GetAll();
+  }
+
+  openAddForm(): void {
+    console.log('showAddForm :', this.showAddForm);
+    this.showAddForm = true;
+  }
+
+  closeAddForm(): void {
+    this.showAddForm = false;
+    // this.loadUsers(); 
   }
 
   GetAll(): void {
@@ -81,7 +74,19 @@ export class Users {
   Demote(userId: string): void {
     this._UserManagement.Demotion(userId).subscribe({
       next: (value) => {
-        console.log('DemoteToUser', value);
+        // console.log('DemoteToUser', value);
+        this.GetAll();
+      },
+      error: (err) => {
+        console.error('error', err);
+      }
+    });
+  }
+
+  DeleteUser(userId: string): void {
+    this._UserManagement.DeleteUser(userId).subscribe({
+      next: (value) => {
+        // console.log('DeleteUser', value);
         this.GetAll();
       },
       error: (err) => {

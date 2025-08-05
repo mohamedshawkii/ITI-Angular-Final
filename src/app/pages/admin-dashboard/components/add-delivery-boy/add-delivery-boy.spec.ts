@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddDeliveryBoy } from './add-delivery-boy';
+import { AddDeliveryBoyComponent } from './add-delivery-boy';
 
 describe('AddDeliveryBoy', () => {
-  let component: AddDeliveryBoy;
-  let fixture: ComponentFixture<AddDeliveryBoy>;
+  let component: AddDeliveryBoyComponent;
+  let fixture: ComponentFixture<AddDeliveryBoyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddDeliveryBoy]
+      imports: [AddDeliveryBoyComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(AddDeliveryBoy);
+    fixture = TestBed.createComponent(AddDeliveryBoyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

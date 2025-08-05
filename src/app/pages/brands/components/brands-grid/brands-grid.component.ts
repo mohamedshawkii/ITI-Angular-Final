@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { IBrand } from '../../../../interfaces/IBrand';
-import { BrandCardComponent } from '../brand-card/brand-card.component';
+import { IBrand } from '@interfaces/IBrand';
+import { BrandCardComponent } from "@pages/brands/components/brand-card/brand-card.component";
 
 @Component({
   selector: 'app-brands-grid',

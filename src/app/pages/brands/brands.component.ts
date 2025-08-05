@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { IBrand } from '../../interfaces/IBrand';
-import { BrandService } from '../../../../src/app/Services/brand.service';
+import { IBrand } from '@interfaces/IBrand';
+import { BrandService } from '@services/brand.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { BrandsFilterComponent } from './components/brands-filter/brands-filter.
 import { BrandsGridComponent } from './components/brands-grid/brands-grid.component';
 import { LoadMoreComponent } from './components/load-more/load-more.component';
 import { BrandsEmptyStateComponent } from './components/brands-empty-state/brands-empty-state.component';
-import { Auth } from '../../Services/auth';
+import { Auth } from '@services/auth';
 
 @Component({
   selector: 'app-brands',

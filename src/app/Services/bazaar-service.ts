@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IBazaar } from '../interfaces/IBazaar';
-import { IFeaturedBrand } from '../interfaces/IFeaturedBrand';
-import { environment } from '../../environments/environments';
+import { IBazaar } from '@interfaces/IBazaar'; 
+import { IFeaturedBrand } from '@interfaces/IFeaturedBrand'; 
+import { environment } from '@env/environments'; 
 import { Auth } from './auth';
 
 @Injectable({
