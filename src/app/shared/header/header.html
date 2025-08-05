@@ -187,6 +187,14 @@
             >Orders</a
           >
         </li>
+        <li class="nav-item" *ngIf="hasAnyRole(['BrandOwner'], userRole)">
+          <a
+            [routerLink]="['/brand', BrandId]"
+            routerLinkActive="active"
+            class="nav-link"
+            >My Brand</a
+          >
+        </li>
         <li class="nav-item-mobile" *ngIf="!isLoggedIn">
           <a
             routerLink="/login"
