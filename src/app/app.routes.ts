@@ -28,13 +28,13 @@ import { MyOrdersBrand } from './pages/brand-dashboard/components/my-orders-bran
 import { AvailableOrdersBrand } from './pages/brand-dashboard/components/available-orders-brand/available-orders-brand';
 import { NotDeliveryBoyGuard } from './guards/not-delivery-boy-guard';
 import { EditBrandComponent } from './pages/brands/components/edit-brand/edit-brand.component';
+import { Dashboard } from './pages/admin-dashboard/components/dashboard/dashboard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [NotDeliveryBoyGuard],
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -109,6 +109,12 @@ export const routes: Routes = [
       {
         path: 'createBazar',
         component: Bazar,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN'] },
+      },
+      {
+        path: 'dashboard',
+        component: Dashboard,
         canActivate: [RoleGuard],
         data: { roles: ['ADMIN'] },
       },

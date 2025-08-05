@@ -64,19 +64,18 @@ export class BrandDetailComponent implements OnInit {
     });
     this.currentUserId = this._AuthService.getCurrentUserID()!;
     this.userRole = this._AuthService.getRole();
+
     this._CartService.cart$.subscribe(items => {
       this.cartItems = items;
     });
 
     const ParamId = this.route.snapshot.paramMap.get('id');
-    if (!ParamId) {
-      return;
+    if (ParamId) {
+      this.BrandId = parseInt(ParamId);
+      this.GetBrandById(this.BrandId);
+      this.GetAllProducts(this.BrandId);
+      this.GetProductReviews(this.BrandId);
     }
-    this.BrandId = parseInt(ParamId);
-    this.GetBrandById(this.BrandId);
-    this.GetAllProducts(this.BrandId);
-    this.productForm.patchValue({ brandID: this.BrandId });
-    this.GetProductReviews(this.BrandId);
   }
 
   hasAnyRole(rolesToCheck: string[], userRoles: string[]): boolean {
@@ -102,7 +101,7 @@ export class BrandDetailComponent implements OnInit {
   }
 
   editProduct(product: IProduct): void {
-    this.selectedProduct = product;  // <== VERY IMPORTANT
+    this.selectedProduct = product;
     this.productForm.patchValue({
       name: product.name,
       description: product.description,
@@ -134,8 +133,12 @@ export class BrandDetailComponent implements OnInit {
   }
 
   SaveProduct() {
+    if (!this.productForm.value.brandID && this.BrandId) {
+      this.productForm.patchValue({ brandID: this.BrandId });
+    }
     if (this.productForm.invalid) {
-      console.log('Form is invalid');
+      console.log('Form is invalid', this.productForm.value);
+      console.log('this.BrandId>>', this.BrandId);
       return;
     }
 
@@ -150,7 +153,7 @@ export class BrandDetailComponent implements OnInit {
       formData.append('ImageFile', this.selectedImageFile);
     }
 
-    if (this.selectedProduct) {
+    if (this.selectedProduct?.id != null) {
       // EDIT MODE
       this._ProductService.UpdateProduct(this.selectedProduct.id, formData).subscribe({
         next: (res) => {
@@ -164,7 +167,6 @@ export class BrandDetailComponent implements OnInit {
         error: (err) => console.error('Error updating product:', err)
       });
     } else {
-      // CREATE MODE
       this._ProductService.CreateProduct(formData).subscribe({
         next: (res) => {
           this.products.push(res);
@@ -241,7 +243,6 @@ export class BrandDetailComponent implements OnInit {
     this._BrandService.GetBrandById(ID).subscribe({
       next: (res) => {
         this.brand = res;
-        // console.log('Brand-api:', this.brand);
         this.IsBrandOwner()
       },
       error: (err) => {

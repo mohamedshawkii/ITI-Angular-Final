@@ -32,8 +32,9 @@ export class BrandsComponent implements OnInit {
   currentSort = 'name';
   showAddBrandButton: boolean = false;
   userRole!: string[];
-  _AuthService = inject(Auth);
   currentUserId: string | null = null;
+
+  _AuthService = inject(Auth);
 
   constructor(
     private brandService: BrandService,
@@ -45,7 +46,6 @@ export class BrandsComponent implements OnInit {
     this.router.navigate(['/brands/add']);
   }
 
-
   ngOnInit(): void {
     this.brandService.getAllBrands().subscribe((brands) => {
       this.allBrands = brands.map((b) => ({
@@ -55,8 +55,10 @@ export class BrandsComponent implements OnInit {
         isFollowed: false,
       }));
       this.filteredBrands = [...this.allBrands];
+      // console.log('Brands fetched successfully', this.allBrands);
       this.applySorting();
     });
+
     const role = this.authService.getRole();
     this.userRole = role;
 
@@ -70,6 +72,8 @@ export class BrandsComponent implements OnInit {
         },
       });
     }
+
+
   }
 
   DisplayBasedOnRole(Role: string[]): boolean {
@@ -77,20 +81,24 @@ export class BrandsComponent implements OnInit {
     return Role.some(role => userRole.includes(role));
   }
 
-  filterByCategory(category: string): void {
-    this.currentFilter = category;
+  filterByCategory(categoryID: string): void {
+    this.currentFilter = categoryID;
     this.applyFilters();
   }
 
   sortBrands(sortBy: string): void {
+    // console.log('Received sortBy:', sortBy);
     this.currentSort = sortBy;
     this.applySorting();
+    // this.applyFilters();
   }
 
   applyFilters(): void {
+    // console.log(this.allBrands.map(b => b.categoryID));
+    // console.log('Current Filter:', this.currentFilter);
     if (this.currentFilter) {
       this.filteredBrands = this.allBrands.filter(
-        (brand) => brand.categoryID === this.currentFilter
+        (brand) => brand.categoryID.toString() === this.currentFilter
       );
     } else {
       this.filteredBrands = [...this.allBrands];
@@ -127,7 +135,7 @@ export class BrandsComponent implements OnInit {
     this.currentFilter = '';
     this.currentSort = 'name';
     this.filteredBrands = [...this.allBrands];
-    this.applySorting();
+    this.applyFilters();
   }
 
   private getIconForCategory(category: string): string {
