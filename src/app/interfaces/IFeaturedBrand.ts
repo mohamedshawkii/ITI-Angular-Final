@@ -1,4 +1,4 @@
-export interface IfeaturedBrand {
+export interface IFeaturedBrand {
   id: number;
   name: string;
   description: string;

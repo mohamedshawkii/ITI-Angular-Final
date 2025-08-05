@@ -7,7 +7,7 @@ import { NextEventComponent } from './components/next-event/next-event.component
 import { FeaturedBrandsComponent } from './components/featured-brands/featured-brands.component';
 import { ActivitiesComponent } from './components/activities/activities.component';
 import { BrandService } from '../../Services/brand.service';
-import { iBrand } from '../../interfaces/iBrand';
+import { IBrand } from '../../interfaces/IBrand';
 import { BazaarService } from '../../Services/bazaar-service';
 
 @Component({
@@ -24,7 +24,7 @@ import { BazaarService } from '../../Services/bazaar-service';
   styleUrls: ['./bazaar.component.scss'],
 })
 export class BazaarComponent implements OnInit {
-  featuredBrands: iBrand[] = [];
+  featuredBrands: IBrand[] = [];
   _BrandService = inject(BrandService);
   _BazarService = inject(BazaarService);
 
@@ -37,6 +37,7 @@ export class BazaarComponent implements OnInit {
     this._BrandService.GetBrandByBazarId(BazarId).subscribe({
       next: (data) => {
         this.featuredBrands = data;
+        // console.log('Featured brands:', this.featuredBrands);
       },
       error: (err) => {
         console.error('Error fetching featured brands:', err);

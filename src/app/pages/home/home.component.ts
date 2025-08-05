@@ -4,8 +4,8 @@ import { TopBrandsComponent } from './components/top-brands/top-brands.component
 import { SubscriptionsPreviewComponent } from './components/subscriptions-preview/subscriptions-preview.component';
 import { BazaarSectionComponent } from './components/bazaar-section/bazaar-section.component';
 import { CallToActionComponent } from './components/call-to-action/call-to-action.component';
-import { TopBrand } from '../../interfaces/top-Brand';
 import { HomeService } from '../../Services/home.service';
+import { IBrand } from '../../interfaces/IBrand';
 
 @Component({
   selector: 'app-home',
@@ -54,16 +54,17 @@ import { HomeService } from '../../Services/home.service';
 // }
 
 export class HomeComponent implements OnInit {
-  topBrands: TopBrand[] = [];
+  topBrands: IBrand[] = [];
 
   constructor(private homeService: HomeService) { }
 
   ngOnInit(): void {
     this.homeService.getTopBrands().subscribe({
-      next: (data) => this.topBrands = data,
-
+      next: (data) => {
+        this.topBrands = data;
+        // console.log('Top Brands loaded:', this.topBrands);
+      },
       error: (err) => console.error('Failed to load top brands:', err)
-
     });
   }
 }

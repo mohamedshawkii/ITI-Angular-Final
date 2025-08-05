@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { iBrand } from '../../../../interfaces/iBrand';
+import { IBrand } from '../../../../interfaces/IBrand';
 import { Router } from '@angular/router';
+import { environment } from '../../../../../environments/environments';
 
 @Component({
   selector: 'app-featured-brands',
@@ -12,8 +13,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./featured-brands.component.scss'],
 })
 export class FeaturedBrandsComponent {
-  @Input() featuredBrands: iBrand[] = [];
-
+  @Input() featuredBrands: IBrand[] = [];
+  EURL = environment.apiUrl;
   constructor(private router: Router) { }
 
   viewBrand(id: number): void {

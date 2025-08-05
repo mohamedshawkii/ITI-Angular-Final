@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../../../Services/auth';
-import { IBazaar } from '../../../../interfaces/ibazaar';
+import { IBazaar } from '../../../../interfaces/IBazaar';
 import { BazaarService } from '../../../../Services/bazaar-service';
 import { FormGroup } from '@angular/forms';
 import { BrandService } from '../../../../Services/brand.service';

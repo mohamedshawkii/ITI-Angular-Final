@@ -1,6 +1,10 @@
 <div class="brand-card">
   <div class="brand-image">
-    <span class="brand-icon">{{ brand.icon }}</span>
+    <img
+      class="brand-ProfileImage"
+      [src]="EURL + '/' + brand.profileImage"
+      alt="profileImage"
+    />
   </div>
   <div class="brand-info">
     <h3 class="brand-name">{{ brand.name }}</h3>

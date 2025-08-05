@@ -22,6 +22,7 @@ export class BrandsFilterComponent implements OnInit {
 
   onCategoryChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
+    // console.log('category changed to:', value);
     this.categoryChange.emit(value);
   }
 

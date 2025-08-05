@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environments';
 import { IReview } from '../../interfaces/IReview';
 import { ReviewService } from '../../Services/review-service';
 import { Auth } from '../../Services/auth';
-import { iBrand } from '../../interfaces/iBrand';
+import { IBrand } from '../../interfaces/IBrand';
 
 @Component({
   selector: 'app-brand-detail',
@@ -23,7 +23,7 @@ import { iBrand } from '../../interfaces/iBrand';
 export class BrandDetailComponent implements OnInit {
   currentUserId!: string;
   userRole!: string[];
-  brand!: iBrand;
+  brand!: IBrand;
   products: IProduct[] = [];
   productForm!: FormGroup;
   BrandId!: number;

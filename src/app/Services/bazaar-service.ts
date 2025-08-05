@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IBazaar } from '../interfaces/ibazaar';
-import { IfeaturedBrand } from '../interfaces/ifeatured-brand';
+import { IBazaar } from '../interfaces/IBazaar';
+import { IFeaturedBrand } from '../interfaces/IFeaturedBrand';
 import { environment } from '../../environments/environments';
 import { Auth } from './auth';
 
@@ -34,8 +34,8 @@ export class BazaarService {
   deleteBazaar(id: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/api/Bazaar/Delete/${id}`);
   }
-  getBrandsForBazaar(bazaarId: number): Observable<IfeaturedBrand[]> {
-    return this.http.get<IfeaturedBrand[]>(
+  getBrandsForBazaar(bazaarId: number): Observable<IFeaturedBrand[]> {
+    return this.http.get<IFeaturedBrand[]>(
       `${environment.apiUrl}/api/BazarBrand/${bazaarId}/brands`
     );
   }
