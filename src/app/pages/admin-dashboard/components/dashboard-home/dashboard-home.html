@@ -1,0 +1,54 @@
+<div class="dashboard-home-container">
+  <div class="dashboard-header">
+    <h1>Welcome Back, {{displayedUsers.length}}! 👋</h1>
+    <!-- <p>Here's a snapshot of your platform's activity.</p> -->
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="card-icon users">👤</div>
+      <div class="card-content">
+        <p>Total Users</p>
+        <span>{{ displayedUsers?.length || 5 }}</span>
+      </div>
+    </div>
+    <!-- <div class="stat-card">
+      <div class="card-icon signups">📈</div>
+      <div class="card-content">
+        <p>New Signups (Month)</p>
+        <span>{{ stats.newSignups }}</span>
+      </div>
+    </div> -->
+    <div class="stat-card">
+      <div class="card-icon bazars">🎪</div>
+      <div class="card-content">
+        <p>Active Bazars</p>
+        <span>{{ stats.activeBazars }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="card-icon revenue">💰</div>
+      <div class="card-content">
+        <p>Total Revenue</p>
+        <span>${{ stats.totalRevenue.toLocaleString() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-actions-grid">
+    <a routerLink="users" class="action-card">
+      <div class="action-icon users-manage">👥</div>
+      <h3>Manage Users</h3>
+      <p>View, edit, and promote user accounts.</p>
+    </a>
+    <a routerLink="createBazar" class="action-card" routerLinkActive="active">
+      <div class="action-icon bazar-create">🎉</div>
+      <h3>Create New Bazar</h3>x`
+      <p>Set up a new event for vendors and customers.</p>
+    </a>
+    <a class="action-card disabled"> <div class="action-icon reports">📊</div>
+      <h3>View Reports</h3>
+      <p>Analyze sales, traffic, and other metrics.</p>
+    </a>
+  </div>
+</div>

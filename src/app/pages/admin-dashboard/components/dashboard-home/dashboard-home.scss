@@ -1,0 +1,131 @@
+// Variables for consistency
+$primary-color: #3b82f6;
+$secondary-color: #10b981;
+$bg-color: #f0f2f5;
+$card-bg: #ffffff;
+$text-color: #1e293b;
+$text-muted: #64748b;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// Main container
+.dashboard-home-container {
+  animation: fadeIn 0.5s ease-out;
+  margin-top: 20px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Header
+.dashboard-header {
+  margin-bottom: 2rem;
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: $text-color;
+  }
+  p {
+    font-size: 1.1rem;
+    color: $text-muted;
+  }
+}
+
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: $card-bg;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: $shadow;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+    padding: 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &.users { background: rgba($primary-color, 0.1); }
+    &.signups { background: rgba($secondary-color, 0.1); }
+    &.bazars { background: rgba(#f59e0b, 0.1); }
+    &.revenue { background: rgba(#ef4444, 0.1); }
+  }
+
+  .card-content {
+    p {
+      margin: 0 0 0.25rem 0;
+      color: $text-muted;
+      font-weight: 500;
+    }
+    span {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $text-color;
+    }
+  }
+}
+
+// Quick Actions Grid
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.action-card {
+  background: $card-bg;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  color: $text-color;
+  box-shadow: $shadow;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    border-color: $primary-color;
+  }
+  
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    background-color: #f9fafb;
+  }
+
+  .action-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    color: $text-muted;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
