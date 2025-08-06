@@ -27,7 +27,7 @@ import { DeliveryHistoryBrand } from '@pages/brand-dashboard/components/delivery
 import { MyOrdersBrand } from '@pages/brand-dashboard/components/my-orders-brand/my-orders-brand';
 import { AvailableOrdersBrand } from '@pages/brand-dashboard/components/available-orders-brand/available-orders-brand';
 import { EditBrandComponent } from '@pages/brands/components/edit-brand/edit-brand.component';
-import { Dashboard } from '@pages/admin-dashboard/components/dashboard/dashboard';
+import { DashboardHomeComponent } from '@pages/admin-dashboard/components/dashboard-home/dashboard-home';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -113,7 +113,7 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        component: Dashboard,
+        component: DashboardHomeComponent,
         canActivate: [RoleGuard],
         data: { roles: ['ADMIN'] },
       },
