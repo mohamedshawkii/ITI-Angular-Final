@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { OrderService } from '../../../../Services/order-service';
-import { IOrder } from '../../../../interfaces/IOrder';
-import { Auth } from '../../../../Services/auth';
+import { OrderService } from '@services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { Auth } from '@services/auth';
 
 @Component({
   selector: 'app-available-orders',
@@ -63,7 +63,7 @@ export class AvailableOrdersUser implements OnInit {
       this.currentPage = 1;
     }
   }
-  
+
   updateDisplayedOrders(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;

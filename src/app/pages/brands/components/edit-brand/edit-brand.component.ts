@@ -7,11 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BrandService } from '../../../../Services/brand.service';
-import { CategoryService } from '../../../../Services/category-service';
-import { Auth } from '../../../../Services/auth';
-import { ICategory } from '../../../../interfaces/ICategory';
-import { iBrand } from '../../../../interfaces/iBrand';
+import { BrandService } from '@services/brand.service'; 
+import { CategoryService } from '@services/category-service'; 
+import { Auth } from '@services/auth'; 
+import { ICategory } from '@interfaces/ICategory'; 
+import { IBrand } from '@interfaces/IBrand'; 
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -76,7 +76,7 @@ export class EditBrandComponent implements OnInit {
 
   loadBrand(id: number): void {
     this._BrandService.GetBrandById(id).subscribe({
-      next: (brand: iBrand) => {
+      next: (brand: IBrand) => {
         this.brandForm.patchValue({
           Id: brand.id,
           Name: brand.name,

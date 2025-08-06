@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { iBrand } from '../../../../interfaces/iBrand';
+import { IBrand } from '@interfaces/IBrand';
 import { RouterModule } from '@angular/router';
+import { environment } from '@env/environments';
 
 @Component({
   selector: 'app-brand-card',
@@ -11,11 +12,15 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./brand-card.component.scss'],
 })
 export class BrandCardComponent {
-  @Input() brand!: iBrand;
+  EURL = environment.apiUrl;
+  @Input() brand!: IBrand;
   @Input() currentUserId!: string | null;
 
   @Output() follow = new EventEmitter<number>();
   @Output() edit = new EventEmitter<number>();
+
+  constructor() { }
+
 
   toggleFollow() {
     this.brand.isFollowed = !this.brand.isFollowed;

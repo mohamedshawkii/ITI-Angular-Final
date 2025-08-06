@@ -1,11 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Stripe } from '@stripe/stripe-js';
-import { StripeService } from '../../Services/stripe-service';
+import { StripeService } from '@services/stripe-service';
 import { firstValueFrom } from 'rxjs';
-import { CartService } from '../../Services/cart-service';
-import { OrderService } from '../../Services/order-service';
+import { CartService } from '@services/cart-service';
+import { OrderService } from '@services/order-service';
+import { IOrder } from '@interfaces/IOrder';
 import { Router } from '@angular/router';
-import { IOrder } from '../../interfaces/IOrder';
 
 @Component({
   selector: 'app-stripe-payment',

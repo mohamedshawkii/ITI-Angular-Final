@@ -11,12 +11,15 @@
     <div class="brands-grid">
       <div class="brand-card" *ngFor="let brand of featuredBrands">
         <div class="brand-image">
-          <span class="brand-icon">{{ brand.icon }}</span>
-          <div class="brand-badge" *ngIf="brand.address">New</div>
+          <img
+            class="brand-ProfileImage"
+            [src]="EURL + '/' + brand.profileImage"
+            alt="profileImage"
+          />
         </div>
         <div class="brand-info">
           <h3 class="brand-name">{{ brand.name }}</h3>
-          <p class="brand-category">{{ brand.categoryID }}</p>
+          <p class="brand-category">{{ brand.categoryName }}</p>
           <p class="brand-description">{{ brand.description }}</p>
           <div class="brand-special" *ngIf="brand.address">
             <span class="special-icon">🎁</span>

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CategoryService } from '../../../../Services/category-service';
-import { ICategory } from '../../../../interfaces/ICategory';
+import { CategoryService } from '@services/category-service';
+import { ICategory } from '@interfaces/ICategory';
 
 @Component({
   selector: 'app-brands-filter',
@@ -22,6 +22,7 @@ export class BrandsFilterComponent implements OnInit {
 
   onCategoryChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
+    // console.log('category changed to:', value);
     this.categoryChange.emit(value);
   }
 

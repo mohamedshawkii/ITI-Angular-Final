@@ -1,27 +1,37 @@
-  <section class="top-brands">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Top Brands</h2>
-        <p class="section-description">Discover our most popular home brands</p>
-        <a routerLink="/brands" class="section-link">View All Brands →</a>
-      </div>
-      
-      <div class="brands-grid">
-        <div class="brand-card" *ngFor="let brand of topBrands">
-          <div class="brand-image">
-            <!-- <span class="brand-icon">{{ brand.icon }}</span> -->
-          </div>
-          <div class="brand-info">
-            <h3 class="brand-name">{{ brand.name }}</h3>
-            <!-- <p class="brand-category">{{ brand.category }}</p> -->
-            <p class="brand-description">{{ brand.description }}</p>
-            <div class="brand-stats">
-              <span class="brand-rating">⭐ {{ brand.averageRating }}</span>
-              <span class="brand-products">{{ brand.productCount }} products</span>
-            </div>
-          </div>
-          <a [routerLink]="['/brand', brand.id]" class="btn btn-outline">View Brand</a>
+<section class="top-brands">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Top Brands</h2>
+      <p class="section-description">Discover our most popular home brands</p>
+      <a routerLink="/brands" class="section-link">View All Brands →</a>
+    </div>
+
+    <div class="brands-grid">
+      <div class="brand-card" *ngFor="let brand of topBrands">
+        <div class="brand-image">
+          <img
+            class="brand-ProfileImage"
+            [src]="EURL + '/' + brand.profileImage"
+            alt="profileImage"
+          />
         </div>
+        <div class="brand-info">
+          <h3 class="brand-name">{{ brand.name }}</h3>
+          <p class="brand-category">{{ brand.categoryName || "category" }}</p>
+          <p class="brand-description">{{ brand.description }}</p>
+          <div class="brand-stats">
+            <span class="brand-rating"
+              >⭐ {{ brand.averageRating?.toFixed(1) }}</span
+            >
+            <span class="brand-products"
+              >{{ brand.productCount }} products</span
+            >
+          </div>
+        </div>
+        <a [routerLink]="['/brand', brand.id]" class="btn btn-outline"
+          >View Brand</a
+        >
       </div>
     </div>
-  </section>
+  </div>
+</section>

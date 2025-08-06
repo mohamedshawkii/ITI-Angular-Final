@@ -4,9 +4,9 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import { RegisterRequest } from '../pages/register/register';
-import { environment } from '../../environments/environments';
-import { CartService } from './cart-service';
+import { RegisterRequest } from '@pages/register/register';
+import { environment } from '@env/environments';
+import { CartService } from '@services/cart-service';
 
 export interface DecodedToken {
   [key: string]: unknown;

@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { iBrand } from '../../../../interfaces/iBrand';
-import { BrandCardComponent } from '../brand-card/brand-card.component';
+import { IBrand } from '@interfaces/IBrand';
+import { BrandCardComponent } from "@pages/brands/components/brand-card/brand-card.component";
 
 @Component({
   selector: 'app-brands-grid',
@@ -12,8 +12,8 @@ import { BrandCardComponent } from '../brand-card/brand-card.component';
   styleUrls: ['./brands-grid.component.scss'],
 })
 export class BrandsGridComponent {
-  @Input() brands: iBrand[] = [];
-  @Input() currentUserId!: string;  
+  @Input() brands: IBrand[] = [];
+  @Input() currentUserId!: string;
   @Output() follow = new EventEmitter<number>();
 
   toggleFollow(id: number) {

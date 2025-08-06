@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { iBrand } from '../../interfaces/iBrand';
-import { BrandService } from '../../../../src/app/Services/brand.service';
+import { IBrand } from '@interfaces/IBrand';
+import { BrandService } from '@services/brand.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { BrandsFilterComponent } from './components/brands-filter/brands-filter.
 import { BrandsGridComponent } from './components/brands-grid/brands-grid.component';
 import { LoadMoreComponent } from './components/load-more/load-more.component';
 import { BrandsEmptyStateComponent } from './components/brands-empty-state/brands-empty-state.component';
-import { Auth } from '../../Services/auth';
+import { Auth } from '@services/auth';
 
 @Component({
   selector: 'app-brands',
@@ -25,8 +25,8 @@ import { Auth } from '../../Services/auth';
   styleUrls: ['./brands.component.scss'],
 })
 export class BrandsComponent implements OnInit {
-  allBrands: iBrand[] = [];
-  filteredBrands: iBrand[] = [];
+  allBrands: IBrand[] = [];
+  filteredBrands: IBrand[] = [];
   hasMoreBrands = false;
   currentFilter = '';
   currentSort = 'name';
@@ -56,6 +56,7 @@ export class BrandsComponent implements OnInit {
       }));
       this.filteredBrands = [...this.allBrands];
       // console.log('Brands fetched successfully', this.allBrands);
+      this.applyFilters();
       this.applySorting();
     });
 
@@ -82,6 +83,7 @@ export class BrandsComponent implements OnInit {
   }
 
   filterByCategory(categoryID: string): void {
+    // console.log('Filtering by category:', categoryID);
     this.currentFilter = categoryID;
     this.applyFilters();
   }
@@ -89,16 +91,16 @@ export class BrandsComponent implements OnInit {
   sortBrands(sortBy: string): void {
     // console.log('Received sortBy:', sortBy);
     this.currentSort = sortBy;
-    this.applySorting();
-    // this.applyFilters();
+    // this.applySorting();
+    this.applyFilters();
   }
 
   applyFilters(): void {
-    // console.log(this.allBrands.map(b => b.categoryID));
+    // console.log(this.allBrands);
     // console.log('Current Filter:', this.currentFilter);
     if (this.currentFilter) {
       this.filteredBrands = this.allBrands.filter(
-        (brand) => brand.categoryID.toString() === this.currentFilter
+        (brand) => brand.categoryID?.toString() === this.currentFilter
       );
     } else {
       this.filteredBrands = [...this.allBrands];

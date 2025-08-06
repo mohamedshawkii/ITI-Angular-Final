@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { TopBrand } from '../../../../interfaces/top-Brand';
+import { environment } from '@env/environments';
+import { IBrand } from '@interfaces/IBrand';
 
 @Component({
   selector: 'app-top-brands',
@@ -11,6 +12,7 @@ import { TopBrand } from '../../../../interfaces/top-Brand';
   styleUrls: ['./top-brands.component.scss']
 })
 export class TopBrandsComponent {
-  @Input() topBrands: TopBrand[] = [];
+  @Input() topBrands: IBrand[] = [];
+  EURL = environment.apiUrl;
 }
 

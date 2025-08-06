@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../../../../Services/auth';
-import { IBazaar } from '../../../../interfaces/ibazaar';
-import { BazaarService } from '../../../../Services/bazaar-service';
+import { Auth } from '@services/auth';
+import { IBazaar } from '@interfaces/IBazaar';
+import { BazaarService } from '@services/bazaar-service';
 import { FormGroup } from '@angular/forms';
-import { BrandService } from '../../../../Services/brand.service';
+import { BrandService } from '@services/brand.service';
 
 @Component({
   selector: 'app-next-event',

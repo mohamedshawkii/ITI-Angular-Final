@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
-import { environment } from '../../environments/environments';
+import { environment } from '@env/environments';
 
 @Injectable({ providedIn: 'root' })
 export class StripeService {

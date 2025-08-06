@@ -6,11 +6,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { iBrand } from '../../../../interfaces/iBrand';
-import { ICategory } from '../../../../interfaces/ICategory';
-import { BrandService } from '../../../../Services/brand.service';
-import { CategoryService } from '../../../../Services/category-service';
-import { Auth } from '../../../../Services/auth';
+import { IBrand } from '@interfaces/IBrand';
+import { ICategory } from '@interfaces/ICategory'; 
+import { BrandService } from '@services/brand.service'; 
+import { CategoryService } from '@services/category-service'; 
+import { Auth } from '@services/auth'; 
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 })
 export class AddBrand implements OnInit {
   brandForm!: FormGroup;
-  Brand!: iBrand;
+  Brand!: IBrand;
   Categories!: ICategory[];
   selectedImageFile: File | null = null;
   selectedProfileImageFile: File | null = null;
