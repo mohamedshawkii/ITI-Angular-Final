@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SideBareBrand } from './components/side-bare-brand/side-bare-brand';
+import { SideBareBrand } from './components/side-bare-brand/side-bare-brand'; 
 
 @Component({
   selector: 'app-brand-dashboard',

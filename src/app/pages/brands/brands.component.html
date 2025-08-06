@@ -10,15 +10,21 @@
         </p>
       </div>
       @if(DisplayBasedOnRole(['BrandOwner'])){
-      <button class="btn btn-primary" *ngIf="showAddBrandButton" (click)="goToAddBrandPage()">
+      <button
+        class="btn btn-primary"
+        *ngIf="showAddBrandButton"
+        (click)="goToAddBrandPage()"
+      >
         Add New Brand
       </button>
-
       }
     </div>
 
     <!-- Filters Section -->
-    <app-brands-filter (categoryChange)="filterByCategory($event)" (sortChange)="sortBrands($event)">
+    <app-brands-filter
+      (categoryChange)="filterByCategory($event)"
+      (sortChange)="sortBrands($event)"
+    >
     </app-brands-filter>
 
     <!-- Brands Grid Section  //nahed-->
@@ -34,7 +40,10 @@
     </app-load-more>
 
     <!-- Empty State -->
-    <app-brands-empty-state *ngIf="filteredBrands.length === 0" (clear)="clearFilters()">
+    <app-brands-empty-state
+      *ngIf="filteredBrands.length === 0"
+      (clear)="clearFilters()"
+    >
     </app-brands-empty-state>
   </div>
 </div>

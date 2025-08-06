@@ -37,7 +37,7 @@
             }
           </ul>
         </td>
-        <td>payment method</td>
+        <td>{{ order.paymentMethod || "checking" }}</td>
         <td>
           @if(order.status === 4){
           <button

@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { UserManagementServic } from '../../../../Services/user-management-servic';
-import { IUser } from '../../../../interfaces/IUser';
+import { UserManagementServic } from '@services/user-management-servic';
+import { IUser } from '@interfaces/IUser';
+
 import { CommonModule } from '@angular/common';
+import { AddDeliveryBoyComponent } from "@pages/admin-dashboard/components/add-delivery-boy/add-delivery-boy";
 
 @Component({
   selector: 'app-users',
-  imports: [CommonModule],
+  imports: [CommonModule, AddDeliveryBoyComponent],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
@@ -18,14 +20,23 @@ export class Users {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
-
-  // Search functionality
+  showAddForm = false;
   searchQuery: string = '';
 
   _UserManagement = inject(UserManagementServic)
 
   ngOnInit(): void {
     this.GetAll();
+  }
+
+  openAddForm(): void {
+    console.log('showAddForm :', this.showAddForm);
+    this.showAddForm = true;
+  }
+
+  closeAddForm(): void {
+    this.showAddForm = false;
+    // this.loadUsers(); 
   }
 
   GetAll(): void {
@@ -63,7 +74,19 @@ export class Users {
   Demote(userId: string): void {
     this._UserManagement.Demotion(userId).subscribe({
       next: (value) => {
-        console.log('DemoteToUser', value);
+        // console.log('DemoteToUser', value);
+        this.GetAll();
+      },
+      error: (err) => {
+        console.error('error', err);
+      }
+    });
+  }
+
+  DeleteUser(userId: string): void {
+    this._UserManagement.DeleteUser(userId).subscribe({
+      next: (value) => {
+        // console.log('DeleteUser', value);
         this.GetAll();
       },
       error: (err) => {

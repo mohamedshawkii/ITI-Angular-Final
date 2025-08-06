@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../../../../Services/auth';
-import { IBazaar } from '../../../../interfaces/ibazaar';
-import { BazaarService } from '../../../../Services/bazaar-service';
+import { Auth } from '@services/auth';
+import { IBazaar } from '@interfaces/IBazaar';
+import { BazaarService } from '@services/bazaar-service';
 import { FormGroup } from '@angular/forms';
-import { BrandService } from '../../../../Services/brand.service';
+import { BrandService } from '@services/brand.service';
 
 @Component({
   selector: 'app-next-event',
@@ -64,7 +64,8 @@ export class NextEventComponent implements OnInit {
 
   GetUserId(): void {
     this.userID = this._AuthService.getCurrentUserID()!;
-    if (this.userID !== null && this.userID !== undefined) {
+    this.userRole = this._AuthService.getRole()!;
+    if (this.userID !== null && this.userID !== undefined && this.userRole.includes('BrandOwner')) {
       this.GetBrandId();
     }
   }
@@ -80,7 +81,7 @@ export class NextEventComponent implements OnInit {
         // console.log(data);
       },
       error: (error) => {
-        console.error('Error fetching available brands:', error);
+        // console.error('Error fetching available brands:', error);
       }
     });
   }

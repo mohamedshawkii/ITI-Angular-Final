@@ -1,17 +1,31 @@
-<aside class="Nav_Side col-md-3 col-lg-2 bg-light sidebar p-3 flex-shrink-0">
-  <nav class="">
-    <ul class="nav flex-column m-2">
-      <li class="nav-item d-flex flex-column gap-3">
-        <a routerLink="history" class="nav-link btn btn-primary w-100 mr-auto"
-          >history</a
-        >
-        <a routerLink="myorders" class="nav-link btn btn-primary w-100 mr-auto"
-          >progress</a
-        >
-        <a routerLink="available" class="nav-link btn btn-primary w-100 mr-auto"
-          >Waiting</a
-        >
+<aside class="sidebar-container">
+  <div class="sidebar-header">
+    <h3 class="sidebar-title">User Dashboard</h3>
+    <div class="sidebar-divider"></div>
+  </div>
+  <nav class="sidebar-nav">
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a routerLink="history" class="nav-link" routerLinkActive="active">
+          <i class="fas fa-history"></i>
+          <span>Order History</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="myorders" class="nav-link" routerLinkActive="active">
+          <i class="fas fa-spinner"></i>
+          <span>In Progress</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="available" class="nav-link" routerLinkActive="active">
+          <i class="fas fa-clock"></i>
+          <span>Waiting Orders</span>
+        </a>
       </li>
     </ul>
   </nav>
+  <div class="sidebar-footer">
+    <span>© 2023 Delivery System</span>
+  </div>
 </aside>

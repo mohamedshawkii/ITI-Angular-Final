@@ -1,10 +1,12 @@
 <!-- Header Section -->
 <app-header></app-header>
 
-<!-- Main Content Area -->
-<main class="main-content">
+<!-- Main Content -->
+<main>
   <router-outlet></router-outlet>
 </main>
 
+<!-- <p>Current Route: {{ currentRoute }}</p>
+<p>Hide footer? {{ hideFooter }}</p> -->
 <!-- Footer Section -->
-<app-footer></app-footer>
+<app-footer *ngIf="!hideFooter"></app-footer>

@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { OrderService } from '../../../../Services/order-service';
-import { IOrder } from '../../../../interfaces/IOrder';
-import { Auth } from '../../../../Services/auth';
-import { BrandService } from '../../../../Services/brand.service';
+import { OrderService } from '@services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { Auth } from '@services/auth';
+import { BrandService } from '@services/brand.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
@@ -58,6 +58,19 @@ export class AvailableOrdersBrand implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching available brands:', error);
+      }
+    });
+  }
+
+  CancelOrder(Order: IOrder): void {
+    Order.status = 3;
+    this._OrderService.OrderUpdate(Order).subscribe({
+      next: (data) => {
+        alert('Order Canceled');
+        this.GetAvailable();
+      },
+      error: (error) => {
+        console.error('Error taking order:', error);
       }
     });
   }

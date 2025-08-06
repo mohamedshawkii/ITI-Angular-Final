@@ -2,16 +2,16 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms'; // Import FormsModule
-import { IProduct } from '../../interfaces/IProduct';
-import { BrandService } from '../../Services/brand.service';
-import { ProductService } from '../../Services/product-service';
-import { CartService } from '../../Services/cart-service';
-import { environment } from '../../../environments/environments';
-import { IReview } from '../../interfaces/IReview';
-import { ReviewService } from '../../Services/review-service';
-import { Auth } from '../../Services/auth';
-import { iBrand } from '../../interfaces/iBrand';
+import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IProduct } from '@interfaces/IProduct';
+import { BrandService } from '@services/brand.service';
+import { ProductService } from '@services/product-service';
+import { CartService } from '@services/cart-service';
+import { environment } from '@env/environments';
+import { IReview } from '@interfaces/IReview';
+import { ReviewService } from '@services/review-service';
+import { Auth } from '@services/auth';
+import { IBrand } from '@interfaces/IBrand';
 
 @Component({
   selector: 'app-brand-detail',
@@ -23,7 +23,7 @@ import { iBrand } from '../../interfaces/iBrand';
 export class BrandDetailComponent implements OnInit {
   currentUserId!: string;
   userRole!: string[];
-  brand!: iBrand;
+  brand!: IBrand;
   products: IProduct[] = [];
   productForm!: FormGroup;
   BrandId!: number;
@@ -62,21 +62,20 @@ export class BrandDetailComponent implements OnInit {
       quantity: ['', Validators.required],
       brandID: ['', Validators.required],
     });
-    this.currentUserId = this._AuthService.getCurrentUserID()!; // Ensure user ID is fetched
+    this.currentUserId = this._AuthService.getCurrentUserID()!;
     this.userRole = this._AuthService.getRole();
+
     this._CartService.cart$.subscribe(items => {
       this.cartItems = items;
     });
-    // Get brand ID from route params
+
     const ParamId = this.route.snapshot.paramMap.get('id');
-    if (!ParamId) {
-      return;
+    if (ParamId) {
+      this.BrandId = parseInt(ParamId);
+      this.GetBrandById(this.BrandId);
+      this.GetAllProducts(this.BrandId);
+      this.GetProductReviews(this.BrandId);
     }
-    this.BrandId = parseInt(ParamId);
-    this.GetBrandById(this.BrandId);
-    this.GetAllProducts(this.BrandId);
-    this.productForm.patchValue({ brandID: this.BrandId });
-    this.GetProductReviews(this.BrandId);
   }
 
   hasAnyRole(rolesToCheck: string[], userRoles: string[]): boolean {
@@ -102,7 +101,7 @@ export class BrandDetailComponent implements OnInit {
   }
 
   editProduct(product: IProduct): void {
-    this.selectedProduct = product;  // <== VERY IMPORTANT
+    this.selectedProduct = product;
     this.productForm.patchValue({
       name: product.name,
       description: product.description,
@@ -134,8 +133,12 @@ export class BrandDetailComponent implements OnInit {
   }
 
   SaveProduct() {
+    if (!this.productForm.value.brandID && this.BrandId) {
+      this.productForm.patchValue({ brandID: this.BrandId });
+    }
     if (this.productForm.invalid) {
-      console.log('Form is invalid');
+      console.log('Form is invalid', this.productForm.value);
+      console.log('this.BrandId>>', this.BrandId);
       return;
     }
 
@@ -150,7 +153,7 @@ export class BrandDetailComponent implements OnInit {
       formData.append('ImageFile', this.selectedImageFile);
     }
 
-    if (this.selectedProduct) {
+    if (this.selectedProduct?.id != null) {
       // EDIT MODE
       this._ProductService.UpdateProduct(this.selectedProduct.id, formData).subscribe({
         next: (res) => {
@@ -164,7 +167,6 @@ export class BrandDetailComponent implements OnInit {
         error: (err) => console.error('Error updating product:', err)
       });
     } else {
-      // CREATE MODE
       this._ProductService.CreateProduct(formData).subscribe({
         next: (res) => {
           this.products.push(res);

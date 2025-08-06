@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BazarService } from '../../../../Services/bazar.service';
+import { BazarService } from '@services/bazar.service'; 
 import { CommonModule } from '@angular/common';
 
 @Component({

@@ -7,12 +7,13 @@
         <th class="text-left">Status</th>
         <th class="text-left">Order Details</th>
         <th class="text-left">Payment Method</th>
+        <th class="text-left">Actions</th>
       </tr>
     </thead>
     <tbody>
       @for (order of orders; track order.id) {
       <tr>
-        <td>{{ order.orderDate | date:'shortDate' }}</td>
+        <td>{{ order.orderDate | date : "shortDate" }}</td>
         @switch( order.status){ @case (0) {
         <td><span class="badge bg-info text-dark">Available</span></td>
         }@default {
@@ -21,16 +22,33 @@
         <td>
           <ul class="list-unstyled order-details-list">
             @for (_order of order.orderDetails; track $index) {
-            <li>Price: \${{ _order.price | number:'1.2-2' }}, Qty: {{ _order.quantity }}</li>
+            <li>
+              Price: \${{ _order.price | number : "1.2-2" }}, Qty:
+              {{ _order.quantity }}
+            </li>
             }
           </ul>
         </td>
-        <td>{{ order.orderDetails }}</td>
+        <td>{{ order.paymentMethod || "checking" }}</td>
+        <td>
+          @if(order.status !== 1 && order.status !== 2 && order.status !== 3 &&
+          order.status !== 4 && order.status !== 5 && order.status !== 6 &&
+          order.status !== 7) {
+          <button
+            class="btn btn-sm btn-primary action-btn"
+            (click)="CancelOrder(order)"
+          >
+            <i class="fas fa-info-circle"></i> Cancel
+          </button>
+          }@else {
+          <span class="action-status">Processing</span>
+          }
+        </td>
       </tr>
       } @empty {
-        <tr>
-          <td colspan="4" class="text-center py-3">No available orders found.</td>
-        </tr>
+      <tr>
+        <td colspan="4" class="text-center py-3">No available orders found.</td>
+      </tr>
       }
     </tbody>
   </table>

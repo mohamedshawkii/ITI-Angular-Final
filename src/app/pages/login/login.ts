@@ -1,10 +1,9 @@
-import { Token } from './../../../../node_modules/@stripe/stripe-js/dist/api/tokens.d';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
-import { Auth } from '../../Services/auth';
+import { Auth } from '@services/auth';
 
 interface LoginData {
   email: string;
@@ -57,9 +56,11 @@ export class LoginComponent {
         if (token) {
           localStorage.setItem('token', token);
           this._auth.saveUser();
-          
+
           const role = this._auth.getRole();
-          if (role.includes('DeliveryBoy')) {
+          if (role.includes('ADMIN')) {
+            this._router.navigate(['/admin/dashboard']);
+          } else if (role.includes('DeliveryBoy')) {
             this._router.navigate(['/delivery']);
           } else {
             this._router.navigate(['/']);

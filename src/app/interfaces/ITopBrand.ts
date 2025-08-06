@@ -1,4 +1,4 @@
-export interface TopBrand {
+export interface ITopBrand {
     id: number;
     name: string;
     description: string;

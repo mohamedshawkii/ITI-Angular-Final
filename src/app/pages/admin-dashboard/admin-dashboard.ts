@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SideBare } from "./components/side-bare/side-bare";
-import { Users } from "./components/users/users";
+import { Users } from './components/users/users';
 
 @Component({
   selector: 'app-admin-dashboard',

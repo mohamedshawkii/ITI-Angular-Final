@@ -3,10 +3,9 @@
     <label class="filter-label">Category:</label>
     <select class="filter-select" (change)="onCategoryChange($event)">
       <option value="">All Categories</option>
-      <option value="Food & Beverages">Food & Beverages</option>
-      <option value="Home Decor">Home Decor</option>
-      <option value="Fashion & Accessories">Fashion & Accessories</option>
-      <option value="Beauty & Wellness">Beauty & Wellness</option>
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </option>
     </select>
   </div>
   <div class="filter-group">

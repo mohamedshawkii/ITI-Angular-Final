@@ -6,7 +6,7 @@
       <h1>Users Management</h1>
       <p>Manage user accounts and permissions</p>
     </div>
-    <button class="btn btn-primary add-user-btn">
+    <button class="btn btn-primary add-user-btn" (click)="openAddForm()">
       <svg
         width="20"
         height="20"
@@ -38,8 +38,16 @@
           stroke-width="2"
         />
       </svg>
-      Add User
+      Add Delivery Boy
     </button>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showAddForm">
+    <div class="modal-content">
+      <app-add-delivery-boy
+        (formClosed)="closeAddForm()"
+      ></app-add-delivery-boy>
+    </div>
   </div>
 
   <!-- Search and Filter Bar -->
@@ -102,7 +110,7 @@
                     (click)="Promotion(user.id)"
                     [disabled]="user.roles[0] === 'Admin'"
                   >
-                    <svg
+                    <!-- <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
@@ -138,7 +146,7 @@
                         stroke="currentColor"
                         stroke-width="2"
                       />
-                    </svg>
+                    </svg> -->
                     Promote to Admin
                   </button>
                   }@else {
@@ -147,7 +155,7 @@
                     (click)="Demote(user.id)"
                     [disabled]="user.roles[0] === 'Admin'"
                   >
-                    <svg
+                    <!-- <svg
                       width="16"
                       height="16"
                       viewBox="0 0 24 24"
@@ -183,12 +191,20 @@
                         stroke="currentColor"
                         stroke-width="2"
                       />
-                    </svg>
+                    </svg> -->
                     Demote
                   </button>
                   }
 
-                  <button class="btn btn-sm btn-outline more-btn">
+                  <button
+                    class="btn btn-sm btn-primary promote-btn"
+                    (click)="DeleteUser(user.id)"
+                    [disabled]="user.roles[0] === 'Admin'"
+                  >
+                    Delete
+                  </button>
+
+                  <!-- <button class="btn btn-sm btn-outline more-btn">
                     <svg
                       width="16"
                       height="16"
@@ -218,7 +234,7 @@
                         stroke-width="2"
                       />
                     </svg>
-                  </button>
+                  </button> -->
                 </div>
               </td>
             </tr>

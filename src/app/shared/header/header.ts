@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../../Services/auth';
-import { CartService } from '../../Services/cart-service';
-import { IProduct } from '../../interfaces/IProduct';
-import { BrandService } from '../../Services/brand.service';
+import { Auth } from '@services/auth';
+import { CartService } from '@services/cart-service';
+import { IProduct } from '@interfaces/IProduct';
+import { BrandService } from '@services/brand.service';
 
 @Component({
   selector: 'app-header',
@@ -28,8 +28,10 @@ export class HeaderComponent implements OnInit {
       this.isLoggedIn = !!token;
 
       if (this.isLoggedIn) {
-        this.GetBrandByUserId(this.authService.getCurrentUserID()!);
         this.userRole = this.authService.getRole();
+        if (this.userRole.includes('BrandOwner')) {
+          this.GetBrandByUserId(this.authService.getCurrentUserID()!);
+        }
       } else {
         this.userRole = [];
       }
@@ -44,10 +46,9 @@ export class HeaderComponent implements OnInit {
     this._BrandService.GetBrandByUserId(UserId).subscribe({
       next: (data) => {
         this.BrandId = data[0].id
-        console.log(data);
       },
       error: (error) => {
-        console.error('Error fetching available brands:', error);
+        // console.error('Error fetching available brands:', error);
       }
     });
   }

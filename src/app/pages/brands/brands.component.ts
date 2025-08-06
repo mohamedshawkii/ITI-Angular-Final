@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { iBrand } from '../../interfaces/iBrand';
-import { BrandService } from '../../../../src/app/Services/brand.service';
+import { IBrand } from '@interfaces/IBrand';
+import { BrandService } from '@services/brand.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { BrandsFilterComponent } from './components/brands-filter/brands-filter.
 import { BrandsGridComponent } from './components/brands-grid/brands-grid.component';
 import { LoadMoreComponent } from './components/load-more/load-more.component';
 import { BrandsEmptyStateComponent } from './components/brands-empty-state/brands-empty-state.component';
-import { Auth } from '../../Services/auth';
+import { Auth } from '@services/auth';
 
 @Component({
   selector: 'app-brands',
@@ -25,15 +25,16 @@ import { Auth } from '../../Services/auth';
   styleUrls: ['./brands.component.scss'],
 })
 export class BrandsComponent implements OnInit {
-  allBrands: iBrand[] = [];
-  filteredBrands: iBrand[] = [];
+  allBrands: IBrand[] = [];
+  filteredBrands: IBrand[] = [];
   hasMoreBrands = false;
   currentFilter = '';
   currentSort = 'name';
   showAddBrandButton: boolean = false;
   userRole!: string[];
-  _AuthService = inject(Auth);
   currentUserId: string | null = null;
+
+  _AuthService = inject(Auth);
 
   constructor(
     private brandService: BrandService,
@@ -45,7 +46,6 @@ export class BrandsComponent implements OnInit {
     this.router.navigate(['/brands/add']);
   }
 
-
   ngOnInit(): void {
     this.brandService.getAllBrands().subscribe((brands) => {
       this.allBrands = brands.map((b) => ({
@@ -55,8 +55,11 @@ export class BrandsComponent implements OnInit {
         isFollowed: false,
       }));
       this.filteredBrands = [...this.allBrands];
+      // console.log('Brands fetched successfully', this.allBrands);
+      this.applyFilters();
       this.applySorting();
     });
+
     const role = this.authService.getRole();
     this.userRole = role;
 
@@ -70,6 +73,8 @@ export class BrandsComponent implements OnInit {
         },
       });
     }
+
+
   }
 
   DisplayBasedOnRole(Role: string[]): boolean {
@@ -77,20 +82,25 @@ export class BrandsComponent implements OnInit {
     return Role.some(role => userRole.includes(role));
   }
 
-  filterByCategory(category: string): void {
-    this.currentFilter = category;
+  filterByCategory(categoryID: string): void {
+    // console.log('Filtering by category:', categoryID);
+    this.currentFilter = categoryID;
     this.applyFilters();
   }
 
   sortBrands(sortBy: string): void {
+    // console.log('Received sortBy:', sortBy);
     this.currentSort = sortBy;
-    this.applySorting();
+    // this.applySorting();
+    this.applyFilters();
   }
 
   applyFilters(): void {
+    // console.log(this.allBrands);
+    // console.log('Current Filter:', this.currentFilter);
     if (this.currentFilter) {
       this.filteredBrands = this.allBrands.filter(
-        (brand) => brand.categoryID === this.currentFilter
+        (brand) => brand.categoryID?.toString() === this.currentFilter
       );
     } else {
       this.filteredBrands = [...this.allBrands];
@@ -127,7 +137,7 @@ export class BrandsComponent implements OnInit {
     this.currentFilter = '';
     this.currentSort = 'name';
     this.filteredBrands = [...this.allBrands];
-    this.applySorting();
+    this.applyFilters();
   }
 
   private getIconForCategory(category: string): string {

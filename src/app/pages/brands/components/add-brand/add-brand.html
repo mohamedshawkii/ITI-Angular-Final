@@ -35,14 +35,21 @@
     </div>
 
     <div class="form-group">
-      <label for="ImageFile">Image URL</label>
-      <!-- <input
+      <label for="ImageFile">Profile Image</label>
+      <input
         type="file"
-        (change)="onImageSelected($event)"
+        id="profileImage"
+        (change)="onImageProfileSelected($event)"
         class="form-control"
-      /> -->
-
-      <input type="file" id="ImageFile" (change)="onImageSelected($event)" />
+      />
+      <br />
+      <label for="ImageFile">Cover Image</label>
+      <input
+        type="file"
+        id="image"
+        (change)="onImageCoverSelected($event)"
+        class="form-control"
+      />
     </div>
 
     <div class="form-group">

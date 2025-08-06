@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { OrderService } from '../../../../Services/order-service';
-import { IOrder } from '../../../../interfaces/IOrder';
-import { Auth } from '../../../../Services/auth';
+import { OrderService } from '@services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { Auth } from '@services/auth';
 
 @Component({
   selector: 'app-my-orders',
@@ -35,8 +35,8 @@ export class MyOrdersUser {
       next: (data: any[]) => {
         this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
         this.orders = this.filteredOrders;
-        this.calculatePagination();
         this.updateDisplayedUsers();
+        this.calculatePagination();
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);

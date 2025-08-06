@@ -78,7 +78,7 @@
       </nav>
 
       <div class="user-actions">
-        @if(hasAnyRole(['Customer', 'BrandOwner'], this.userRole)){
+        @if(hasAnyRole(['Customer'], this.userRole)){
         <a routerLink="/cart" class="cart-link">
           <span class="cart-icon">🛒</span>
           <span class="cart-count">{{ itemCount }}</span>
@@ -90,7 +90,7 @@
         </ng-container>
 
         <ng-container *ngIf="isLoggedIn">
-          <button class="btn btn-danger" (click)="logOut()">Logout</button>
+          <button class="btn btn-primary" (click)="logOut()">Logout</button>
         </ng-container>
       </div>
 
@@ -160,10 +160,7 @@
             >Admin</a
           >
         </li>
-        <li
-          class="nav-item-mobile"
-          *ngIf="hasAnyRole(['Customer', 'BrandOwner'], userRole)"
-        >
+        <li class="nav-item-mobile" *ngIf="hasAnyRole(['Customer'], userRole)">
           <a
             routerLink="/cart"
             class="nav-link-mobile"
@@ -185,6 +182,14 @@
             routerLinkActive="active"
             class="nav-link"
             >Orders</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="hasAnyRole(['BrandOwner'], userRole)">
+          <a
+            [routerLink]="['/brand', BrandId]"
+            routerLinkActive="active"
+            class="nav-link"
+            >My Brand</a
           >
         </li>
         <li class="nav-item-mobile" *ngIf="!isLoggedIn">
