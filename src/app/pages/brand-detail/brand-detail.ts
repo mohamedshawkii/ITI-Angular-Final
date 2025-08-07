@@ -96,6 +96,7 @@ export class BrandDetailComponent implements OnInit {
 
   editBrand(BrandId: number): void {
     if (BrandId !== null && BrandId !== undefined) {
+      // Navigate to edit brand page
       this._Router.navigateByUrl(`/edit-brand/${BrandId}`);
     }
   }
@@ -157,21 +158,32 @@ export class BrandDetailComponent implements OnInit {
       // EDIT MODE
       this._ProductService.UpdateProduct(this.selectedProduct.id, formData).subscribe({
         next: (res) => {
-          const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
-          if (index > -1) this.products[index] = res;
-
+          // Close form and reset
           this.closeProductForm();
           this.productForm.reset();
           this.selectedProduct = null;
+          this.selectedImageFile = null;
+
+          // Refresh the products list to show updated data
+          this.GetAllProducts(this.BrandId);
+
+          console.log('Product updated successfully!');
         },
         error: (err) => console.error('Error updating product:', err)
       });
     } else {
+      // CREATE MODE
       this._ProductService.CreateProduct(formData).subscribe({
         next: (res) => {
-          this.products.push(res);
+          // Close form and reset
           this.closeProductForm();
           this.productForm.reset();
+          this.selectedImageFile = null;
+
+          // Refresh the products list to show new product
+          this.GetAllProducts(this.BrandId);
+
+          console.log('Product created successfully!');
         },
         error: (err) => console.error('Error creating product:', err)
       });
@@ -199,9 +211,26 @@ export class BrandDetailComponent implements OnInit {
 
     this._ReviewService.AddReview(this.newReview).subscribe({
       next: (res) => {
+        // Reset form and close modal
         form.resetForm();
+        this.closeReviewForm();
         this.selectedProduct = null;
-        this.closeReviewModal();
+
+        // Refresh the reviews list
+        this.GetProductReviews(this.BrandId);
+
+        // Reset the newReview object
+        this.newReview = {
+          id: 0,
+          userID: '',
+          comment: '',
+          rating: 1,
+          createdAt: new Date(),
+          productID: 0
+        };
+
+        // Show success message (optional)
+        console.log('Review added successfully!');
       },
       error: (err) => {
         console.error('Error adding review:', err);
@@ -209,13 +238,7 @@ export class BrandDetailComponent implements OnInit {
     });
   }
 
-  closeReviewModal(): void {
-    const modalEl = document.getElementById('reviewModal');
-    if (modalEl) {
-      const modalInstance = (window as any).bootstrap.Modal.getInstance(modalEl);
-      modalInstance?.hide();
-    }
-  }
+
 
   getCartItems(): IProduct[] {
     return this._CartService.getCartItems();

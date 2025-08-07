@@ -86,6 +86,7 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { roles: ['ADMIN', 'Customer', 'BrandOwner'] },
   },
+
   // {
   //   path: 'subscriptions',
   //   component: SubscriptionsComponent,
@@ -111,12 +112,12 @@ export const routes: Routes = [
         canActivate: [RoleGuard],
         data: { roles: ['ADMIN'] },
       },
-      {
-        path: 'dashboard',
-        component: DashboardHomeComponent,
-        canActivate: [RoleGuard],
-        data: { roles: ['ADMIN'] },
-      },
+      // {
+      //   path: 'dashboard',
+      //   component: DashboardHomeComponent,
+      //   canActivate: [RoleGuard],
+      //   data: { roles: ['ADMIN'] },
+      // },
     ],
   },
 

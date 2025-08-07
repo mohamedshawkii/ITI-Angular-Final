@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IProduct } from '@interfaces/IProduct'; 
-import { IOrder } from '@interfaces/IOrder';  
+import { IProduct } from '@interfaces/IProduct';
+import { IOrder } from '@interfaces/IOrder';
 @Injectable({
   providedIn: 'root',
 })
@@ -65,6 +65,44 @@ export class CartService {
   removeFromCart(productId: number): void {
     const updatedCart = this.getCartItems().filter(p => p.id !== productId);
     this.updateCart(updatedCart);
+  }
+
+  increaseQuantity(productId: number): void {
+    const cart = this.getCartItems();
+    const product = cart.find(p => p.id === productId);
+
+    if (product) {
+      product.quantity = (product.quantity || 0) + 1;
+      this.updateCart(cart);
+    }
+  }
+
+  decreaseQuantity(productId: number): void {
+    const cart = this.getCartItems();
+    const product = cart.find(p => p.id === productId);
+
+    if (product && product.quantity > 1) {
+      product.quantity = product.quantity - 1;
+      this.updateCart(cart);
+    } else if (product && product.quantity === 1) {
+      // Remove item if quantity would become 0
+      this.removeFromCart(productId);
+    }
+  }
+
+  updateQuantity(productId: number, quantity: number): void {
+    if (quantity <= 0) {
+      this.removeFromCart(productId);
+      return;
+    }
+
+    const cart = this.getCartItems();
+    const product = cart.find(p => p.id === productId);
+
+    if (product) {
+      product.quantity = quantity;
+      this.updateCart(cart);
+    }
   }
 
   clearCart(): void {

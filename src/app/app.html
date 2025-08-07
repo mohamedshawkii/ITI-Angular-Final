@@ -1,10 +1,12 @@
 <!-- Header Section -->
 <app-header></app-header>
-
+<app-chatbot></app-chatbot>
 <!-- Main Content -->
 <main>
   <router-outlet></router-outlet>
 </main>
 
 <!-- Footer Section -->
-<app-footer *ngIf="!hideFooter"></app-footer>
+@if(!hideFooter){
+<app-footer></app-footer>
+}

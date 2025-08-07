@@ -23,6 +23,7 @@ $transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر �
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -30,9 +31,20 @@ $transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر �
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7); }
-  70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(13, 110, 253, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+  }
+
+  70% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+  }
 }
 
 //===============================================
@@ -42,7 +54,7 @@ $transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر �
   // التأثير الزجاجي يتطلب وجود خلفية للصفحة (صورة أو لون)
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  
+
   background-color: $card-background;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: $base-border-radius;
@@ -67,14 +79,16 @@ $transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر �
 
     .cart-item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 1.5rem;
-      padding: 1.25rem 0.5rem;
+      padding: 1.5rem;
       border-bottom: 1px solid $border-color;
       transition: transform $transition-speed, box-shadow $transition-speed;
       border-radius: $base-border-radius;
       opacity: 0; // تبدأ مخفية ليتم إظهارها بالأنيميشن
       animation: fadeInUp 0.5s $transition-speed forwards;
+      min-height: 200px;
+      flex-wrap: wrap;
 
       // هذا هو سر الأنيميشن المتتابع
       @for $i from 1 through 10 {
@@ -87,6 +101,211 @@ $transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر �
         transform: translateY(-5px) scale(1.01);
         box-shadow: $card-box-shadow;
         background-color: $card-background;
+      }
+
+      .cart-item-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        min-width: 0; // Prevents flex item from overflowing
+
+        .cart-item-title {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: $text-color;
+          margin: 0;
+        }
+
+        .cart-item-price {
+          font-size: 1rem;
+          color: $text-color-muted;
+          margin: 0;
+        }
+
+        .quantity-controls {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .quantity-display {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .quantity-label {
+              font-weight: 600;
+              color: $text-color;
+              min-width: 80px;
+              font-size: 1rem;
+            }
+
+            .quantity-buttons {
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+              background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+              border-radius: 12px;
+              padding: 0.5rem;
+              border: 2px solid $border-color;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+              .btn-quantity {
+                width: 40px;
+                height: 40px;
+                border: none;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                position: relative;
+                overflow: hidden;
+
+                &::before {
+                  content: '';
+                  position: absolute;
+                  top: 0;
+                  left: -100%;
+                  width: 100%;
+                  height: 100%;
+                  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                  transition: left 0.5s;
+                }
+
+                &:hover::before {
+                  left: 100%;
+                }
+
+                &.btn-decrease {
+                  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+                  color: white;
+
+                  &:hover:not(:disabled) {
+                    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+                    transform: translateY(-2px) scale(1.05);
+                    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+                  }
+
+                  &:active:not(:disabled) {
+                    transform: translateY(0) scale(0.95);
+                  }
+
+                  &:disabled {
+                    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+                    cursor: not-allowed;
+                    opacity: 0.7;
+                    transform: none;
+                    box-shadow: none;
+                  }
+                }
+
+                &.btn-increase {
+                  background: linear-gradient(135deg, $success-color 0%, #157347 100%);
+                  color: white;
+
+                  &:hover {
+                    background: linear-gradient(135deg, #157347 0%, #146c43 100%);
+                    transform: translateY(-2px) scale(1.05);
+                    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.4);
+                  }
+
+                  &:active {
+                    transform: translateY(0) scale(0.95);
+                  }
+                }
+
+                i {
+                  font-size: 1rem;
+                  font-weight: 700;
+                  z-index: 1;
+                }
+              }
+
+              .quantity-value {
+                min-width: 50px;
+                text-align: center;
+                font-weight: 700;
+                color: $text-color;
+                font-size: 1.2rem;
+                background: white;
+                padding: 0.5rem 0.75rem;
+                border-radius: 6px;
+                border: 1px solid $border-color;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+              }
+            }
+          }
+
+          .item-total {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            border: 1px solid $border-color;
+
+            .item-total-label {
+              font-weight: 600;
+              color: $text-color;
+              font-size: 1rem;
+            }
+
+            .item-total-value {
+              font-weight: 700;
+              color: $success-color;
+              font-size: 1.3rem;
+              text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            }
+          }
+        }
+
+        .btn-danger {
+          align-self: flex-start;
+          background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+          color: white;
+          border: none;
+          padding: 0.75rem 1.5rem;
+          border-radius: 8px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+          position: relative;
+          overflow: hidden;
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+          }
+
+          &:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+          }
+
+          &:hover::before {
+            left: 100%;
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
       }
     }
   }
@@ -103,8 +322,9 @@ $transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر �
       font-weight: 600;
       margin-bottom: 1.5rem;
     }
-    
-    .summary-row, .cart-total {
+
+    .summary-row,
+    .cart-total {
       display: flex;
       justify-content: space-between;
       margin-bottom: 1rem;
@@ -114,29 +334,35 @@ $transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر �
       margin-top: 1.5rem;
       padding-top: 1.5rem;
       border-top: 1px solid $border-color;
-      
-      span { font-size: 1.25rem; font-weight: 700; }
-      span:last-child { color: $success-color; }
-    }
-    
-    .checkout-btn {
-        width: 100%;
-        padding: 14px 20px;
-        margin-top: 1rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: white;
-        background-image: $primary-gradient;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: transform $transition-speed, box-shadow $transition-speed;
-        animation: pulse 2s infinite 3s; // يبدأ الأنيميشن بعد 3 ثواني
 
-        &:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
-        }
+      span {
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      span:last-child {
+        color: $success-color;
+      }
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 14px 20px;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      background-image: $primary-gradient;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform $transition-speed, box-shadow $transition-speed;
+      animation: pulse 2s infinite 3s; // يبدأ الأنيميشن بعد 3 ثواني
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+      }
     }
   }
 
@@ -144,5 +370,112 @@ $transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); // حركة أكثر �
     flex-direction: column;
     backdrop-filter: none; // إلغاء التأثير على الموبايل لتحسين الأداء
     background-color: #ffffff; // الرجوع للخلفية العادية
+  }
+
+  @media (max-width: 768px) {
+    .cart-content {
+      .cart-item {
+        padding: 1rem;
+        min-height: auto;
+
+        .cart-item-content {
+          .quantity-controls {
+            .quantity-display {
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 0.75rem;
+
+              .quantity-buttons {
+                align-self: flex-start;
+
+                .btn-quantity {
+                  width: 36px;
+                  height: 36px;
+                  font-size: 1rem;
+                }
+
+                .quantity-value {
+                  min-width: 45px;
+                  font-size: 1.1rem;
+                  padding: 0.4rem 0.6rem;
+                }
+              }
+            }
+          }
+
+          .btn-danger {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    gap: 1rem;
+
+    .cart-content {
+      .cart-item {
+        padding: 0.75rem;
+        min-height: auto;
+
+        .cart-item-content {
+          gap: 0.75rem;
+
+          .cart-item-title {
+            font-size: 1rem;
+          }
+
+          .cart-item-price {
+            font-size: 0.9rem;
+          }
+
+          .quantity-controls {
+            .quantity-display {
+              .quantity-label {
+                min-width: 70px;
+                font-size: 0.9rem;
+              }
+
+              .quantity-buttons {
+                gap: 0.5rem;
+                padding: 0.4rem;
+
+                .btn-quantity {
+                  width: 32px;
+                  height: 32px;
+                  font-size: 0.9rem;
+                }
+
+                .quantity-value {
+                  min-width: 40px;
+                  font-size: 1rem;
+                  padding: 0.3rem 0.5rem;
+                }
+              }
+            }
+
+            .item-total {
+              padding: 0.5rem;
+
+              .item-total-label {
+                font-size: 0.9rem;
+              }
+
+              .item-total-value {
+                font-size: 1.1rem;
+              }
+            }
+          }
+
+          .btn-danger {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
   }
 }
