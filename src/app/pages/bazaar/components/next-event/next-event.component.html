@@ -1,3 +1,4 @@
+@if(this.nextEvent!= null){
 <div class="next-event-section">
   <div class="container">
     <div class="event-card">
@@ -65,18 +66,15 @@
           </div>
         </div>
       </div>
-
-      <div
-        class="event-actions"
-        *ngIf="
-          authService.getRole() === 'Admin' ||
-          authService.getRole() === 'BrandOwner'
-        "
-      >
-        <button class="btn btn-primary" (click)="register.emit()">
+      @if(!this.IsRegisted && this.IsHasBrand &&
+      _AuthService.getRole().includes('BrandOwner')){
+      <div class="event-actions">
+        <button (click)="RegisterInEvent()" class="btn btn-primary">
           Register Now
         </button>
       </div>
+      }
     </div>
   </div>
 </div>
+}

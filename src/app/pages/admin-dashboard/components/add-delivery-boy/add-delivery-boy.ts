@@ -1,9 +1,8 @@
 import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Auth } from '../../../../Services/auth'; // تأكد من أن المسار صحيح
+import { Auth } from '@services/auth';
 
-// واجهة بيانات مخصصة لهذا الكومبوننت
 export interface DeliveryBoyData {
   firstName: string;
   lastName: string;
@@ -11,19 +10,18 @@ export interface DeliveryBoyData {
   phoneNumber: string;
   password: string;
   confirmPassword: string;
-  accountType: 'DeliveryBoy'; // القيمة ثابتة هنا
+  accountType: 'DeliveryBoy';
 }
 
 @Component({
-  selector: 'app-add-delivery-boy', // اسم الكومبوننت الجديد
+  selector: 'app-add-delivery-boy',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  // استخدم template و style خاصين به
   templateUrl: './add-delivery-boy.html',
   styleUrls: ['./add-delivery-boy.scss']
 })
 export class AddDeliveryBoyComponent {
-  @Output() formClosed = new EventEmitter<void>(); // لإغلاق الفورم من الأب
+  @Output() formClosed = new EventEmitter<void>();
 
   constructor(private _auth: Auth) { }
 
@@ -34,7 +32,7 @@ export class AddDeliveryBoyComponent {
     phoneNumber: '',
     password: '',
     confirmPassword: '',
-    accountType: 'DeliveryBoy' // قيمة ثابتة لا تحتاج لإدخال من المستخدم
+    accountType: 'DeliveryBoy'
   };
 
   showPassword = false;

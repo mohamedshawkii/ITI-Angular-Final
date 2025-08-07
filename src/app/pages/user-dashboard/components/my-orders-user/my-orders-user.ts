@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { OrderService } from '../../../../Services/order-service';
-import { IOrder } from '../../../../interfaces/IOrder';
-import { Auth } from '../../../../Services/auth';
+import { OrderService } from '@services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { Auth } from '@services/auth';
 
 @Component({
   selector: 'app-my-orders',
@@ -11,6 +11,7 @@ import { Auth } from '../../../../Services/auth';
 })
 export class MyOrdersUser {
   orders: IOrder[] = [];
+  filteredOrders: IOrder[] = [];
   pageSize = 5;
   currentPage = 1;
   totalPages = 0;
@@ -32,19 +33,10 @@ export class MyOrdersUser {
   GetAvailable() {
     this._OrderService.GetMadeOrders(this.UserId).subscribe({
       next: (data: any[]) => {
-        this.orders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
-        console.log(data);
-
-        this.pageSize = this.pageSize > 0 ? this.pageSize : 1;
-        this.totalPages = Math.ceil(this.orders.length / this.pageSize);
-
-        if (this.totalPages > 0 && Number.isFinite(this.totalPages)) {
-          this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        } else {
-          this.totalPagesArray = [];
-        }
+        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
+        this.orders = this.filteredOrders;
         this.updateDisplayedUsers();
-        console.log(data);
+        this.calculatePagination();
       },
       error: (error) => {
         console.error('Error fetching available orders:', error);
@@ -57,7 +49,7 @@ export class MyOrdersUser {
     this._OrderService.OrderUpdate(Order).subscribe({
       next: (data) => {
         alert('Order Received');
-        console.log('Order Received successfully:', data);
+        // console.log('Order Received successfully:', data);
         this.IsReceived = true;
         this.GetAvailable();
       },
@@ -71,7 +63,7 @@ export class MyOrdersUser {
     Order.status = 6;
     this._OrderService.OrderUpdate(Order).subscribe({
       next: (data) => {
-        console.log('request handing:', data);
+        // console.log('request handing:', data);
         this.GetAvailable();
       },
       error: (error) => {
@@ -80,10 +72,20 @@ export class MyOrdersUser {
     });
   }
 
+  calculatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize);
+    this.totalPagesArray = Array(this.totalPages)
+      .fill(0)
+      .map((_, i) => i + 1);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = 1;
+    }
+  }
+
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.orders = this.orders.slice(start, end);
+    this.orders = this.filteredOrders.slice(start, end);
   }
 
   goToPage(page: number): void {

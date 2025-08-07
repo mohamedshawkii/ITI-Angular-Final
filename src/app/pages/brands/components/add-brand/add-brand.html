@@ -1,9 +1,8 @@
 <div class="form-container">
   <h2>Add New Brand</h2>
 
-  <form class="brand-form" [formGroup]="brandForm" (ngSubmit)="OnSubmtit()">
+  <form class="brand-form" [formGroup]="brandForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <input type="hidden" id="OwnerID" formControlName="OwnerID" />
       <label for="brandName"
         >Brand Name <span class="required-star">*</span></label
       >
@@ -36,12 +35,20 @@
     </div>
 
     <div class="form-group">
-      <label for="ImageFile">Image URL</label>
+      <label for="ImageFile">Profile Image</label>
       <input
         type="file"
-        id="ImageFile"
-        formControlName="ImageFile"
-        (change)="onImageSelected($event)"
+        id="profileImage"
+        (change)="onImageProfileSelected($event)"
+        class="form-control"
+      />
+      <br />
+      <label for="ImageFile">Cover Image</label>
+      <input
+        type="file"
+        id="image"
+        (change)="onImageCoverSelected($event)"
+        class="form-control"
       />
     </div>
 
@@ -57,12 +64,15 @@
     </div>
 
     <div class="form-actions">
+      <button type="button" class="cancel-button" (click)="onCancel()">
+        Close
+      </button>
       <button
         type="submit"
         class="submit-button"
         [disabled]="brandForm.invalid"
       >
-        حفظ البراند
+        Add Brand
       </button>
     </div>
   </form>

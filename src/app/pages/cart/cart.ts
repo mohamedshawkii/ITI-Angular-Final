@@ -1,16 +1,17 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { IOrder } from '../../interfaces/IOrder';
-import { IProduct } from '../../interfaces/IProduct';
-import { CartService } from '../../Services/cart-service';
-import { Auth } from '../../Services/auth';
-import { OrderService } from '../../Services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { IProduct } from '@interfaces/IProduct';
+import { CartService } from '@services/cart-service';
+import { Auth } from '@services/auth';
+import { OrderService } from '@services/order-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, FormsModule],
   templateUrl: './cart.html',
   styleUrl: './cart.scss'
 })
@@ -20,18 +21,41 @@ export class CartComponent implements OnInit {
   isDisabled!: boolean;
   totalInDollars: number = 0;
   UserId!: string;
+  isCashOnDelivery: boolean = false;
 
   _Order = inject(OrderService);
   _CartService = inject(CartService);
   _AuthService = inject(Auth);
+  _OrderService = inject(OrderService);
+  _Router = inject(Router);
 
   ngOnInit() {
+    this.UserId = this._AuthService.getCurrentUserID()!;
+
     this._CartService.cart$.subscribe(cart => {
       this.cartItems = cart;
+      this.calculateTotal(this.cartItems);
+      this.Orders = {
+        id: 0,
+        status: 0,
+        paymentMethod: '',
+        deliveryBoyID: null,
+        orderTypeID: null,
+        userID: this.UserId,
+        orderDate: new Date(),
+        totalAmount: this.calculateTotal(this.cartItems),
+        orderDetails: this.cartItems.map((item) => ({
+          orderID: 0,
+          productID: item.id,
+          quantity: item.quantity,
+          price: item.price,
+        }))
+      };
+
+      this._CartService.SaveOrder(this.Orders);
     });
-    this.calculateTotal(this.cartItems);
-    this.UserId = this._AuthService.getCurrentUserID()!;
   }
+
   getCartItems(): IProduct[] {
     return this._CartService.getCartItems();
   }
@@ -47,25 +71,45 @@ export class CartComponent implements OnInit {
     return this.totalInDollars;
   }
 
-  checkout(): void {
-    this.cartItems = this._CartService.getCartItems();
+  toggleCashOnDelivery() {
+    if (this.isCashOnDelivery) {
+      alert('You have selected Cash on Delivery');
+    }
+    console.log('Pay with cash:', this.isCashOnDelivery);
+  }
 
-    this.Orders = {
-      id: 0,
-      status: 0,
-      deliveryBoyID: null,
-      orderTypeID: null,
-      userID: this.UserId,
-      orderDate: new Date(),
-      totalAmount: this.calculateTotal(this.cartItems),
-      orderDetails: this.cartItems.map((item) => ({
-        orderID: 0,
-        productID: item.id,
-        quantity: item.quantity,
-        price: item.price,
-      }))
-    };
-    console.log("cart", this.Orders);
-    this._CartService.SaveOrder(this.Orders);
+  checkout(): void {
+    const savedOrder = this._CartService.getOrder();
+
+    if (!savedOrder) {
+      alert('No order found. Please add items again.');
+      this._Router.navigate(['/cart']);
+      return;
+    }
+
+    savedOrder.paymentMethod = this.isCashOnDelivery
+      ? 'Cash on Delivery'
+      : 'Online Payment';
+
+    if (this.isCashOnDelivery) {
+      this._OrderService.CreateUserOrder(savedOrder).subscribe({
+        next: () => {
+          localStorage.removeItem('order');
+          this._CartService.clearCart();
+          this._CartService.totalInCents = 0;
+          this._CartService.totalInDollars = 0;
+          this.cartItems = [];
+          this.isCashOnDelivery = false;
+          alert('Your order has been placed successfully!');
+          this._Router.navigate(['/home']);
+        },
+        error: (err) => {
+          console.error('Order creation failed:', err);
+        }
+      });
+    } else {
+      // redirect to payment page
+      this._Router.navigate(['/payment']);
+    }
   }
 }

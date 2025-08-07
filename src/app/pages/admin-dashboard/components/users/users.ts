@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { UserManagementServic } from '../../../../Services/user-management-servic';
-import { IUser } from '../../../../interfaces/IUser';
-import { AddDeliveryBoyComponent } from '../add-delivery-boy/add-delivery-boy';
+import { UserManagementServic } from '@services/user-management-servic';
+import { IUser } from '@interfaces/IUser';
+
 import { CommonModule } from '@angular/common';
+import { AddDeliveryBoyComponent } from "@pages/admin-dashboard/components/add-delivery-boy/add-delivery-boy";
 
 @Component({
   selector: 'app-users',
-  imports: [AddDeliveryBoyComponent,CommonModule],
+  imports: [CommonModule, AddDeliveryBoyComponent],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
@@ -19,25 +20,7 @@ export class Users {
   currentPage = 1;
   totalPages = 0;
   totalPagesArray: number[] = [];
-  
-  // متغير للتحكم في عرض الفورم
   showAddForm = false;
-
-  // دالة لفتح الفورم
-  openAddForm(): void {
-        console.log('تم الضغط على الزر! قيمة showAddForm قبل التغيير:', this.showAddForm);
-
-    this.showAddForm = true;
-  }
-
-  // دالة لإغلاق الفورم
-  closeAddForm(): void {
-    this.showAddForm = false;
-    // يمكنك عمل إعادة تحميل للبيانات هنا إذا أردت
-    // this.loadUsers(); 
-  }
-
-  // Search functionality
   searchQuery: string = '';
 
   _UserManagement = inject(UserManagementServic)
@@ -46,14 +29,27 @@ export class Users {
     this.GetAll();
   }
 
+  openAddForm(): void {
+    console.log('showAddForm :', this.showAddForm);
+    this.showAddForm = true;
+  }
+
+  closeAddForm(): void {
+    this.showAddForm = false;
+    // this.loadUsers(); 
+  }
+
   GetAll(): void {
     this._UserManagement.GetAll().subscribe({
       next: (value) => {
-        this.users = value;
-        this.filteredUsers = [...this.users]; // Initialize filtered users
-        this.calculatePagination();
+        this.displayedUsers = value;
+        this.users = this.displayedUsers;
+
+        this.totalPages = Math.ceil(this.users.length / this.pageSize);
+        this.totalPagesArray = Array(this.totalPages)
+          .fill(0)
+          .map((_, i) => i + 1);
         this.updateDisplayedUsers();
-        console.log(value);
       },
       error: (err) => {
         console.log(err);
@@ -61,10 +57,24 @@ export class Users {
     });
   }
 
+  hasAnyRole(rolesToCheck: string[], userRoles: string[]): boolean {
+    return rolesToCheck.some(role => userRoles.includes(role));
+  }
+
   Promotion(userId: string): void {
     this._UserManagement.Promotion(userId).subscribe({
       next: (value) => {
-        console.log('Promoted', value);
+        this.GetAll();
+      },
+      error: (err) => {
+        console.error('error', err);
+      }
+    });
+  }
+  Demote(userId: string): void {
+    this._UserManagement.Demotion(userId).subscribe({
+      next: (value) => {
+        // console.log('DemoteToUser', value);
         this.GetAll();
       },
       error: (err) => {
@@ -73,16 +83,23 @@ export class Users {
     });
   }
 
-  /**
-   * Calculate pagination based on filtered users
-   */
+  DeleteUser(userId: string): void {
+    this._UserManagement.DeleteUser(userId).subscribe({
+      next: (value) => {
+        // console.log('DeleteUser', value);
+        this.GetAll();
+      },
+      error: (err) => {
+        console.error('error', err);
+      }
+    });
+  }
+
   calculatePagination(): void {
     this.totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
     this.totalPagesArray = Array(this.totalPages)
       .fill(0)
       .map((_, i) => i + 1);
-    
-    // Reset to first page if current page exceeds total pages
     if (this.currentPage > this.totalPages) {
       this.currentPage = 1;
     }
@@ -91,36 +108,7 @@ export class Users {
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.displayedUsers = this.filteredUsers.slice(start, end);
-  }
-
-  /**
-   * Filter users based on search query
-   */
-  onSearch(): void {
-    if (!this.searchQuery.trim()) {
-      this.filteredUsers = [...this.users];
-    } else {
-      const query = this.searchQuery.toLowerCase().trim();
-      this.filteredUsers = this.users.filter(user => 
-        (user.firstName?.toLowerCase().includes(query)) ||
-        (user.lastName?.toLowerCase().includes(query)) ||
-        (user.email?.toLowerCase().includes(query)) ||
-        (user.roles?.[0]?.toLowerCase().includes(query))
-      );
-    }
-    
-    this.currentPage = 1; // Reset to first page
-    this.calculatePagination();
-    this.updateDisplayedUsers();
-  }
-
-  /**
-   * Clear search and show all users
-   */
-  clearSearch(): void {
-    this.searchQuery = '';
-    this.onSearch();
+    this.displayedUsers = this.users.slice(start, end);
   }
 
   goToPage(page: number): void {

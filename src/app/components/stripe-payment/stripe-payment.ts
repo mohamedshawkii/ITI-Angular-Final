@@ -1,9 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Stripe } from '@stripe/stripe-js';
-import { StripeService } from '../../Services/stripe-service';
+import { StripeService } from '@services/stripe-service';
 import { firstValueFrom } from 'rxjs';
-import { CartService } from '../../Services/cart-service';
-import { OrderService } from '../../Services/order-service';
+import { CartService } from '@services/cart-service';
+import { OrderService } from '@services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -16,10 +18,12 @@ export class StripePayment implements OnInit {
   stripe!: Stripe;
   cardElement: any;
   totalAmount!: number;
+  Orders!: IOrder;
 
   _StripeService = inject(StripeService);
   _CartService = inject(CartService);
   _OrderService = inject(OrderService);
+  _Route = inject(Router);
 
 
   async ngOnInit() {
@@ -35,6 +39,7 @@ export class StripePayment implements OnInit {
     const elements = this.stripe.elements();
     this.cardElement = elements.create('card');
     this.cardElement.mount('#card-element');
+    this.Orders = this._CartService.getOrder()!;
   }
 
   async pay() {
@@ -49,32 +54,35 @@ export class StripePayment implements OnInit {
         }
       });
 
-      if (result.error) {
-        console.error('Payment failed:', result.error.message);
-        alert('Payment failed: ' + result.error.message);
+      const savedOrder = this._CartService.getOrder();
+
+      if (!savedOrder) {
+        alert('Payment succeeded, but no order found. Please try again.');
+        this._Route.navigate(['/cart']);
         return;
       }
 
-      if (result.paymentIntent.status === 'succeeded') {
-        alert('Payment succeeded!');
+      savedOrder.paymentMethod = 'Visa/MasterCard';
 
-        this._OrderService.CreateUserOrder(this._CartService.getOrder()!).subscribe({
-          next: (value) => {
-            localStorage.removeItem('order');
-            this._CartService.clearCart();
-            this._CartService.totalInCents = 0;
-            this._CartService.totalInDollars = 0;
-          },
-          error: (err) => {
-            console.error("Error submitting order:", err);
-            alert("Payment succeeded but order failed.");
-          }
-        });
-      }
+      this._OrderService.CreateUserOrder(savedOrder).subscribe({
+        next: () => {
+          localStorage.removeItem('order');
+          this._CartService.clearCart();
+          this._CartService.totalInCents = 0;
+          this._CartService.totalInDollars = 0;
+          alert('Your order has been placed successfully!');
+          this._Route.navigate(['/home']);
+        },
+        error: (err) => {
+          console.error('Order creation failed:', err);
+          alert('Payment succeeded, but order could not be saved. Please contact support.');
+        }
+      });
 
     } catch (error) {
-      console.error("Error during payment:", error);
-      alert("Something went wrong. Please try again.");
+      console.error('Unexpected error during payment:', error);
+      alert('Something went wrong during payment. Please try again.');
+      this._Route.navigate(['/cart']);
     }
   }
 

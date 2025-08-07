@@ -10,7 +10,7 @@ describe('DashboardHome', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardHome]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DashboardHome);
     component = fixture.componentInstance;

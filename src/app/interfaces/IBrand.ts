@@ -1,11 +1,13 @@
-export interface iBrand {
+export interface IBrand {
   id: number;
   name: string;
   description?: string;
   address?: string;
-  ImageFile?: string;
+  image?: string;
+  profileImage?: string;
   categoryID: string;
-  OwnerID: string;
+  categoryName: string;
+  ownerID: string;
   productCount?: number;
   averageRating?: number;
   icon?: string;

@@ -10,10 +10,9 @@
       </tr>
     </thead>
     <tbody>
-      @for (order of displayedOrders; track order.id) {
+      @for (order of orders; track order.id) {
       <tr>
-        <td>{{ order.orderDate | date:'shortDate' }}</td>
-
+        <td>{{ order.orderDate | date : "shortDate" }}</td>
         <td>
           @if( order.status === 2){
           <span class="badge bg-success">Delivered</span>
@@ -27,16 +26,19 @@
         <td>
           <ul class="list-unstyled order-details-list">
             @for (_order of order.orderDetails; track $index) {
-            <li>Price: \${{ _order.price | number:'1.2-2' }}, Qty: {{ _order.quantity }}</li>
+            <li>
+              Price: \${{ _order.price | number : "1.2-2" }}, Qty:
+              {{ _order.quantity }}
+            </li>
             }
           </ul>
         </td>
-        <td>{{ order.id }}</td>
+        <td>{{ order.paymentMethod || "checking" }}</td>
       </tr>
       } @empty {
-        <tr>
-          <td colspan="4" class="text-center py-3">No delivery history found.</td>
-        </tr>
+      <tr>
+        <td colspan="4" class="text-center py-3">No delivery history found.</td>
+      </tr>
       }
     </tbody>
   </table>

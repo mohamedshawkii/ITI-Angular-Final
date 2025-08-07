@@ -2,8 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Auth } from '../../Services/auth';
-
+import { Auth } from '@services/auth';
 
 
 

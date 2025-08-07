@@ -1,27 +1,36 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { iBrand } from '../../../../interfaces/ibrand';
-import { ICategory } from '../../../../interfaces/ICategory';
-import { BrandService } from '../../../../Services/brand.service';
-import { CategoryService } from '../../../../Services/category-service';
-import { Auth } from '../../../../Services/auth';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { IBrand } from '@interfaces/IBrand';
+import { ICategory } from '@interfaces/ICategory'; 
+import { BrandService } from '@services/brand.service'; 
+import { CategoryService } from '@services/category-service'; 
+import { Auth } from '@services/auth'; 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-brand',
   imports: [FormsModule, ReactiveFormsModule],
   standalone: true,
   templateUrl: './add-brand.html',
-  styleUrl: './add-brand.scss'
+  styleUrl: './add-brand.scss',
 })
 export class AddBrand implements OnInit {
   brandForm!: FormGroup;
-  Brand!: iBrand;
+  Brand!: IBrand;
   Categories!: ICategory[];
   selectedImageFile: File | null = null;
+  selectedProfileImageFile: File | null = null;
 
   _BrandService = inject(BrandService);
   _CategoryService = inject(CategoryService);
   _AuthService = inject(Auth);
+  private router = inject(Router);
 
   constructor(private fb: FormBuilder) { }
 
@@ -30,20 +39,37 @@ export class AddBrand implements OnInit {
       Name: ['', Validators.required],
       Description: [''],
       Address: [''],
-      ImageFile: [''],
+      ImageFile: [null],
+      ProfileImage: [null],
       CategoryID: ['', Validators.required],
-      OwnerID: ['', Validators.required]
+      OwnerID: ['', Validators.required],
     });
 
-    this.brandForm.patchValue({ OwnerID: this._AuthService.getCurrentUserID() as string });
+    this.brandForm.patchValue({
+      OwnerID: this._AuthService.getCurrentUserID() as string,
+    });
 
     this.GetCategories();
   }
 
-  onImageSelected(event: any): void {
-    const file = event.target.files[0];
+  onCancel(): void {
+    this.router.navigate(['/brands']);
+  }
+
+  onImageCoverSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.selectedImageFile = file;
+      this.brandForm.patchValue({ ImageFile: file });
+      this.brandForm.get('ImageFile')?.updateValueAndValidity();
+    }
+  }
+  onImageProfileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedProfileImageFile = file;
+      this.brandForm.patchValue({ profileImage: file });
+      this.brandForm.get('profileImage')?.updateValueAndValidity();
     }
   }
 
@@ -55,34 +81,35 @@ export class AddBrand implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching categories', err);
-      }
-    })
+      },
+    });
   }
 
-  OnSubmtit(): void {
-    if (this.brandForm.valid) {
-      const formData = new FormData();
-
-      formData.append('Name', this.brandForm.value.Name);
-      formData.append('Description', this.brandForm.value.Description || '');
-      formData.append('Address', this.brandForm.value.Address || '');
-      formData.append('CategoryID', this.brandForm.value.CategoryID.toString());
-      formData.append('OwnerID', this.brandForm.value.OwnerID);
-
-      if (this.selectedImageFile) {
-        formData.append('ImageFile', this.selectedImageFile);
-      }
-
-      this._BrandService.CreateBrand(formData).subscribe({
-        next: (res) => {
-          console.log('Brand created successfully', res);
-        },
-        error: (err) => {
-          console.error('Error creating brand', err);
-        }
-      });
-    } else {
-      console.log('Form is invalid');
+  onSubmit(): void {
+    if (this.brandForm.invalid) {
+      console.log('Form invalid');
+      return;
     }
+    const formData = new FormData();
+    formData.append('Name', this.brandForm.value.Name);
+    formData.append('Description', this.brandForm.value.Description || '');
+    formData.append('Address', this.brandForm.value.Address || '');
+    formData.append('CategoryID', this.brandForm.value.CategoryID.toString());
+    formData.append('OwnerID', this.brandForm.value.OwnerID);
+    if (this.selectedImageFile) {
+      formData.append('ImageFile', this.selectedImageFile);
+    }
+    if (this.selectedProfileImageFile) {
+      formData.append('ProfileImage', this.selectedProfileImageFile);
+    }
+    this._BrandService.CreateBrand(formData).subscribe({
+      next: (res) => {
+        console.log('Brand created successfully', res);
+        this.router.navigate(['/brands']);
+      },
+      error: (err) => {
+        console.error('Error creating brand', err);
+      },
+    });
   }
 }

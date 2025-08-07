@@ -1,21 +1,19 @@
 <div class="brand-card">
   <div class="brand-image">
-    <span class="brand-icon">{{ brand.icon }}</span>
+    <img
+      class="brand-ProfileImage"
+      [src]="EURL + '/' + brand.profileImage"
+      alt="profileImage"
+    />
   </div>
   <div class="brand-info">
     <h3 class="brand-name">{{ brand.name }}</h3>
-    <p class="brand-category">{{ brand.categoryID }}</p>
+    <p class="brand-category">{{ brand.categoryName || "category" }}</p>
     <p class="brand-description">{{ brand.description }}</p>
     <div class="brand-stats">
-      <span class="brand-rating">
-        ⭐
-        {{
-          brand.averageRating! > 0
-            ? (brand.averageRating | number : "1.1-1")
-            : "No ratings yet"
-        }}
-      </span>
-
+      <span class="brand-rating"
+        >⭐ {{ brand.averageRating | number : "1.1-1" }}</span
+      >
       <span class="brand-products">{{ brand.productCount }} products</span>
     </div>
     <div class="brand-location" *ngIf="brand.location">
@@ -27,8 +25,8 @@
     <a [routerLink]="['/brand', brand.id]" class="btn btn-primary"
       >View Brand</a
     >
-    <button class="btn btn-outline" (click)="toggleFollow()">
+    <!-- <button class="btn btn-outline" (click)="toggleFollow()">
       {{ brand.isFollowed ? "Following" : "Follow" }}
-    </button>
+    </button> -->
   </div>
 </div>

@@ -2,11 +2,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import { RegisterRequest } from '../pages/register/register';
-import { environment } from '../../environments/environments';
-import { CartService } from './cart-service';
+import { RegisterRequest } from '@pages/register/register';
+import { environment } from '@env/environments';
+import { CartService } from '@services/cart-service';
 
 export interface DecodedToken {
   [key: string]: unknown;
@@ -64,7 +64,6 @@ export class Auth {
     }
   }
 
-
   logOut() {
     localStorage.removeItem('token');
     this._CartService.clearCart();
@@ -72,7 +71,7 @@ export class Auth {
     this._Router.navigate(['/login']);
 
   }
-  // ✅ فك التوكن
+
   getDecodedToken(): DecodedToken | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
@@ -84,7 +83,7 @@ export class Auth {
       return null;
     }
   }
-  //modified nahed
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -98,19 +97,28 @@ export class Auth {
     }
     return userId ?? null;
   }
+  getRole(): string[] {
+    const token = localStorage.getItem('token');
+    if (!token) return [];
 
-  // ✅ قراءة الدور
-  getRole(): string | null {
-    const decoded = this.getDecodedToken();
-    const role = decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const roleClaim =
+        payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
-    if (Array.isArray(role)) {
-      return role.join(',');
+      if (Array.isArray(roleClaim)) {
+        return roleClaim;
+      } else if (typeof roleClaim === "string") {
+        return [roleClaim];
+      } else {
+        return [];
+      }
+    } catch (e) {
+      console.error("❌ Failed to decode token:", e);
+      return [];
     }
-    return role ?? null;
   }
 
-  // ✅ التحقق من دور معين
   hasRole(role: string): boolean {
     const userRole = this.getRole();
     if (Array.isArray(userRole)) {
@@ -119,7 +127,14 @@ export class Auth {
     return userRole === role;
   }
 
-  // استخدام جاهز: هل المستخدم Admin؟
+  hasBrand(): Observable<boolean> {
+    const userId = this.getCurrentUserID();
+    if (!userId) return new Observable(observer => observer.next(true));
+
+    return this._httpClient.get<{ hasBrand: boolean }>(`${environment.apiUrl}/api/Brand/HasBrand/${userId}`)
+      .pipe(map(res => res.hasBrand));
+  }
+
   isAdmin(): boolean {
     return this.hasRole('Admin');
   }

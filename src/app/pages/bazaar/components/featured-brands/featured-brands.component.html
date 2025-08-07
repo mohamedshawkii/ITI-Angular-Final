@@ -11,25 +11,28 @@
     <div class="brands-grid">
       <div class="brand-card" *ngFor="let brand of featuredBrands">
         <div class="brand-image">
-          <span class="brand-icon">{{ brand.icon }}</span>
-          <div class="brand-badge" *ngIf="brand.isNew">New</div>
+          <img
+            class="brand-ProfileImage"
+            [src]="EURL + '/' + brand.profileImage"
+            alt="profileImage"
+          />
         </div>
         <div class="brand-info">
           <h3 class="brand-name">{{ brand.name }}</h3>
-          <p class="brand-category">{{ brand.category }}</p>
+          <p class="brand-category">{{ brand.categoryName }}</p>
           <p class="brand-description">{{ brand.description }}</p>
-          <div class="brand-special" *ngIf="brand.specialOffer">
+          <div class="brand-special" *ngIf="brand.address">
             <span class="special-icon">🎁</span>
-            <span class="special-text">{{ brand.specialOffer }}</span>
+            <span class="special-text">{{ brand.name }}</span>
           </div>
         </div>
         <div class="brand-actions">
           <button class="btn btn-outline" (click)="viewBrand(brand.id)">
             View Brand
           </button>
-          <button class="btn btn-text" (click)="followBrand(brand.id)">
+          <!-- <button class="btn btn-text" (click)="followBrand(brand.id)">
             {{ brand.isFollowed ? "Following" : "Follow" }}
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
