@@ -8,7 +8,34 @@
       <div class="cart-item-content">
         <h2 class="cart-item-title">{{ item.name }}</h2>
         <p class="cart-item-price">{{ item.price }}</p>
-        <p class="cart-item-quantity">Quantity: {{ item.quantity }}</p>
+        <div class="quantity-controls">
+          <div class="quantity-display">
+            <span class="quantity-label">Quantity:</span>
+            <div class="quantity-buttons">
+              <button
+                class="btn btn-quantity btn-decrease"
+                (click)="decreaseQuantity(item.id)"
+                [disabled]="item.quantity <= 1"
+              >
+                <i class="fa fa-minus FontSize">-</i>
+              </button>
+              <span class="quantity-value">{{ item.quantity }}</span>
+              <button
+                class="btn btn-quantity btn-increase"
+                (click)="increaseQuantity(item.id)"
+              >
+                <i class="fa fa-plus FontSize">+</i>
+              </button>
+            </div>
+          </div>
+          <div class="item-total">
+            <span class="item-total-label">Total:</span>
+            <span class="item-total-value"
+              >${{ (item.price * item.quantity).toFixed(2) }}</span
+            >
+          </div>
+        </div>
+
         <button class="btn btn-danger" (click)="removeItem(item.id)">
           Remove
         </button>

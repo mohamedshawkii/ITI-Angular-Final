@@ -7,4 +7,6 @@
 </main>
 
 <!-- Footer Section -->
-<app-footer *ngIf="!hideFooter"></app-footer>
+@if(!hideFooter){
+<app-footer></app-footer>
+}

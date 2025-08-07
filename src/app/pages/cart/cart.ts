@@ -62,6 +62,18 @@ export class CartComponent implements OnInit {
   removeItem(productId: number) {
     this._CartService.removeFromCart(productId);
   }
+
+  increaseQuantity(productId: number) {
+    this._CartService.increaseQuantity(productId);
+  }
+
+  decreaseQuantity(productId: number) {
+    this._CartService.decreaseQuantity(productId);
+  }
+
+  updateQuantity(productId: number, quantity: number) {
+    this._CartService.updateQuantity(productId, quantity);
+  }
   calculateTotal(cartItems: any[]): number {
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const totalInCents = Math.round(total * 100);

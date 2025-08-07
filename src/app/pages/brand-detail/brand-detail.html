@@ -57,7 +57,8 @@
       </div>
       }
       <div class="products-grid">
-        <div class="product-card" *ngFor="let product of products">
+        @for (product of products; track product.id ) {
+        <div class="product-card">
           <div class="product-info">
             <h3 class="product-name">{{ product.name }}</h3>
             <p class="product-description">
@@ -103,10 +104,12 @@
           </div>
           }
         </div>
+        }
       </div>
 
-      <div class="section-header mt-4">
-        <h2 class="section-title">Our Product Reviews</h2>
+      @if(ProductReviews && ProductReviews.length > 0) {
+      <div class="reviews-section-header mt-4">
+        <h2 class="reviews-section-title">Our Product Reviews</h2>
       </div>
 
       <div class="reviews-section">
@@ -135,6 +138,7 @@
         </div>
         }
       </div>
+      }
     </div>
   </div>
 </div>
