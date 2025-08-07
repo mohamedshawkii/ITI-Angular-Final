@@ -1,13 +1,15 @@
+import { ChatbotComponent } from './interfaces/chatbot/chatbot';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/header/header';
 import { FooterComponent } from './shared/footer/footer';
 import { CommonModule } from '@angular/common';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule,],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule,ChatbotComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

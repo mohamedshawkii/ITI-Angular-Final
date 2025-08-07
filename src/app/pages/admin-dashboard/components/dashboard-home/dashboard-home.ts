@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['dashboard-home.scss']
 })
 export class DashboardHomeComponent {
+  // هنا يمكنك جلب الإحصائيات الحقيقية من الـ Services الخاصة بك
 
     users: IUser[] = [];
       displayedUsers: IUser[] = [];
