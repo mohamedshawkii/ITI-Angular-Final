@@ -55,7 +55,7 @@ export class BrandsComponent implements OnInit {
         isFollowed: false,
       }));
       this.filteredBrands = [...this.allBrands];
-      // console.log('Brands fetched successfully', this.allBrands);
+      console.log('Brands fetched successfully', this.allBrands);
       this.applyFilters();
       this.applySorting();
     });
