@@ -1,0 +1,247 @@
+.payment-dashboard {
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 3rem;
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            font-weight: 400;
+        }
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+
+            .icon-text {
+                font-size: 2rem;
+                line-height: 1;
+                display: block;
+            }
+        }
+
+        .card-content {
+            .card-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 0.5rem;
+            }
+
+            .card-value {
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                color: #2c3e50;
+            }
+
+            .card-description {
+                font-size: 0.9rem;
+                color: #7f8c8d;
+                margin: 0;
+            }
+        }
+
+        // Card variants with icon styling
+        &.primary .card-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        &.secondary .card-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-color: #f093fb;
+        }
+
+        &.success .card-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-color: #4facfe;
+        }
+
+        &.warning .card-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-color: #43e97b;
+        }
+
+        &.danger .card-icon {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            border-color: #fa709a;
+        }
+
+        &.info .card-icon {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-color: #a8edea;
+        }
+    }
+
+    .summary-section {
+        .summary-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+
+            h3 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 1.5rem;
+                text-align: center;
+                position: relative;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -8px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 50px;
+                    height: 3px;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border-radius: 2px;
+                }
+            }
+
+            .summary-grid {
+                display: grid;
+                gap: 1rem;
+            }
+
+            .summary-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+                border-radius: 10px;
+                background: #f8f9fa;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: #e9ecef;
+                    transform: translateX(5px);
+                }
+
+                &.highlight {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+
+                    .label,
+                    .value {
+                        color: white;
+                        font-weight: 600;
+                    }
+                }
+
+                .label {
+                    font-weight: 500;
+                    color: #2c3e50;
+                }
+
+                .value {
+                    font-weight: 600;
+                    color: #2c3e50;
+                    font-size: 1.1rem;
+                }
+            }
+        }
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .payment-dashboard {
+        padding: 1rem;
+
+        .dashboard-header {
+            h2 {
+                font-size: 2rem;
+            }
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .stat-card {
+            padding: 1.5rem;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-dashboard {
+        .dashboard-header {
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+        }
+
+        .stat-card {
+            padding: 1rem;
+
+            .card-icon {
+                width: 50px;
+                height: 50px;
+
+                .icon-text {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .card-value {
+                font-size: 1.5rem;
+            }
+        }
+    }
+}

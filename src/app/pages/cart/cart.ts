@@ -38,6 +38,8 @@ export class CartComponent implements OnInit {
       this.Orders = {
         id: 0,
         status: 0,
+        isDeliveryFeesCollected: false,
+        isCashDeliveredToBrand: false,
         paymentMethod: '',
         deliveryBoyID: null,
         orderTypeID: null,
@@ -76,9 +78,7 @@ export class CartComponent implements OnInit {
   }
   calculateTotal(cartItems: any[]): number {
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const totalInCents = Math.round(total * 100);
-    this.totalInDollars = this._CartService.convertCentsToDollars(totalInCents);
-    this._CartService.totalInCents = totalInCents;
+    this.totalInDollars = total
     this._CartService.totalInDollars = this.totalInDollars;
     return this.totalInDollars;
   }
@@ -101,14 +101,13 @@ export class CartComponent implements OnInit {
 
     savedOrder.paymentMethod = this.isCashOnDelivery
       ? 'Cash on Delivery'
-      : 'Online Payment';
+      : 'Visa/MasterCard';
 
     if (this.isCashOnDelivery) {
       this._OrderService.CreateUserOrder(savedOrder).subscribe({
         next: () => {
           localStorage.removeItem('order');
           this._CartService.clearCart();
-          this._CartService.totalInCents = 0;
           this._CartService.totalInDollars = 0;
           this.cartItems = [];
           this.isCashOnDelivery = false;

@@ -47,6 +47,7 @@ export class AvailableOrdersUser implements OnInit {
     this._OrderService.OrderUpdate(Order).subscribe({
       next: (data) => {
         alert('Order Canceled');
+        this.RefundPayment(Order);
         this.GetMadeOrders();
       },
       error: (error) => {
@@ -54,6 +55,16 @@ export class AvailableOrdersUser implements OnInit {
       }
     });
   }
+  RefundPayment(order: IOrder): void {
+    this._OrderService.refundPayment(order.id).subscribe({
+      next: (res) => {
+        console.log('Refund successful', res)
+        alert('Order Refunded');
+      },
+      error: (err) => console.error('Refund failed', err)
+    });
+  }
+
   calculatePagination(): void {
     this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize);
     this.totalPagesArray = Array(this.totalPages)

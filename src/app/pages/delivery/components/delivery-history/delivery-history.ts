@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { OrderService } from '@services/order-service'; 
-import { IOrder } from '@interfaces/IOrder'; 
-import { Auth } from '@services/auth'; 
+import { OrderService } from '@services/order-service';
+import { IOrder } from '@interfaces/IOrder';
+import { Auth } from '@services/auth';
 import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
@@ -31,10 +31,9 @@ export class DeliveryHistory implements OnInit {
   GetOrdersHistory(DeliveryID: string) {
     this._OrderService.OrdersHistory(DeliveryID).subscribe({
       next: (data: IOrder[]) => {
-        this.filteredOrders = data.filter(order => order.status === 2 || order.status === 3);
+        this.filteredOrders = data.filter(order => order.status === 2 || order.status === 3 || order.status === 9);
 
         this.orders = this.filteredOrders;
-
         this.calculatePagination();
         this.updateDisplayedUsers();
       },

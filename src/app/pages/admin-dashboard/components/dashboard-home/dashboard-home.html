@@ -1,6 +1,6 @@
 <div class="dashboard-home-container">
   <div class="dashboard-header">
-    <h1>Welcome Back, {{displayedUsers.length}}! 👋</h1>
+    <!-- <h1>Welcome Back, {{displayedUsers.length}}! 👋</h1> -->
     <!-- <p>Here's a snapshot of your platform's activity.</p> -->
   </div>
 
@@ -9,7 +9,7 @@
       <div class="card-icon users">👤</div>
       <div class="card-content">
         <p>Total Users</p>
-        <span>{{ displayedUsers?.length || 5 }}</span>
+        <span>{{ UsersCount || 0 }}</span>
       </div>
     </div>
     <!-- <div class="stat-card">
@@ -22,15 +22,15 @@
     <div class="stat-card">
       <div class="card-icon bazars">🎪</div>
       <div class="card-content">
-        <p>Active Bazars</p>
-        <span>{{ stats.activeBazars }}</span>
+        <p>Delivered Orders</p>
+        <span>{{ DeliveredOrders || 0 }}</span>
       </div>
     </div>
     <div class="stat-card">
       <div class="card-icon revenue">💰</div>
       <div class="card-content">
         <p>Total Revenue</p>
-        <span>${{ stats.totalRevenue.toLocaleString() }}</span>
+        <span>${{ TotalRevenue }}</span>
       </div>
     </div>
   </div>
@@ -53,3 +53,4 @@
       <p>Analyze sales, traffic, and other metrics.</p>
     </a>
   </div>
+</div>

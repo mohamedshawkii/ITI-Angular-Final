@@ -18,8 +18,10 @@
           <span class="badge bg-success">Delivered</span>
           }@else if(order.status === 3){
           <span class="badge bg-danger">Cancelled</span>
+          }@else if(order.status === 9){
+          <span class="badge bg-success">Cash Delivered</span>
           }@else {
-          <span class="badge bg-secondary">Unknown</span>
+          <span class="badge bg-secondary">Checking</span>
           }
         </td>
 

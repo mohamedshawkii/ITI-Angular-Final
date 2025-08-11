@@ -1,4 +1,5 @@
 import { IOrderDetails } from "./IOrderDetails";
+import { IPayment } from "./IPayment";
 
 export interface IOrder {
     id: number;
@@ -10,4 +11,7 @@ export interface IOrder {
     userID: string;
     orderTypeID?: number | null;
     orderDetails: IOrderDetails[];
+    isDeliveryFeesCollected: boolean;
+    isCashDeliveredToBrand: boolean;
+    payment?: IPayment;
 }

@@ -28,6 +28,9 @@ import { MyOrdersBrand } from '@pages/brand-dashboard/components/my-orders-brand
 import { AvailableOrdersBrand } from '@pages/brand-dashboard/components/available-orders-brand/available-orders-brand';
 import { EditBrandComponent } from '@pages/brands/components/edit-brand/edit-brand.component';
 import { DashboardHomeComponent } from '@pages/admin-dashboard/components/dashboard-home/dashboard-home';
+import { UserPaymentStatus } from '@pages/user-dashboard/components/user-payment-status/user-payment-status';
+import { DeliveryProfitStatus } from '@pages/delivery/components/delivery-profit-status/delivery-profit-status';
+import { BrandPaymentStatus } from '@pages/brand-dashboard/components/brand-payment-status/brand-payment-status';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -145,6 +148,12 @@ export const routes: Routes = [
         canActivate: [RoleGuard],
         data: { roles: ['DeliveryBoy'] },
       },
+      {
+        path: 'Profit-status',
+        component: DeliveryProfitStatus,
+        canActivate: [RoleGuard],
+        data: { roles: ['DeliveryBoy'] },
+      },
     ],
   },
 
@@ -172,6 +181,12 @@ export const routes: Routes = [
         canActivate: [RoleGuard],
         data: { roles: ['ADMIN', 'Customer'] },
       },
+      {
+        path: 'payment-status',
+        component: UserPaymentStatus,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'Customer'] },
+      },
     ],
   },
 
@@ -196,6 +211,12 @@ export const routes: Routes = [
       {
         path: 'available',
         component: AvailableOrdersBrand,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'BrandOwner'] },
+      },
+      {
+        path: 'Brand-payment-status',
+        component: BrandPaymentStatus,
         canActivate: [RoleGuard],
         data: { roles: ['ADMIN', 'BrandOwner'] },
       },
