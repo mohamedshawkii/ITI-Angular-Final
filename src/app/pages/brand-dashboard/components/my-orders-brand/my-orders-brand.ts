@@ -38,7 +38,7 @@ export class MyOrdersBrand implements OnInit {
   GetAvailable() {
     this._OrderService.GetOrderByBrandId(this.BrandID).subscribe({
       next: (data: IOrder[]) => {
-        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
+        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7 || order.status === 8 || order.status === 10);
         this.orders = this.filteredOrders;
 
         this.calculatePagination();
@@ -48,8 +48,6 @@ export class MyOrdersBrand implements OnInit {
         console.error('Error fetching available orders:', error);
       }
     });
-
-
   }
 
   GetBrandId() {
@@ -61,6 +59,23 @@ export class MyOrdersBrand implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching available brands:', error);
+      }
+    });
+  }
+
+  ReceiveCashFromDelivery(order: IOrder): void {
+    if (order.status === 10) {
+      order.status = 9;
+      order.isCashDeliveredToBrand = true;
+    }
+    this._OrderService.OrderUpdate(order).subscribe({
+      next: (data) => {
+        console.log('Cash handed to the brand', data);
+        this.IsHanded = true;
+        this.GetAvailable();
+      },
+      error: (error) => {
+        console.error('Error delivering order:', error);
       }
     });
   }
@@ -83,8 +98,9 @@ export class MyOrdersBrand implements OnInit {
     order.status = 3;
     this._OrderService.OrderUpdate(order).subscribe({
       next: (data) => {
-        console.log('Order returned:', data);
+        // console.log('Order returned:', data);
         this.IsHanded = true;
+        this.RefundPayment(order);
         this.GetAvailable();
       },
       error: (error) => {
@@ -92,6 +108,17 @@ export class MyOrdersBrand implements OnInit {
       }
     });
   }
+
+  RefundPayment(order: IOrder): void {
+    this._OrderService.refundPayment(order.id).subscribe({
+      next: (res) => {
+        console.log('Refund successful', res)
+        alert('Order Refunded');
+      },
+      error: (err) => console.error('Refund failed', err)
+    });
+  }
+
   calculatePagination(): void {
     this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize);
     this.totalPagesArray = Array(this.totalPages)
@@ -101,6 +128,7 @@ export class MyOrdersBrand implements OnInit {
       this.currentPage = 1;
     }
   }
+
   updateDisplayedUsers(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;

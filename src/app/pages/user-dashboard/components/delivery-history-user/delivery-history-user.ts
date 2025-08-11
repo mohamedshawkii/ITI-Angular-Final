@@ -17,6 +17,8 @@ export class DeliveryHistoryUser implements OnInit {
   totalPages = 0;
   totalPagesArray: number[] = [];
   UserId!: string;
+  totalPayment: number = 0;
+  totalPendingPayment: number = 0;
 
   _OrderService = inject(OrderService);
   _AuthService = inject(Auth);
@@ -28,11 +30,10 @@ export class DeliveryHistoryUser implements OnInit {
   }
 
   GetOrdersHistory(UserId: string) {
-    this._OrderService.OrdersHistory(UserId).subscribe({
+    this._OrderService.GetMadeOrders(UserId).subscribe({
       next: (data: IOrder[]) => {
-        this.filteredOrders = data.filter(order => order.status === 2 || order.status === 3);
+        this.filteredOrders = data.filter(order => order.status === 2 || order.status === 3 || order.status === 9);
         this.orders = this.filteredOrders;
-
         this.calculatePagination();
         this.updateDisplayedUsers();
       },
@@ -40,8 +41,6 @@ export class DeliveryHistoryUser implements OnInit {
         console.error('Error fetching available orders:', error);
       }
     });
-
-
   }
 
   calculatePagination(): void {

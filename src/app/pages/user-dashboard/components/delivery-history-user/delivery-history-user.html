@@ -20,6 +20,7 @@
             <tr>
               <th>Order Date</th>
               <th>Status</th>
+              <th>Payment Status</th>
               <th>Order Details</th>
               <th>Payment Method</th>
             </tr>
@@ -34,11 +35,15 @@
                 <span class="status-badge status-delivered">Delivered</span>
                 } @case (3) {
                 <span class="status-badge status-cancelled">Cancelled</span>
-                } @default {
+                } @case (9) {
+                <span class="status-badge status-delivered">CashDelivered</span>
+                }@default {
                 <span class="status-badge status-checking">Processing</span>
                 } }
               </td>
-
+              <td class="status-badge status-cancelled">
+                {{ order.payment?.paymentStatus }}
+              </td>
               <td class="order-details">
                 <div class="details-list">
                   @for (_order of order.orderDetails; track $index) {
@@ -75,7 +80,7 @@
         <ul class="pagination">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button class="page-link prev-button" (click)="prevPage()">
-              <i class="fas fa-chevron-left"></i>
+              <i class="fas fa-chevron-left"></i>prev
             </button>
           </li>
 
@@ -89,7 +94,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button class="page-link next-button" (click)="nextPage()">
-              <i class="fas fa-chevron-right"></i>
+              <i class="fas fa-chevron-right"></i>next
             </button>
           </li>
         </ul>

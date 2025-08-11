@@ -1,0 +1,123 @@
+<div class="payment-dashboard">
+  <div class="dashboard-header">
+    <h2>Delivery Profit Dashboard</h2>
+    <p>Track your delivery earnings and order status</p>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Total Orders Card -->
+    <div class="stat-card primary">
+      <div class="card-icon">
+        <span class="icon-text">📦</span>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Total Orders</h3>
+        <p class="card-value">{{ Orders }}</p>
+        <p class="card-description">Total orders carried</p>
+      </div>
+    </div>
+
+    <!-- Orders In Progress Card -->
+    <div class="stat-card info">
+      <div class="card-icon">
+        <span class="icon-text">🚚</span>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Orders In Progress</h3>
+        <p class="card-value">{{ OrdersInProgress }}</p>
+        <p class="card-description">Currently being delivered</p>
+      </div>
+    </div>
+
+    <!-- Delivered Orders Card -->
+    <div class="stat-card success">
+      <div class="card-icon">
+        <span class="icon-text">✅</span>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Delivered Orders</h3>
+        <p class="card-value">{{ DeliveredOrders }}</p>
+        <p class="card-description">Successfully delivered</p>
+      </div>
+    </div>
+
+    <!-- Cancelled Orders Card -->
+    <div class="stat-card danger">
+      <div class="card-icon">
+        <span class="icon-text">❌</span>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Cancelled Orders</h3>
+        <p class="card-value">{{ CancelledOrders }}</p>
+        <p class="card-description">Cancelled orders</p>
+      </div>
+    </div>
+
+    <!-- Online Payment Profit Card -->
+    <div class="stat-card secondary">
+      <div class="card-icon">
+        <span class="icon-text">💳</span>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Online Payment Profit</h3>
+        <p class="card-value">
+          {{ TotalProfit | currency : "USD" : "symbol" : "1.2-2" }}
+        </p>
+        <p class="card-description">5% commission from online orders</p>
+      </div>
+    </div>
+
+    <!-- Cash Delivery Profit Card -->
+    <div class="stat-card warning">
+      <div class="card-icon">
+        <span class="icon-text">💵</span>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Cash Delivery Profit</h3>
+        <p class="card-value">
+          {{
+            TotalProfitFromCashOnDelivery
+              | currency : "USD" : "symbol" : "1.2-2"
+          }}
+        </p>
+        <p class="card-description">10% commission from cash orders</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Section -->
+  <div class="summary-section">
+    <div class="summary-card">
+      <h3>Earnings Summary</h3>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="label">Online Payment Profit:</span>
+          <span class="value">{{
+            TotalProfit | currency : "USD" : "symbol" : "1.2-2"
+          }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Cash Delivery Profit:</span>
+          <span class="value">{{
+            TotalProfitFromCashOnDelivery
+              | currency : "USD" : "symbol" : "1.2-2"
+          }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Pending Cash Profit:</span>
+          <span class="value">{{
+            PendingProfitFromCashOnDelivery
+              | currency : "USD" : "symbol" : "1.2-2"
+          }}</span>
+        </div>
+        <div class="summary-item highlight">
+          <span class="label">Total Withdrawable:</span>
+          <span class="value">{{
+            TotalProfitFromCashOnDelivery + TotalProfit
+              | currency : "USD" : "symbol" : "1.2-2"
+          }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

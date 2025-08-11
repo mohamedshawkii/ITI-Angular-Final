@@ -8,7 +8,6 @@ import { IOrder } from '@interfaces/IOrder';
 export class CartService {
   private cartSubject = new BehaviorSubject<IProduct[]>(this.loadCartFromStorage());
   cart$ = this.cartSubject.asObservable();
-  totalInCents: number = 0;
   totalInDollars: number = 0;
 
   private loadCartFromStorage(): IProduct[] {
@@ -30,9 +29,6 @@ export class CartService {
     this.saveCartToStorage(cart); // Save to localStorage every time it's updated
   }
 
-  convertCentsToDollars(totalInCents: number): number {
-    return totalInCents / 100;
-  }
   SaveOrder(order: IOrder): void {
     localStorage.setItem('order', JSON.stringify(order));
   }

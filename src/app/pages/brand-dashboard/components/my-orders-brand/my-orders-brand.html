@@ -26,8 +26,10 @@
           <span class="badge bg-info">Delivery User Handing Request</span> }
           @case (6) {
           <span class="badge bg-secondary">User Delivery Handing Request</span>
-          } @case (7) { <span class="badge bg-dark">Returning</span> } @default
-          { <span class="badge bg-secondary">Checking</span> } }
+          } @case (7) { <span class="badge bg-dark">Returning</span> } @case (8)
+          { <span class="badge bg-dark">CashOntheWay</span> } @case (10) {
+          <span class="badge bg-dark">CashToBrandHandingRequest</span> }
+          @default { <span class="badge bg-secondary">Checking</span> } }
         </td>
 
         <td>
@@ -52,6 +54,13 @@
             (click)="ReceiveReturning(order)"
           >
             <i class="fas fa-undo"></i> Receive Returning
+          </button>
+          }@else if(order.status === 10){
+          <button
+            class="btn btn-sm btn-success action-btn"
+            (click)="ReceiveCashFromDelivery(order)"
+          >
+            <i class="fas fa-undo"></i> Received Cash
           </button>
           }@else {
           <p class="no-action-text">
