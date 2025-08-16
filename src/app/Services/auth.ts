@@ -68,7 +68,7 @@ export class Auth {
     localStorage.removeItem('token');
     this._CartService.clearCart();
     this.UserToken.next('');
-    this._Router.navigate(['/login']);
+    this._Router.navigate(['/home']);
 
   }
 
