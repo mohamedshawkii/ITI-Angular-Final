@@ -1,4 +1,4 @@
-import { ChatbotComponent } from './interfaces/chatbot/chatbot';
+import { ChatbotComponent } from '@pages/chatbot/chatbot';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './shared/header/header';
