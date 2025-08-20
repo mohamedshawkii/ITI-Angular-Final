@@ -7,11 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BrandService } from '@services/brand.service';
-import { CategoryService } from '@services/category-service';
-import { Auth } from '@services/auth';
-import { ICategory } from '@interfaces/ICategory';
-import { IBrand } from '@interfaces/IBrand';
+import { BrandService } from '@services/brand.service'; 
+import { CategoryService } from '@services/category-service'; 
+import { Auth } from '@services/auth'; 
+import { ICategory } from '@interfaces/ICategory'; 
+import { IBrand } from '@interfaces/IBrand'; 
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -60,8 +60,7 @@ export class EditBrandComponent implements OnInit {
   }
 
   onCancel(): void {
-    // Navigate back to the brand detail page
-    this.router.navigate([`/brand-detail/${this.brandId}`]);
+    this.router.navigate(['/brands']);
   }
 
   loadCategories(): void {
@@ -129,12 +128,12 @@ export class EditBrandComponent implements OnInit {
     }
     this._BrandService.updateBrand(formData).subscribe({
       next: (res) => {
-        console.log('Brand updated successfully!');
-        // Navigate back to the brand detail page
-        this.router.navigate([`/brand-detail/${this.brandId}`]);
+        alert('Brand updated successfully!');
+        // console.log('Brand created successfully', res);
+        this.router.navigate(['/brands']);
       },
       error: (err) => {
-        console.error('Error updating brand', err);
+        console.error('Error creating brand', err);
       },
     });
   }

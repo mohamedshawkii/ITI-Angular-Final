@@ -41,10 +41,11 @@ export class OrderService {
     return this._httpClient.get<IOrder[]>(`${environment.apiUrl}/api/DeliveryOrders/delivery/${deliveryId}/active-orders`);
   }
 
-  // Get all orders made by the current user
+  // Get orders made by the current user
   CreateUserOrder(order: IOrder): Observable<any> {
     return this._httpClient.post(`${environment.apiUrl}/api/Order/CreateOrder`, order);
   }
+
   GetMadeOrders(userId: string): Observable<IOrder[]> {
     return this._httpClient.get<IOrder[]>(`${environment.apiUrl}/api/Order/UserOrders/${userId}`);
   }
@@ -52,7 +53,17 @@ export class OrderService {
   OrderUpdate(order: IOrder): Observable<any> {
     return this._httpClient.put(`${environment.apiUrl}/api/Order/update`, order);
   }
+
   GetOrderByBrandId(BrandId: number): Observable<IOrder[]> {
     return this._httpClient.get<IOrder[]>(`${environment.apiUrl}/api/Order/Brand/${BrandId}`);
   }
+
+  refundPayment(orderId: number) {
+    return this._httpClient.post(`${environment.apiUrl}/api/Payment/refund/${orderId}`, {});
+  }
+
+  GetAllOrders(): Observable<IOrder[]> {
+    return this._httpClient.get<IOrder[]>(`${environment.apiUrl}/api/Order/all`);
+  }
+
 }

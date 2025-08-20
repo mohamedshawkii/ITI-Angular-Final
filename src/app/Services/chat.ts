@@ -25,7 +25,9 @@ interface GeminiResponse {
   providedIn: 'root'
 })
 export class ChatService {
+
   private readonly apiKey = 'AIzaSyA1RwlQ6L8rLs_linOnJAQQhvLC5vEfFoQ';
+
 private readonly apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${this.apiKey}`;
 
   constructor(private http: HttpClient) { }

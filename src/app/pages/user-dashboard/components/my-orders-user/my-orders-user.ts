@@ -33,7 +33,7 @@ export class MyOrdersUser {
   GetAvailable() {
     this._OrderService.GetMadeOrders(this.UserId).subscribe({
       next: (data: any[]) => {
-        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
+        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7 || order.status === 8 || order.status === 10);
         this.orders = this.filteredOrders;
         this.updateDisplayedUsers();
         this.calculatePagination();
@@ -46,6 +46,9 @@ export class MyOrdersUser {
 
   ReceiveOrder(Order: IOrder): void {
     Order.status = 2;
+    if (Order.paymentMethod === 'Cash on Delivery') {
+      Order.status = 8;
+    }
     this._OrderService.OrderUpdate(Order).subscribe({
       next: (data) => {
         alert('Order Received');

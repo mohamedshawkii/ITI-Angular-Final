@@ -65,13 +65,26 @@ export class AvailableOrdersBrand implements OnInit {
   CancelOrder(Order: IOrder): void {
     Order.status = 3;
     this._OrderService.OrderUpdate(Order).subscribe({
-      next: (data) => {
+      next: () => {
         alert('Order Canceled');
+        if (Order.paymentMethod === 'Visa/MasterCard') {
+          this.RefundPayment(Order);
+        }
         this.GetAvailable();
       },
       error: (error) => {
         console.error('Error taking order:', error);
       }
+    });
+  }
+
+  RefundPayment(order: IOrder): void {
+    this._OrderService.refundPayment(order.id).subscribe({
+      next: (res) => {
+        console.log('Refund successful', res)
+        alert('Order Refunded');
+      },
+      error: (err) => console.error('Refund failed', err)
     });
   }
 

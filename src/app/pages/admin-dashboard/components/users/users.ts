@@ -71,6 +71,7 @@ export class Users {
       }
     });
   }
+
   Demote(userId: string): void {
     this._UserManagement.Demotion(userId).subscribe({
       next: (value) => {

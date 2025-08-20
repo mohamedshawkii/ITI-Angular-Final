@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { OrderService } from '@services/order-service'; 
+import { OrderService } from '@services/order-service';
 import { IOrder } from '@interfaces/IOrder';
-import { Auth } from '@services/auth'; 
+import { Auth } from '@services/auth';
 import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
@@ -32,9 +32,10 @@ export class MyOrders {
   GetAvailable() {
     this._OrderService.MyOrders(this.DeliveryID).subscribe({
       next: (data: any[]) => {
-        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 2 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7);
+        this.filteredOrders = data.filter(order => order.status === 1 || order.status === 4 || order.status === 5 || order.status === 6 || order.status === 7 || order.status === 8 || order.status === 10);
         this.orders = this.filteredOrders;
-        
+
+
         this.calculatePagination();
         this.updateDisplayedUsers();
       },
@@ -54,6 +55,19 @@ export class MyOrders {
       },
       error: (error) => {
         console.error('Error Returning Order:', error);
+      }
+    });
+  }
+
+  CashBrandHandingRequest(Order: IOrder): void {
+    Order.status = 10;
+    this._OrderService.OrderUpdate(Order).subscribe({
+      next: (data) => {
+        console.log('request handing:', data);
+        this.GetAvailable();
+      },
+      error: (error) => {
+        console.error('Error handing order:', error);
       }
     });
   }
@@ -82,6 +96,8 @@ export class MyOrders {
       }
     });
   }
+
+
 
   calculatePagination(): void {
     this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize);

@@ -34,7 +34,7 @@ export class DeliveryHistoryBrand implements OnInit {
   GetAvailable() {
     this._OrderService.GetOrderByBrandId(this.BrandID).subscribe({
       next: (data: IOrder[]) => {
-        this.filteredOrders = data.filter(order => order.status === 2 || order.status === 3);
+        this.filteredOrders = data.filter(order => order.status === 2 || order.status === 3 || order.status === 9);
         this.orders = this.filteredOrders;
 
         this.calculatePagination();

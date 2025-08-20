@@ -53,7 +53,13 @@
                 >
                 } @case (7) {
                 <span class="status-badge status-returning">Returning</span>
-                } @default {
+                } @case (8) {
+                <span class="status-badge status-returning">CashOntheWay</span>
+                } @case (10) {
+                <span class="status-badge status-returning"
+                  >CashToBrandHandingRequest</span
+                >
+                }@default {
                 <span class="status-badge status-checking">Checking</span>
                 } }
               </td>
@@ -114,7 +120,7 @@
         <ul class="pagination">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button class="page-link prev-button" (click)="prevPage()">
-              <i class="fas fa-chevron-left"></i>
+              <i class="fas fa-chevron-left"></i>prev
             </button>
           </li>
 
@@ -128,7 +134,7 @@
 
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <button class="page-link next-button" (click)="nextPage()">
-              <i class="fas fa-chevron-right"></i>
+              <i class="fas fa-chevron-right"></i>next
             </button>
           </li>
         </ul>
