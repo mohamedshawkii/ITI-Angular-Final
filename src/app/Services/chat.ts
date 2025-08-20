@@ -25,7 +25,9 @@ interface GeminiResponse {
   providedIn: 'root'
 })
 export class ChatService {
-  private readonly apiKey = 'AIzaSyBmETiJtL7lhvnzh3Mx_1vJAF1tisPNPE0';
+
+  private readonly apiKey = 'AIzaSyA1RwlQ6L8rLs_linOnJAQQhvLC5vEfFoQ';
+
 private readonly apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${this.apiKey}`;
 
   constructor(private http: HttpClient) { }
@@ -75,7 +77,7 @@ private readonly apiUrl = `https://generativelanguage.googleapis.com/v1beta/mode
         let errorMessage = 'عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.';
         
         if (error.status === 403) {
-          errorMessage = 'خطأ في مفتاح API. يرجى التحقق من صحة المفتاح.';
+          errorMessage = 'خطأ في مفتاح API. يرجى التحقaق من صحة المفتاح.';
         } else if (error.status === 429) {
           errorMessage = 'تم تجاوز حد الاستخدام. يرجى المحاولة لاحقاً.';
         } else if (error.status === 400) {
