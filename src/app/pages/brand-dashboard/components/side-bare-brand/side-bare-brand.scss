@@ -1,6 +1,6 @@
 .sidebar {
   width: 280px; // Slightly wider for better spacing
-  background: #fa882b;
+  background: #eb6c04;
   color: #ecf0f1;
   padding: 25px 20px; // Increased padding
   display: flex;
@@ -70,7 +70,7 @@
   }
 
   &:hover, &.active {
-    background-color: #0e7e10;
+    background-color: #ffae00;
     color: #f2f9f9;
     border-left-color: #3498db;
   }
